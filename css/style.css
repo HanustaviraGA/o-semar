@@ -190,7 +190,9 @@ label {
   margin-bottom: 0.5rem; }
 
 button {
-  border-radius: 0; }
+  border-radius: 0;
+  border: 1px solid #fff;
+}
 
 button:focus {
   outline: 1px dotted;
