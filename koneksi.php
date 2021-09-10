@@ -11,7 +11,6 @@
  	} catch(PDOException $e){
 		die("Koneksi gagal : ".$e->getMessage());
 	}
-
 	//kode awal
 /*	if(!$koneksi) {
 		die("Koneksi gagal : ".mysql_connect_error());
