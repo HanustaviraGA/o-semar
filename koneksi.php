@@ -1,13 +1,13 @@
 <?php 
-	$host = "localhost";
-	$user = "root";
-	$pass = "";
-	$db = "osemar";
+	$db_host = "localhost";
+	$db_user = "root";
+	$db_pass = "";
+	$db_name = "osemar";
 
 	
     //percobaan
 	try{
-		$koneksi = mysqli_connect($host, $user, $pass, $db);
+		$db = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
  	} catch(PDOException $e){
 		die("Koneksi gagal : ".$e->getMessage());
 	}
