@@ -1,36 +1,3 @@
-<?php 
-// mengaktifkan session php
-session_start();
- 
-// menghubungkan dengan koneksi
-include 'koneksi.php';
- 
-// menangkap data yang dikirim dari form
-$nama = $_POST['nama'];
-$username = $_POST['username'];
-$password = $_POST['password'];
-$c_password = $_POST['c_password'];
-$ubah_nama = mysqli_real_escape_string($koneksi, $nama);
-// // menambah data
-// $rowSQL = mysqli_query( "SELECT MAX( id ) AS max FROM `users`;" );
-// $row = mysqli_fetch_array( $rowSQL );
-// $largestNumber = $row['max'];
-
-if($password != $c_password){
-    header("location:register.php?pesan=Konfirmasi password harus sama dengan password !");
-    exit;
-}
-
-if((!empty($ubah_nama)) && (!empty($username)) && (!empty($password))){
-    $query = mysqli_query($koneksi,"INSERT INTO `users` (`nama`, `username`, `password`) VALUES ('$ubah_nama', '$username', '$password');");
-    header("location:register.php?pesan=Pendaftaran Berhasil !");
-}
-else{
-    header("location:register.php?pesan=Maaf, tidak boleh ada field yang kosong !");
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,52 +29,47 @@ else{
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Register</h1>
                   </div>
-                  <form>
+                  <form action="controller.php?aksi=register" method="POST">
                     <div class="form-group">
                       <label>NIK</label>
-                      <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Masukan NIK Anda">
+                      <input type="text" class="form-control" name="nik" id="nik" placeholder="Masukan NIK Anda">
                     </div>
                     <div class="form-group">
                       <label>Nama Lengkap</label>
-                      <input type="text" class="form-control" id="exampleInputLastName" placeholder="Masukan Nama Lengkap Anda">
-                    </div>
-                    <div class="form-group">
-                      <label>Email</label>
-                      <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
-                        placeholder="Masukan Alamat Email Anda">
+                      <input type="text" class="form-control" name="nama" id="nama" placeholder="Masukan Nama Lengkap Anda">
                     </div>
                     <div class="form-group">
                       <label>Kata Sandi</label>
-                      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Masukan Kata Sandi">
+                      <input type="password" class="form-control" name="password" id="password" placeholder="Masukan Kata Sandi">
                     </div>
                     <div class="form-group">
                       <label>Konfirmasi Kata Sandi</label>
-                      <input type="password" class="form-control" id="exampleInputPasswordRepeat"
+                      <input type="password" class="form-control" name="c_password" id="c_password"
                         placeholder="Ulangi Kata Sandi yang Telah Anda Masukan">
                     </div>
                     <div class="form-group">
                       <label>Nomor KK</label>
-                      <input type="text" class="form-control" id="exampleInputLastName" placeholder="Masukan Nomot KK">
+                      <input type="text" class="form-control" name="kk" id="kk" placeholder="Masukan Nomot KK">
                     </div>
                     <div class="form-group">
                       <label>Nama Pengguna</label>
-                      <input type="text" class="form-control" id="exampleInputLastName" placeholder="Bukan Nama Asli">
+                      <input type="text" class="form-control" name="username" id="username" placeholder="Bukan Nama Asli">
                     </div>
                     <div class="form-group">
                       <label>Alamat</label>
-                      <input type="text" class="form-control" id="exampleInputLastName" placeholder="Masukan Alamat Lengkap Anda">
+                      <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Masukan Alamat Lengkap Anda">
                     </div>
                     <div class="form-group">
                       <label>TTL</label>
-                      <input type="text" class="form-control" id="exampleInputLastName" placeholder="Tempat dan Tanggal Lahir">
+                      <input type="text" class="form-control" name="ttl" id="ttl" placeholder="Tempat dan Tanggal Lahir">
                     </div>
                     <div class="form-group">
                       <label>Jenis Kelamin</label>
-                      <input type="text" class="form-control" id="exampleInputLastName" placeholder="Laki-laki / Perempuan">
+                      <input type="text" class="form-control" name="gender" id="gender" placeholder="Laki-laki / Perempuan">
                     </div>
                     <div class="form-group">
                       <label>Posisi dalam Keluarga</label>
-                      <input type="text" class="form-control" id="exampleInputLastName" placeholder="Posisi Dalam Keluarga">
+                      <input type="text" class="form-control" name="posisi" id="posisi" placeholder="Posisi Dalam Keluarga">
                     </div>
                     <div class="form-group">
                       <button type="submit" class="btn btn-primary btn-block">Register</button>

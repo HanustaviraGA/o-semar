@@ -33,18 +33,23 @@
             }
             break;
         case 'register':
-            $nama = $_POST['nama'];
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $c_password = $_POST['c_password'];
+            $nama = $data['nama'];
+            $username = $data['username'];
+            $password = $data['password'];
+            $c_password = $data['c_password'];
+            $kk = $data['kk'];
+            $alamat = $data['alamat'];
+            $ttl = $data['ttl'];
+            $gender = $data['gender'];
+            $posisi = $data['posisi'];
             $ubah_nama = mysqli_real_escape_string($koneksi, $nama);
+
             if($password != $c_password){
                 header("location:register.php?pesan=Konfirmasi password harus sama dengan password !");
                 exit;
             }
-
             if((!empty($ubah_nama)) && (!empty($username)) && (!empty($password))){
-                $query = mysqli_query($koneksi,"INSERT INTO `users` (`nama`, `username`, `password`) VALUES ('$ubah_nama', '$username', '$password');");
+                $query = mysqli_query($koneksi,"INSERT INTO `admin` (`nama`, `username`, `password`, `no_kk`, `alamat`, `ttl` ,`gender`, `posisi` ) VALUES ('$ubah_nama', '$username', '$password', '$kk', '$alamat', '$ttl', '$gender', '$posisi');");
                 header("location:register.php?pesan=Pendaftaran Berhasil !");
             }
             else{
