@@ -1,3 +1,11 @@
+<?php 
+
+include '../koneksi.php';
+
+$sqlTingkatan = "SELECT * FROM tingkatan";
+$queryTingkatan = mysqli_query($koneksi,$sqlTingkatan);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,26 +37,24 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Masuk</h1>
                   </div>
-                  <form class="user">
+                  <form action="controller.php?aksi=login" method="POST" class="user">
                     <div class="form-group">
-                      <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
-                        placeholder="Nama Pengguna">
+                      <input type="text" class="form-control" name="username" id="username" placeholder="Nama Pengguna" required>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Kata Sandi">
+                      <input type="password" class="form-control" name="password" id="password" placeholder="Kata Sandi" required>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="select2Single">Login Sebagai</label>
-                      <select class="select2-single form-control" name="state" id="select2Single">
-                        <option value="Aceh">Aceh</option>
-                        <option value="Sumatra Utara">Sumatra Utara</option>
-                        <option value="Sumatra Barat">Sumatra Barat</option>
-                        <option value="Riau">Riau</option>
+                      <select class="select2-single form-control" name="tingkatan" required>
+                        <?php while($dataTingkatan = mysqli_fetch_array($queryTingkatan)):?>
+                          <option value="<?= $dataTingkatan['id'] ?>"><?= $dataTingkatan['jabatan'] ?></option>
+                        <?php endwhile; ?>  
                       </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                       <br>
-                      <a href="index.html" class="btn btn-primary btn-block">Login</a>
+                      <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </div>
                   </form>
                   <hr>
