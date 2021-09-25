@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Sep 2021 pada 16.43
--- Versi server: 10.4.21-MariaDB
--- Versi PHP: 8.0.10
+-- Generation Time: Sep 25, 2021 at 05:04 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,27 +24,34 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
+  `nik` varchar(300) NOT NULL,
   `nama` varchar(300) NOT NULL,
+  `nama_pengguna` varchar(300) NOT NULL,
   `username` varchar(300) NOT NULL,
-  `password` varchar(300) NOT NULL
+  `password` varchar(300) NOT NULL,
+  `no_kk` varchar(300) NOT NULL,
+  `alamat` varchar(300) NOT NULL,
+  `ttl` varchar(300) NOT NULL,
+  `gender` varchar(300) NOT NULL,
+  `posisi` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `admin`
+-- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `nama`, `username`, `password`) VALUES
-(1, 'Hanustavira Guru Acarya', 'hanvir', 'sunibngalam');
+INSERT INTO `admin` (`id`, `nik`, `nama`, `nama_pengguna`, `username`, `password`, `no_kk`, `alamat`, `ttl`, `gender`, `posisi`) VALUES
+(1, '', 'Hanustavira Guru Acarya', '', 'hanvir', 'sunibngalam', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tingkatan`
+-- Table structure for table `tingkatan`
 --
 
 CREATE TABLE `tingkatan` (
@@ -53,7 +60,7 @@ CREATE TABLE `tingkatan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `tingkatan`
+-- Dumping data for table `tingkatan`
 --
 
 INSERT INTO `tingkatan` (`id`, `jabatan`) VALUES
@@ -66,7 +73,7 @@ INSERT INTO `tingkatan` (`id`, `jabatan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -83,42 +90,42 @@ CREATE TABLE `users` (
 --
 
 --
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `tingkatan`
+-- Indexes for table `tingkatan`
 --
 ALTER TABLE `tingkatan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `tingkatan`
+-- AUTO_INCREMENT for table `tingkatan`
 --
 ALTER TABLE `tingkatan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
