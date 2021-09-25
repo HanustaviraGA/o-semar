@@ -6,6 +6,10 @@
 
     switch($data['aksi']){
         case 'login' :
+            // mengaktifkan session php
+            session_start();
+            // menghubungkan dengan koneksi
+            include '../koneksi.php';
             $username = $data['username'];
             $password = $data['password'];
             $tingkatan = $data['tingkatan'];
@@ -50,9 +54,7 @@
         case 'logout' :
             // mengaktifkan session
             session_start();
-            
             $_SESSION['keadaan'] = "belum_login_user";
-            
             // mengalihkan halaman login
             header("location:login.php?pesan=Anda telah berhasil logout");        
         default:
