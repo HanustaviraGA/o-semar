@@ -60,7 +60,7 @@ $queryTingkatan = mysqli_query($koneksi,$sqlTingkatan);
                   <hr>
                   <div class="text-center">
                     <h1 class="h6 text-gray-900 mb-3">Sudah punya Akun ? Jika belum, daftar disini !</h1>
-                    <a class="font-weight-bold small" href="register.html">Buat Akun !</a>
+                    <a class="font-weight-bold small" href="register.php">Buat Akun !</a>
                   </div>
                   <div class="text-center">
                   </div>
