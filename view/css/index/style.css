@@ -1,0 +1,14 @@
+/* Root */
+@import '../root.css';
+/* Reboot */
+@import '../reboot.css';
+/* Fonts */
+@import '../font.css';
+/* Navbar */
+@import './navbar.css';
+/* Global Style */
+main {
+    display: grid;
+    grid-template-rows: 100vh;
+    grid-template-columns: 14rem 1fr;
+}
