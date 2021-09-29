@@ -1,68 +1,95 @@
-<!doctype html>
+<?php
+
+require_once("koneksi.php");
+
+if(isset($_POST['register'])){
+
+    // filter data yang diinputkan
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    // enkripsi password
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+
+
+    // menyiapkan query
+    $sql = "INSERT INTO users (name, username, email, password) 
+            VALUES (:name, :username, :email, :password)";
+    $stmt = $db->prepare($sql);
+
+    // bind parameter ke query
+    $params = array(
+        ":name" => $name,
+        ":username" => $username,
+        ":password" => $password,
+        ":email" => $email
+    );
+
+    // eksekusi query untuk menyimpan ke database
+    $saved = $stmt->execute($params);
+
+    // jika query simpan berhasil, maka user sudah terdaftar
+    // maka alihkan ke halaman login
+    if($saved) header("Location: login.php");
+}
+
+?>
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-  	<title>Login 10</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daftar Akun</title>
 
-	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body class="bg-light">
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
-	<link rel="stylesheet" href="css/style.css">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
 
-	</head>
-	<body class="img js-fullheight" style="background-image: url(images/bg.jpg);">
-	<section class="ftco-section">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Login</h2>
-				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-md-6 col-lg-4">
-					<div class="login-wrap p-0">
-		      	<h3 class="mb-4 text-center">Have an account?</h3>
-		      	<form action="#" class="signin-form">
-		      		<div class="form-group">
-		      			<input type="text" class="form-control" placeholder="Username" required>
-		      		</div>
-	            <div class="form-group">
-	              <input id="password-field" type="password" class="form-control" placeholder="Password" required>
-	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-	            </div>
-	            <div class="form-group">
-	            	<button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
-	            </div>
-	            <div class="form-group d-md-flex">
-	            	<div class="w-50">
-		            	<label class="checkbox-wrap checkbox-primary">Remember Me
-									  <input type="checkbox" checked>
-									  <span class="checkmark"></span>
-									</label>
-								</div>
-								<div class="w-50 text-md-right">
-									<a href="#" style="color: #fff">Forgot Password</a>
-								</div>
-	            </div>
-	          </form>
-	          <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
-	          <div class="social d-flex text-center">
-	          	<a href="#" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Facebook</a>
-	          	<a href="#" class="px-2 py-2 ml-md-1 rounded"><span class="ion-logo-twitter mr-2"></span> Twitter</a>
-	          </div>
-		      </div>
-				</div>
-			</div>
-		</div>
-	</section>
+        <p>&larr; <a href="index.php">Home</a>
 
-	<script src="js/jquery.min.js"></script>
-  <script src="js/popper.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/main.js"></script>
+        <h4>Test</h4>
+        <p>Sudah punya akun? <a href="login.php">Login di sini</a></p>
 
-	</body>
+        <form action="" method="POST">
+
+            <div class="form-group">
+                <label for="name">Nama Lengkap</label>
+                <input class="form-control" type="text" name="name" placeholder="Nama kamu" />
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" name="username" placeholder="Username" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" type="email" name="email" placeholder="Alamat Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" name="password" placeholder="Password" />
+            </div>
+
+            <input type="submit" class="btn btn-success btn-block" name="register" value="Daftar" />
+
+        </form>
+            
+        </div>
+
+        <div class="col-md-6">
+            <img class="img img-responsive" src="img/connect.png" />
+        </div>
+
+    </div>
+</div>
+
+</body>
 </html>
-
