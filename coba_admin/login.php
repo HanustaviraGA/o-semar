@@ -10,7 +10,7 @@ $queryTingkatan = mysqli_query($koneksi,$sqlTingkatan);
 <html lang="en">
 
 <head>
-
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -44,14 +44,14 @@ $queryTingkatan = mysqli_query($koneksi,$sqlTingkatan);
                     <div class="form-group">
                       <input type="password" class="form-control" name="password" id="password" placeholder="Kata Sandi" required>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="select2Single">Login Sebagai</label>
                       <select class="select2-single form-control" name="tingkatan" required>
                         <?php while($dataTingkatan = mysqli_fetch_array($queryTingkatan)):?>
                           <option value="<?= $dataTingkatan['id'] ?>"><?= $dataTingkatan['jabatan'] ?></option>
                         <?php endwhile; ?>  
                       </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                       <br>
                       <button type="submit" class="btn btn-primary btn-block">Login</button>
