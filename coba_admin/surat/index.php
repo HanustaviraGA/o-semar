@@ -127,7 +127,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
+                  <a href="../controller.php?aksi=logout" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>

@@ -63,7 +63,6 @@
                         <th>Judul</th>
                         <th>Kategori</th>
                         <th>Tanggal</th>
-                        <th>bukti</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
@@ -72,7 +71,7 @@
                         <th>Nama Pelapor</th>
                         <th>Judul</th>
                         <th>Kategori</th>
-                        <th>Bukti</th>
+                        <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
                     </tfoot>
@@ -87,7 +86,6 @@
                           <td><?= $dataLaporan['judul_laporan'] ?></td>
                           <td><?= $dataLaporan['kategori_laporan'] ?></td>
                           <td><?= $dataLaporan['tanggal_laporan'] ?></td>
-                          <td><?= $dataLaporan['bukti_laporan'] ?></td>
                           <td>
                           <a href="detail.php?id=<?= $dataLaporan['id'] ?>">
                               <button type="button" class="btn btn-primary mb-1"></i>Detail</button>    
@@ -128,7 +126,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
+                  <a href="../controller.php?aksi=logout" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>

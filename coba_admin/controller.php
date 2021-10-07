@@ -59,7 +59,8 @@
         case 'logout' :
             // mengaktifkan session
             session_start();
-            $_SESSION['keadaan'] = "belum_login_user";
+            // $_SESSION['keadaan'] = "belum_login_user";
+            unset($_SESSION['keadaan']);
             // mengalihkan halaman login
             header("location:login.php?pesan=Anda telah berhasil logout");        
         default:

@@ -83,7 +83,10 @@
                         <input type="hidden" name="aksi" value="bukti">
                         <input type="hidden" name="file" value="<?= $dataID['bukti_pembayaran'] ?>">
                         <button class="btn btn-primary">Download Bukti</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
+                          id="#modalCenter">Preview</button>
                     </div>
+              
                     <div class="form-group">
                       <label for="exampleInputPassword1">Tanggal Pembayaran</label>
                       <input type="text" class="form-control" value="<?= $dataID['tanggal_pembayaran'] ?>" readonly>
@@ -128,6 +131,29 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
                   <a href="login.html" class="btn btn-primary">Logout</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Center -->
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">Modal Vertically Centered</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div id="pdf" class="modal-body">
+                  <script src="pdfobject.js"></script>
+                  <script>PDFObject.embed("berkas/dosen.pdf", "#pdf");</script>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
             </div>

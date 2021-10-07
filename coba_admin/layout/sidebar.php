@@ -8,7 +8,7 @@
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="../index.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -25,7 +25,7 @@
         <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Pengajuan Surat</h6>
-            <a class="collapse-item" href="../surat/index.php">Jenis Surat  1</a>
+            <a class="collapse-item" href="../surat/index.php">Surat Keterangan Pindah</a>
             <a class="collapse-item" href="surat/index.php">Jenis Surat  2</a>
             <a class="collapse-item" href="surat/index.php">Jenis Surat  3</a>
             <a class="collapse-item" href="surat/index.php">Jenis Surat  4</a>
