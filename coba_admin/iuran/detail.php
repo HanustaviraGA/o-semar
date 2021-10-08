@@ -95,9 +95,39 @@
                       <label for="exampleInputPassword1">Total Pembayaran</label>
                       <input type="text" class="form-control" value="<?= $dataID['total_pembayaran'] ?>" readonly>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Konfirmasi</button>
-                    <button type="submit" class="btn btn-primary" style="background-color:#ff6961; border-color:#ff6961;">Tidak Sah</button>
+                  <br>
                   </form>
+                  <a href="controller.php?aksi=verifikasi&id=<?= $dataID['id'] ?>">
+                    <button class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
+                  </a>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Alasan Penolakan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                        <div class="modal-body">
+                          <form action="controller.php?aksi=tolak&id=<?= $dataID['id'] ?>" method="POST">
+                            <div class="form-group">
+                              <label for="message-text" class="col-form-label">Tulis Alasan:</label>
+                              <input class="form-control" id="alasan" name="alasan"></input>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak Jadi</button>
+                              <button type="submit" class="btn btn-primary">Kirim Alasan</button>
+                            </div>
+                          </form>  
+                        </div>
+                          
+                      
+                    </div>
+                  </div>
+                </div>
+                  <!-- batas -->
                 </div>
               </div>
               </div>
