@@ -1,0 +1,14 @@
+:root {
+    --primary-color: #6777EF;
+    --info-color: #3abaf4;
+    --danger-color: #fc544b;
+    --success-color: #66bb6a;
+    --warning-color: #ffa426;
+    --secondary-color: #757575;
+    --gradient-primary-color: linear-gradient(180deg,#6777ef 10%,#303f9f 100%);
+    --gradient-info-color: linear-gradient(180deg,#3abaf4 10%,#258391 100%);
+    --gradient-success-color: linear-gradient(180deg,#66bb6a 10%,#13855c 100%);
+    --gradient-warning-color: linear-gradient(180deg,#f6c23e 10%,#ffa426 100%);
+    --gradient-danger-color: linear-gradient(180deg,#fc544b 10%,#be2617 100%);
+    --gradient-secondary-color: linear-gradient(180deg,#757575 10%,#60616f 100%);
+}

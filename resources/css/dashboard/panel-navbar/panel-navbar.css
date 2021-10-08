@@ -1,0 +1,36 @@
+.dashboard-content {
+    width: calc(100% - 12rem);
+    @apply overflow-y-scroll;
+}
+
+.panel-navbar {
+    @apply h-16 p-3 flex justify-between items-center bg-sky-300;
+}
+
+.panel-navbar svg {
+    @apply text-lg;
+}
+
+.panel-navbar > div > *:not(div[class=\"divider-vertical\"]) {
+    @apply cursor-pointer;
+}
+
+.toogle-sidebar, .menus > div, .profile > .avatar {
+    @apply h-4 w-4 flex justify-center items-center;
+}
+
+.panel-nav > .menus > div {
+    @apply mx-4;
+}
+
+.panel-navbar > .toogle-sidebar {
+    @apply p-5 rounded-full transition-colors hover:bg-bluegray-200;
+}
+
+.panel-nav > .profile {
+    @apply mx-4;
+}
+
+.panel-nav > .profile > .avatar {
+    @apply p-4 rounded-full bg-bluegray-200;
+}

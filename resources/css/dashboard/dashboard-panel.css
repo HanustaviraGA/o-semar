@@ -1,0 +1,21 @@
+.info-counting {
+    @apply mx-5 my-10 grid grid-cols-3 gap-x-4;
+}
+
+.info-counting > .info {
+    @apply p-5 flex flex-col items-center border;
+}
+
+.info-counting > .info > .count {
+    @apply mt-2 mb-5 h-20 w-20 flex justify-center items-center;
+}
+
+.info-counting > .info > p {
+    @apply font-bold text-lg;
+}
+
+.info-counting > .info > .count > p {
+    color: white;
+    font-weight: 900;
+    @apply text-4xl;
+}

@@ -1,0 +1,23 @@
+.sidebar {
+    @apply h-screen w-48 bg-bluegray-50;
+}
+
+.sidebar > .logo {
+    @apply h-16 flex justify-center items-center bg-sky-400;
+}
+
+.sidebar-menu {
+    @apply flex flex-col;
+}
+
+.sidebar-menu > .sidebar-link {
+    @apply px-3 py-4 flex justify-between items-center transition-colors hover:bg-bluegray-200;
+}
+
+.sidebar-menu > .sidebar-link > svg {
+    @apply text-bluegray-500;
+}
+
+.sidebar-menu > .sidebar-active {
+    @apply bg-bluegray-200;
+}
