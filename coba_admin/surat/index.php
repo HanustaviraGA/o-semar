@@ -5,6 +5,8 @@
     header("Location: ../login.php");
     exit;
   }
+  $sql = "SELECT * FROM suratketerangan";
+  $query = mysqli_query($koneksi,$sql);
 ?>
 
 <!DOCTYPE html>
@@ -60,32 +62,36 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Name Pengaju</th>
-                        <th>Jenis Surat</th>
-                        <th>Dokumen</th>
-                        <th>Tanggal Pengajuan</th>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Name Pengaju</th>
-                        <th>Jenis Surat</th>
-                        <th>Dokumen</th>
-                        <th>Tanggal Pengajuan</th>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
                     </tfoot>
                     <tbody>
+                        <?php while($data = mysqli_fetch_array($query)):?> 
                         <tr>
-                          <td>DUMMY</td>
-                          <td>DUMMY</td>
-                          <td>DUMMY</td>
-                          <td>DUMMY</td>
+                          <td><?= $data['no_surat'] ?></td>
+                          <td><?= $data['nama'] ?></td>
+                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
-                          DUMMY
+                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                              <button class="btn btn-primary" type="submit">Detail</button>
+                            </a>
                           </td>
                         </tr>
+                        <?php endwhile; ?>
                     </tbody>
                   </table>
                 </div>

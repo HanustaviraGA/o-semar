@@ -1,5 +1,5 @@
 <?php
-  include '../../koneksi.php';
+  include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
     header("Location: ../login.php");
@@ -17,24 +17,24 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>O-SEMAR Admin - List Provinsi</title>
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <title>O-SEMAR Admin - List Pengajuan</title>
+  <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- sidebar -->
     <?php 
-      include '../layout/sidebar.php';
+      include '../../layout/sidebar-adminduk.php';
     ?>
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
         <?php 
-          include '../layout/navbar.php';
+          include '../../layout/navbar-adminduk.php';
         ?>
         <!-- Topbar -->
         <!-- Container Fluid-->
@@ -60,23 +60,33 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Nama Provinsi</th>
-                        <th>Kode Provinsi</th>
+                        <th>Name Pengaju</th>
+                        <th>Jenis Surat</th>
+                        <th>Dokumen</th>
+                        <th>Tanggal Pengajuan</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Nama Provinsi</th>
-                        <th>Kode Provinsi</th>
+                        <th>Name Pengaju</th>
+                        <th>Jenis Surat</th>
+                        <th>Dokumen</th>
+                        <th>Tanggal Pengajuan</th>
                         <th>Aksi</th>
                       </tr>
                     </tfoot>
                     <tbody>
                         <tr>
-                          <td>DUMMY</td>
-                          <td>DUMMY</td>
-                          <td>SELECT</td>
+                          <td>Ragil Mahardika</td>
+                          <td>Surat Keterangan Pindah</td>
+                          <td>Akta Nikah.pdf</td>
+                          <td>12/10/2021</td>
+                          <td>
+                            <a href="detail.php">
+                              <button class="btn btn-primary" type="submit">Detail</button>
+                            </a>
+                          </td>
                         </tr>
                     </tbody>
                   </table>
@@ -140,13 +150,13 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../../vendor/jquery/jquery.min.js"></script>
+  <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../../js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../../vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>

@@ -37,7 +37,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
-          <i class="fab fa-fw fa-wpforms"></i>
+          <i class="far fa-fw fa-window-maximize"></i>
           <span>Pembayaran Iuran</span>
         </a>
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
@@ -50,19 +50,13 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="../laporan/index.php">
-          <i class="fas fa-fw fa-palette"></i>
+          <i class="far fa-fw fa-window-maximize"></i>
           <span>Pelaporan</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>UI Colors</span>
         </a>
       </li>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
-        Examples
+        Administrator
       </div>
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"

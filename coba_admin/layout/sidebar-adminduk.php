@@ -2,13 +2,13 @@
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-          <img src="img/logo/logo2.png">
+          <img src="../../img/logo/logo2.png">
         </div>
         <div class="sidebar-brand-text mx-3">O-Semar Admin</div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item active">
-        <a class="nav-link" href="index.php">
+        <a class="nav-link" href="../index.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -25,12 +25,12 @@
         <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Pengajuan Surat</h6>
-            <a class="collapse-item" href="surat/index.php">Jenis Surat  1</a>
-            <a class="collapse-item" href="../surat/index.php">Jenis Surat  2</a>
-            <a class="collapse-item" href="../surat/index.php">Jenis Surat  3</a>
-            <a class="collapse-item" href="../surat/index.php">Jenis Surat  4</a>
-            <a class="collapse-item" href="../surat/index.php">Jenis Surat  5</a>
-            <a class="collapse-item" href="../surat/index.php">Jenis Surat 6</a>
+            <a class="collapse-item" href="../surat/index.php">Surat Keterangan Pindah</a>
+            <a class="collapse-item" href="surat/index.php">Jenis Surat  2</a>
+            <a class="collapse-item" href="surat/index.php">Jenis Surat  3</a>
+            <a class="collapse-item" href="surat/index.php">Jenis Surat  4</a>
+            <a class="collapse-item" href="surat/index.php">Jenis Surat  5</a>
+            <a class="collapse-item" href="surat/index.php">Jenis Surat 6</a>
           </div>
         </div>
       </li>
@@ -43,13 +43,13 @@
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Jenis Iuran</h6>
-            <a class="collapse-item" href="iuran/index.php">Iuran 1</a>
-            <a class="collapse-item" href="iuran/index.php">Iuran 2</a>
+            <a class="collapse-item" href="../iuran/index.php">Iuran 1</a>
+            <a class="collapse-item" href="../iuran/index.php">Iuran 2</a>
           </div>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="laporan/index.php">
+        <a class="nav-link" href="../laporan/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pelaporan</span>
         </a>

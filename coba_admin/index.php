@@ -1,3 +1,15 @@
+<?php
+    include '../koneksi.php';
+    session_start();
+    if(!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+        header("Location: login.php?pesan=Anda harus login dulu !");
+        exit;
+    }else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_user") {
+        echo "";
+    } else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_user"){
+        echo "";
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +43,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Selamat Datang, DUMMY !</h1>
+            <h1 class="h3 mb-0 text-gray-800">Selamat Datang, <?php echo $_SESSION['nama_admin']; ?> !</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item active" aria-current="page">Dashboard</li>

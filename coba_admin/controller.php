@@ -12,8 +12,7 @@
             include '../koneksi.php';
             $username = $data['username'];
             $password = $data['password'];
-            $tingkatan = $data['tingkatan'];
-            $result = mysqli_query($koneksi,"SELECT * FROM admin where username='$username' and password='$password'");
+            $result = mysqli_query($koneksi,"SELECT * FROM penduduk where username='$username' and password='$password'");
             $cek = mysqli_num_rows($result);
             if($cek > 0) {
                 $data = mysqli_fetch_assoc($result);
@@ -26,7 +25,7 @@
                 else{
                     $_SESSION['keadaan'] = "sudah_login_user";
                 }
-                $_SESSION['id_login'] = $data['id'];
+                $_SESSION['id_login'] = $data['nik'];
 	            header("location:index.php");
             }else {
                 header("location:login.php?pesan=Data tidak ditemukan !");

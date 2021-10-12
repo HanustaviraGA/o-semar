@@ -2,7 +2,7 @@
 	$host = "localhost";
 	$user = "root";
 	$pass = "";
-	$db = "osemar";
+	$db = "new_osemar";
 
 	$koneksi = mysqli_connect($host, $user, $pass, $db);
 

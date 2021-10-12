@@ -1,15 +1,4 @@
-<?php
-  include '../../koneksi.php';
-  session_start();
-  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
-    header("Location: ../login.php");
-    exit;
-  }
-    $id = $_GET['id'];
-    $sqlID = "SELECT * FROM laporan WHERE id='$id'";
-    $queryID = mysqli_query($koneksi,$sqlID);
-    $dataID = mysqli_fetch_array($queryID);
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">

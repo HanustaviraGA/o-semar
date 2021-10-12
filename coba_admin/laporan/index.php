@@ -1,3 +1,11 @@
+<?php
+  include '../../koneksi.php';
+  session_start();
+  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+    header("Location: ../login.php");
+    exit;
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 

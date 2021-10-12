@@ -6,10 +6,11 @@
     exit;
   }
     $id = $_GET['id'];
-    $sqlID = "SELECT * FROM surat WHERE id='$id'";
+    $sqlID = "SELECT * FROM suratketerangan WHERE no_surat='$id'";
     $queryID = mysqli_query($koneksi,$sqlID);
     $dataID = mysqli_fetch_array($queryID);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,43 +59,67 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Detail Surat - <?= $dataID['nama_pengaju'] ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Surat - <?= $dataID['nama'] ?></h6>
                 </div>
                 <div class="card mb-4">
                 <div class="card-body">
                   <form action="controller.php" method="POST">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Nama Pengaju</label>
-                      <input type="text" class="form-control" value="<?= $dataID['nama_pengaju'] ?>" readonly>
+                      <label for="exampleInputEmail1">Nomor Surat</label>
+                      <input type="text" class="form-control" value="<?= $dataID['no_surat'] ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Jenis Surat</label>
-                      <input type="text" class="form-control" value="<?= $dataID['jenis_surat'] ?>" readonly>
+                      <label for="exampleInputPassword1">NIK</label>
+                      <input type="text" class="form-control" value="<?= $dataID['nik'] ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Berkas KTP</label>
-                      <input type="text" class="form-control" value="<?= $dataID['dokumen'] ?>" readonly>
+                      <label for="exampleInputPassword1">Nama Pengaju</label>
+                      <input type="text" class="form-control" value="<?= $dataID['nama'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Tujuan</label>
+                      <input type="text" class="form-control" value="<?= $dataID['tujuan'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Keperluan</label>
+                      <input type="text" class="form-control" value="<?= $dataID['keperluan'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Tempat Pengajuan</label>
+                      <input type="text" class="form-control" value="<?= $dataID['tempat_pengajuan'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Tanggal Pengajuan</label>
+                      <input type="text" class="form-control" value="<?= $dataID['tanggal_pengajuan'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Keterangan</label>
+                      <input type="text" class="form-control" value="<?= $dataID['keterangan'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">status</label>
+                      <input type="text" class="form-control" value="<?= $dataID['status'] ?>" readonly>
                       <br>
                       <a href="berkas/KTP<?= $dataID['dokumen'] ?>" class="btn btn-primary">
                         Download KTP
                       </a>
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
                       id="#modalCenter">Preview</button>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Berkas KK</label>
-                      <input type="text" class="form-control" value="<?= $dataID['dokumen'] ?>" readonly>
-                    </div>
-                    <a href="berkas/KK<?= $dataID['dokumen'] ?>" class="btn btn-primary">
-                        Download KK
+                      <a href="berkas/KK<?= $dataID['dokumen'] ?>" class="btn btn-primary">
+                          Download KK
                       </a>
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
                       id="#modalCenter">Preview</button>
+                    </div>
                   </form>
                   <br>
                   <div>
                     <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
+                    <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=hapus">
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#808080; border-color:#808080;">Hapus</button>
+                    </a>
+                      
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -104,18 +129,19 @@
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
-                      <div class="modal-body">
-                        <form>
+                      <form action="controller.php?aksi=tolak" method="POST">
+                        <div class="modal-body">
                           <div class="form-group">
                             <label for="message-text" class="col-form-label">Ketik Alasan:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
+                            <textarea class="form-control" name="alasan" id="alasan"></textarea>
                           </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak Jadi</button>
-                        <button type="button" class="btn btn-primary">Kirim Alasan</button>
-                      </div>
+                        </div>
+                        <div class="modal-footer">
+                          <input type="hidden" name="id" id="id" value="<?= $dataID['no_surat'] ?>">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                          <button type="submit" class="btn btn-primary">Kirim Alasan</button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>

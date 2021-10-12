@@ -1,3 +1,13 @@
+<?php
+  include '../../koneksi.php';
+  session_start();
+  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+    header("Location: ../login.php");
+    exit;
+  }
+  $sql = "SELECT * FROM tagihan";
+  $query = mysqli_query($koneksi,$sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
