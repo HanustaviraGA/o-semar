@@ -100,15 +100,10 @@
                       <label for="exampleInputPassword1">status</label>
                       <input type="text" class="form-control" value="<?= $dataID['status'] ?>" readonly>
                       <br>
-                      <a href="berkas/KTP<?= $dataID['dokumen'] ?>" class="btn btn-primary">
+                      <a href="berkas/KTP" class="btn btn-primary">
                         Download KTP
                       </a>
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
-                      id="#modalCenter">Preview</button>
-                      <a href="berkas/KK<?= $dataID['dokumen'] ?>" class="btn btn-primary">
-                          Download KK
-                      </a>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
                       id="#modalCenter">Preview</button>
                     </div>
                   </form>
@@ -152,15 +147,6 @@
             </div>
           </div>
           <!--Row-->
-
-          <!-- Documentation Link -->
-          <div class="row">
-            <div class="col-lg-12">
-              <p>DataTables is a third party plugin that is used to generate the demo table below. For more information
-                about DataTables, please visit the official <a href="https://datatables.net/" target="_blank">DataTables
-                  documentation.</a></p>
-            </div>
-          </div>
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
@@ -232,17 +218,6 @@
         <!---Container Fluid-->
       </div>
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
-            </span>
-          </div>
-        </div>
-      </footer>
-      <!-- Footer -->
     </div>
   </div>
 

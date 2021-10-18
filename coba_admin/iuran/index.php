@@ -61,23 +61,19 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Name Pembayar</th>
-                        <th>kebutuhan</th>
-                        <th>metode pembayaran</th>
-                        <th>bukti pembayaran</th>
-                        <th>tanggal pembayaran</th>
-                        <th>total pembayaran</th>
+                        <th>Nama</th>
+                        <th>Jatuh Tempo</th>
+                        <th>Tanggal Pembayaran</th>
+                        <th>Total Pembayaran</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Name Pembayar</th>
-                        <th>kebutuhan</th>
-                        <th>metode pembayaran</th>
-                        <th>bukti pembayaran</th>
-                        <th>tanggal pembayaran</th>
-                        <th>total pembayaran</th>
+                        <th>Nama</th>
+                        <th>Jatuh Tempo</th>
+                        <th>Tanggal Pembayaran</th>
+                        <th>Total Pembayaran</th>
                         <th>Aksi</th>
                       </tr>
                     </tfoot>
@@ -88,10 +84,6 @@
                           <td>DUMMY</td>
                           <td>DUMMY</td>
                           <td>DUMMY</td>
-                          <td>DUMMY</td>
-                          <td>
-                          DUMMY
-                          </td>
                         </tr>
                     </tbody>
                   </table>

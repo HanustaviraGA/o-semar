@@ -1,5 +1,10 @@
-<?php 
-    include '../../koneksi.php';
+<?php
+  include '../../koneksi.php';
+  session_start();
+  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+    header("Location: ../login.php");
+    exit;
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +70,7 @@
                                     $queryProvinsi = mysqli_query($koneksi,$sqlProvinsi);
                                 ?>
                                 <?php while($dataProvinsi = mysqli_fetch_array($queryProvinsi)):?>
-                                    <option value="<?= $dataProvinsi['ID_Provinsi'] ?>"><?= $dataProvinsi['ID_Provinsi'] ?> - <?= $dataProvinsi['NamaProvinsi'] ?></option>
+                                    <option value="<?= $dataProvinsi['id_provinsi'] ?>"><?= $dataProvinsi['id_provinsi'] ?> - <?= $dataProvinsi['nama_provinsi'] ?></option>
                                 <?php endwhile; ?>
                                 </select>
                             </div>
@@ -77,7 +82,7 @@
                                     $queryKabkota = mysqli_query($koneksi,$sqlKabkota);
                                 ?>
                                 <?php while($dataKabkota = mysqli_fetch_array($queryKabkota)):?>
-                                    <option value="<?= $dataKabkota['ID_KabKota'] ?>"><?= $dataKabkota['ID_KabKota'] ?> - <?= $dataKabkota['NamaKabKota'] ?></option>
+                                    <option value="<?= $dataKabkota['id_kabkota'] ?>"><?= $dataKabkota['id_kabkota'] ?> - <?= $dataKabkota['nama_kabkota'] ?></option>
                                 <?php endwhile; ?>
                                 </select>
                             </div>
@@ -89,7 +94,7 @@
                                     $queryKecamatan = mysqli_query($koneksi,$sqlKecamatan);
                                 ?>
                                 <?php while($dataKecamatan = mysqli_fetch_array($queryKecamatan)):?>
-                                    <option value="<?= $dataKecamatan['ID_Kecamatan'] ?>"><?= $dataKecamatan['ID_Kecamatan'] ?> - <?= $dataKecamatan['NamaKecamatan'] ?></option>
+                                    <option value="<?= $dataKecamatan['id_kecamatan'] ?>"><?= $dataKecamatan['id_kecamatan'] ?> - <?= $dataKecamatan['nama_kecamatan'] ?></option>
                                 <?php endwhile; ?>
                                 </select>
                             </div>
@@ -101,7 +106,7 @@
                                     $queryKelurahan = mysqli_query($koneksi,$sqlKelurahan);
                                 ?>
                                 <?php while($dataKelurahan = mysqli_fetch_array($queryKelurahan)):?>
-                                    <option value="<?= $dataKelurahan['ID_Kelurahan'] ?>"><?= $dataKelurahan['ID_Kelurahan'] ?> - <?= $dataKelurahan['NamaKelurahan'] ?></option>
+                                    <option value="<?= $dataKelurahan['id_kelurahan'] ?>"><?= $dataKelurahan['id_kelurahan'] ?> - <?= $dataKelurahan['nama_kelurahan'] ?></option>
                                 <?php endwhile; ?>    
                                 </select>
                             </div>
