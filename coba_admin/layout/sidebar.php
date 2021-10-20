@@ -17,36 +17,16 @@
         Layanan
       </div>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
+        <a class="nav-link" href="../surat/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pengajuan Surat</span>
         </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Pengajuan Surat</h6>
-            <a class="collapse-item" href="../surat/index.php">Surat Keterangan Pindah</a>
-            <a class="collapse-item" href="surat/index.php">Jenis Surat  2</a>
-            <a class="collapse-item" href="surat/index.php">Jenis Surat  3</a>
-            <a class="collapse-item" href="surat/index.php">Jenis Surat  4</a>
-            <a class="collapse-item" href="surat/index.php">Jenis Surat  5</a>
-            <a class="collapse-item" href="surat/index.php">Jenis Surat 6</a>
-          </div>
-        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-          aria-controls="collapseForm">
+        <a class="nav-link" href="../iuran/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pembayaran Iuran</span>
         </a>
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Jenis Iuran</h6>
-            <a class="collapse-item" href="../iuran/index.php">Iuran 1</a>
-            <a class="collapse-item" href="../iuran/index.php">Iuran 2</a>
-          </div>
-        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="../laporan/index.php">
@@ -54,30 +34,26 @@
           <span>Pelaporan</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../adminduk/kartu_keluarga/index.php">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Kartu Keluarga</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../adminduk/list_penduduk/index.php">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Daftar Penduduk</span>
+        </a>
+      </li>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Administrator
       </div>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
-          aria-controls="collapsePage">
-          <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Example Pages</h6>
-            <a class="collapse-item" href="login.php">Login</a>
-            <a class="collapse-item" href="register.php">Register</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span>
+        <a class="nav-link" href="../super/pengaturan.php">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Pengaturan Wilayah</span>
         </a>
       </li>
       <hr class="sidebar-divider">

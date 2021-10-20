@@ -8,7 +8,7 @@
         case 'verifikasi' :
             $id = $data['id'];
             $new = "Terverifikasi";
-            $sql = "UPDATE surat SET status='$new', catatan='' WHERE id='$id'";
+            $sql = "UPDATE suratketerangan SET status='$new', alasan='' WHERE no_surat='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
                 header("Location: index.php?pesan=Sukses !");

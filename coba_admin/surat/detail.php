@@ -109,8 +109,10 @@
                   </form>
                   <br>
                   <div>
-                    <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
+                    <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=verifikasi">
+                      <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
+                    </a>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
                     <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=hapus">
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#808080; border-color:#808080;">Hapus</button>
                     </a>

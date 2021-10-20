@@ -9,6 +9,13 @@
     } else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_user"){
         echo "";
     }
+    $sqlLaporan = "SELECT COUNT(*) AS 'countLaporan' from pelaporan";
+    $hasilLaporan = mysqli_query($koneksi, $sqlLaporan);
+    $dataLaporan = mysqli_fetch_array($hasilLaporan);
+
+    $sqlSurat = "SELECT COUNT(*) AS 'countSurat' from suratketerangan";
+    $hasilSurat = mysqli_query($koneksi, $sqlSurat);
+    $dataSurat = mysqli_fetch_array($hasilSurat);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,10 +85,9 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Laporan</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">650</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $dataLaporan['countLaporan'] ?></div>
                       <div class="mt-2 mb-0 text-muted text-xs">
-                        <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-                        <span>Sejak 1 bulan terakhir</span>
+                        <span>Tersedia</span>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -118,10 +124,9 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Pengajuan Surat</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $dataSurat['countSurat'] ?></div>
                       <div class="mt-2 mb-0 text-muted text-xs">
-                        <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                        <span>Sejak 1 bulan terakhir</span>
+                        <span>Tersedia</span>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -132,106 +137,6 @@
               </div>
             </div>
 
-            <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Rekapitulasi jumlah pengguna aktif selama satu bulan</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                      aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Products Sold</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Month <i class="fas fa-chevron-down"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                      aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Select Periode</div>
-                      <a class="dropdown-item" href="#">Today</a>
-                      <a class="dropdown-item" href="#">Week</a>
-                      <a class="dropdown-item active" href="#">Month</a>
-                      <a class="dropdown-item" href="#">This Year</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Oblong T-Shirt
-                      <div class="small float-right"><b>600 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Gundam 90'Editions
-                      <div class="small float-right"><b>500 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 70%" aria-valuenow="70"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Rounded Hat
-                      <div class="small float-right"><b>455 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: 55%" aria-valuenow="55"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Indomie Goreng
-                      <div class="small float-right"><b>400 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Remote Control Car Racing
-                      <div class="small float-right"><b>200 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer text-center">
-                  <a class="m-0 small text-primary card-link" href="#">View More <i
-                      class="fas fa-chevron-right"></i></a>
-                </div>
-              </div>
-            </div>
             <!-- Invoice Example -->
             <div class="col-xl-8 col-lg-7 mb-4">
               <div class="card">
@@ -278,13 +183,6 @@
                         <td>Indri Junanda</td>
                         <td>Hat Rounded</td>
                         <td><span class="badge badge-info">Processing</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1998</a></td>
-                        <td>Udin Cilok</td>
-                        <td>Baby Powder</td>
-                        <td><span class="badge badge-success">Delivered</span></td>
                         <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
                       </tr>
                     </tbody>
@@ -339,13 +237,6 @@
           </div>
           <!--Row-->
 
-          <div class="row">
-            <div class="col-lg-12 text-center">
-              <p>Do you like this template ? you can download from <a href="https://github.com/indrijunanda/RuangAdmin"
-                  class="btn btn-primary btn-sm" target="_blank"><i class="fab fa-fw fa-github"></i>&nbsp;GitHub</a></p>
-            </div>
-          </div>
-
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
             aria-hidden="true">
@@ -371,17 +262,7 @@
         </div>
         <!---Container Fluid-->
       </div>
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
-            </span>
-          </div>
-        </div>
-      </footer>
-      <!-- Footer -->
+      
     </div>
   </div>
 

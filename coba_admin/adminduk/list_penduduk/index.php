@@ -1,11 +1,11 @@
 <?php
-  include '../../koneksi.php';
+  include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
     header("Location: ../login.php");
     exit;
   }
-  $sql = "SELECT * FROM suratketerangan";
+  $sql = "SELECT * FROM penduduk";
   $query = mysqli_query($koneksi,$sql);
 ?>
 
@@ -20,29 +20,29 @@
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>O-SEMAR Admin - List Pengajuan</title>
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- sidebar -->
     <?php 
-      include '../layout/sidebar.php';
+      include '../../layout/sidebar-adminduk.php';
     ?>
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
         <?php 
-          include '../layout/navbar.php';
+          include '../../layout/navbar-adminduk.php';
         ?>
         <!-- Topbar -->
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Pengajuan Surat</h1>
+            <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Refresh</a></li>
             </ol>
@@ -57,36 +57,36 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Nomor Surat</th>
+                        <th>NIK</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
-                        <th>Tanggal</th>
+                        <th>RT</th>
+                        <th>RW</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Nomor Surat</th>
+                        <th>NIK</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
-                        <th>Tanggal</th>
+                        <th>RT</th>
+                        <th>RW</th>
                         <th>Aksi</th>
                       </tr>
                     </tfoot>
                     <tbody>
-                        <?php while($data = mysqli_fetch_array($query)):?> 
+                      <?php while($data = mysqli_fetch_array($query)):?>
                         <tr>
-                          <td><?= $data['no_surat'] ?></td>
-                          <td><?= $data['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
-                          <td><?= $data['tanggal_pengajuan'] ?></td>
+                          <td><?= $data['nik']?></td>
+                          <td><?= $data['nama']?></td>
+                          <td><?= $data['id_rt']?></td>
+                          <td><?= $data['id_rw']?></td>
                           <td>
-                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
-                              <button class="btn btn-primary">Detail</button>
+                            <a href="detail.php">
+                              <button class="btn btn-primary" type="submit">Detail</button>
                             </a>
                           </td>
                         </tr>
-                        <?php endwhile; ?>
+                      <?php endwhile; ?>
                     </tbody>
                   </table>
                 </div>
@@ -128,13 +128,13 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../../vendor/jquery/jquery.min.js"></script>
+  <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../../js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../../vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>

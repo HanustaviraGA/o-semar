@@ -50,7 +50,7 @@
     
     <aside class="sidebar">
         <div class="logo">
-            <h1 class="text-2xl">O-Semar</h1>
+            <h1 class="text-2xl">O-Mantab</h1>
         </div>
         <nav class="sidebar-menu">
             <a href="index2.php" class="sidebar-link sidebar-active">
