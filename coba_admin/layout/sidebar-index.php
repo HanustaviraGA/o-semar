@@ -56,6 +56,19 @@
           <span>Pengaturan Wilayah</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="super/list_rt.php">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Pengaturan RT</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="super/list_rw.php">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Pengaturan RW</span>
+        </a>
+      </li>
+      
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
     </ul>

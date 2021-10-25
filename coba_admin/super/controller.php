@@ -48,6 +48,17 @@
                 exit;
             }
             break;
+        case 'update_rw':
+            $nik = $data['nik'];
+            $nama = $data['nama'];
+
+            $sql = "UPDATE msrw SET nik_ketuarw='$nik', nama_rw='$nama'";
+            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
+            if($query){
+                header("Location: list_rw.php?pesan=Sukses !");
+                exit;
+            }
+            break;    
         default:
         echo 'gk masuk';
             break;
