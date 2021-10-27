@@ -6,7 +6,6 @@
 
     switch($data['aksi']){
         case 'login' :
-            // mengaktifkan session php
             session_start();
             // menghubungkan dengan koneksi
             include '../koneksi.php';
@@ -17,15 +16,36 @@
             if($cek > 0) {
                 $data = mysqli_fetch_assoc($result);
                 //menyimpan session user, nama, status dan id login
-                $_SESSION['nama_admin'] = $data['nama'];
-                $_SESSION['user_admin'] = $data['username'];
-                if(isset($_SESSION['nama_admin']) && $_SESSION['nama_admin'] == "Guest" || $_SESSION['nama_admin'] == "guest"){
-                    $_SESSION['keadaan'] = "sudah_login_guest";
+                $_SESSION['nik'] = $data['nik'];
+                $ceknik = $data['nik'];
+
+                $rt = mysqli_query($koneksi,"SELECT * FROM msrt where nik_ketuart='$ceknik'");
+                $cekrt = mysqli_num_rows($rt);
+                $rw = mysqli_query($koneksi,"SELECT * FROM msrw where nik_ketuarw='$ceknik'");
+                $cekrw = mysqli_num_rows($rw);
+                $SA = mysqli_query($koneksi,"SELECT * FROM msadmin where nik='$ceknik'");
+                $cekSA = mysqli_num_rows($SA);
+
+                if($cekrt > 0 && $cekrw == 0 && $cekSA != 1){
+                    $_SESSION['nama_admin'] = $data['nama'];
+                    $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['keadaan'] = "sudah_login_rt";
                 }
-                else{
-                    $_SESSION['keadaan'] = "sudah_login_user";
+                else if($cekrt == 0 && $cekrw > 0 && $cekSA != 1){
+                    $_SESSION['nama_admin'] = $data['nama'];
+                    $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['keadaan'] = "sudah_login_rw";
                 }
-                $_SESSION['id_login'] = $data['nik'];
+                else if($cekrt == 0 && $cekrw == 0 && $cekSA != 1){
+                    $_SESSION['nama_admin'] = $data['nama'];
+                    $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['keadaan'] = "sudah_login_penduduk";
+                }
+                else if($cekrt == 0 && $cekrw == 0 && $cekSA == 1){
+                    $_SESSION['nama_admin'] = $data['nama'];
+                    $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['keadaan'] = "sudah_login_admin";
+                }
 	            header("location:index.php");
             }else {
                 header("location:login.php?pesan=Data tidak ditemukan !");

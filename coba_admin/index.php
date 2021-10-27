@@ -1,12 +1,12 @@
 <?php
     include '../koneksi.php';
     session_start();
-    if(!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+    if(!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_admin") {
         header("Location: login.php?pesan=Anda harus login dulu !");
         exit;
-    }else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_user") {
+    }else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_admin") {
         echo "";
-    } else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_user"){
+    } else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_admin"){
         echo "";
     }
     $sqlLaporan = "SELECT COUNT(*) AS 'countLaporan' from pelaporan";

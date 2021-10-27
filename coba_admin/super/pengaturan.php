@@ -171,7 +171,7 @@
   </script>
 
   <!-- RuangAdmin Javascript -->
-  <script src="js/ruang-admin.min.js"></script>
+  <script src="../js/ruang-admin.min.js"></script>
   <!-- Javascript for this page -->
   <script>
     $(document).ready(function () {

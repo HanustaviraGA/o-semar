@@ -1,11 +1,43 @@
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+    <?php if($_SESSION["keadaan"] == "sudah_login_admin") {
+    ?>  
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon">
-          <img src="../../img/o-semar2.png">
-        </div>
-        <div class="sidebar-brand-text mx-3">O-Semar Admin</div>
-      </a>
+      <div class="sidebar-brand-icon">
+        <img src="../../img/o-semar2.png">
+      </div>
+      <div class="sidebar-brand-text mx-3">O-Semar Admin</div>
+    </a>
+    <?php
+    } else if($_SESSION["keadaan"] == "sudah_login_penduduk"){
+    ?>  
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <div class="sidebar-brand-icon">
+        <img src="../../img/o-semar2.png">
+      </div>
+      <div class="sidebar-brand-text mx-3">O-Semar</div>
+    </a>
+    <?php
+    } else if ($_SESSION["keadaan"] == "sudah_login_rt") {
+    ?>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <div class="sidebar-brand-icon">
+        <img src="../../img/o-semar2.png">
+      </div>
+      <div class="sidebar-brand-text mx-3">O-Semar RT</div>
+    </a>
+    <?php
+    } else if ($_SESSION["keadaan"] == "sudah_login_rw") {
+    ?>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <div class="sidebar-brand-icon">
+        <img src="../../img/o-semar2.png">
+      </div>
+      <div class="sidebar-brand-text mx-3">O-Semar RW</div>
+    </a>
+    <?php
+    }
+    ?>
       <hr class="sidebar-divider my-0">
       <li class="nav-item active">
         <a class="nav-link" href="../../index.php">
@@ -46,6 +78,8 @@
           <span>Daftar Penduduk</span>
         </a>
       </li>
+      <?php if($_SESSION["keadaan"] == "sudah_login_admin") {
+      ?>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Administrator
@@ -71,5 +105,12 @@
       
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
+    <?php
+    } else if ($_SESSION["keadaan"] == "sudah_login_rt" || $_SESSION["keadaan"] == "sudah_login_rw" || $_SESSION['keadaan'] == "suda_login_penduduk") {
+    ?>
+      
+    <?php
+    }
+    ?>
     </ul>
     <!-- Sidebar -->
