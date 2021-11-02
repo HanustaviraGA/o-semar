@@ -2,7 +2,7 @@
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
     <?php if($_SESSION["keadaan"] == "sudah_login_admin") {
     ?>  
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
         <img src="img/o-semar2.png">
       </div>
@@ -11,7 +11,7 @@
     <?php
     } else if($_SESSION["keadaan"] == "sudah_login_penduduk"){
     ?>  
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
         <img src="img/o-semar2.png">
       </div>
@@ -20,7 +20,7 @@
     <?php
     } else if ($_SESSION["keadaan"] == "sudah_login_rt") {
     ?>
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
         <img src="img/o-semar2.png">
       </div>
@@ -29,7 +29,7 @@
     <?php
     } else if ($_SESSION["keadaan"] == "sudah_login_rw") {
     ?>
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
         <img src="img/o-semar2.png">
       </div>
