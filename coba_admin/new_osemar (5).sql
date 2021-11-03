@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 20 Okt 2021 pada 16.45
+-- Waktu pembuatan: 03 Nov 2021 pada 13.28
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 8.0.10
 
@@ -64,6 +64,23 @@ CREATE TABLE `lampiran` (
   `status_lampiran` varchar(300) NOT NULL,
   `ket_lampiran` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `msadmin`
+--
+
+CREATE TABLE `msadmin` (
+  `nik` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `msadmin`
+--
+
+INSERT INTO `msadmin` (`nik`) VALUES
+('123456789');
 
 -- --------------------------------------------------------
 
@@ -138,12 +155,8 @@ CREATE TABLE `msprovinsi` (
 --
 
 INSERT INTO `msprovinsi` (`id_provinsi`, `nama_provinsi`) VALUES
-('35', 'Jawa Timur'),
 ('33', 'Jawa Tengah'),
-('32', 'Jawa Barat'),
-('34', 'DAISTA Yogyakarta'),
-('32', 'Jawa Barat'),
-('34', 'DAISTA Yogyakarta');
+('35', 'Jawa Timur');
 
 -- --------------------------------------------------------
 
@@ -158,6 +171,13 @@ CREATE TABLE `msrt` (
   `nama_rt` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `msrt`
+--
+
+INSERT INTO `msrt` (`id_rt`, `id_rw`, `nik_ketuart`, `nama_rt`) VALUES
+('4', '8', '456789123', 'Cheryl Almeira');
+
 -- --------------------------------------------------------
 
 --
@@ -170,6 +190,13 @@ CREATE TABLE `msrw` (
   `nik_ketuarw` varchar(300) NOT NULL,
   `nama_rw` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `msrw`
+--
+
+INSERT INTO `msrw` (`id_rw`, `id_kelurahan`, `nik_ketuarw`, `nama_rw`) VALUES
+('8', '2013', '987456321', 'Andru Baskara Putra');
 
 -- --------------------------------------------------------
 
@@ -246,6 +273,8 @@ CREATE TABLE `penduduk` (
 
 INSERT INTO `penduduk` (`nik`, `nama`, `tempat_lahir`, `tanggal_lahir`, `alamat`, `id_rt`, `id_rw`, `jenis_kelamin`, `agama`, `status_perkawinan`, `pekerjaan`, `gol_darah`, `kewarganegaraan`, `status_ktp`, `foto_ktp`, `username`, `password`, `no_hp`, `tanggal_reg`) VALUES
 ('123456789', 'Hanustavira Guru Acarya', '', '0000-00-00', '', '3', '5', '', '', '', '', '', '', '', '', 'hanvir', 'sunibngalam', '', '0000-00-00'),
+('321654987', 'Michelle Angela Guntjoro', '', '2001-06-27', '', '', '', '', '', '', '', '', '', '', '', 'cele', 'sunibngalam', '', '0000-00-00'),
+('456789123', 'Cheryl Almeira', '', '2021-10-27', '', '', '', '', '', '', '', '', '', '', '', 'cheryl', 'sunibngalam', '', '0000-00-00'),
 ('987456321', 'Andru Baskara Putra', '', '0000-00-00', '', '3', '1', '', '', '', '', '', '', '', '', 'andru', 'sunibngalam', '', '0000-00-00');
 
 -- --------------------------------------------------------
@@ -316,6 +345,18 @@ INSERT INTO `tagihan` (`id_tagihan`, `nik`, `jenis_tagihan`, `total_tagihan`, `j
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `msprovinsi`
+--
+ALTER TABLE `msprovinsi`
+  ADD PRIMARY KEY (`id_provinsi`);
+
+--
+-- Indeks untuk tabel `msrw`
+--
+ALTER TABLE `msrw`
+  ADD PRIMARY KEY (`id_rw`);
 
 --
 -- Indeks untuk tabel `penduduk`
