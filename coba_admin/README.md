@@ -1,21 +1,21 @@
-# RuangAdmin
+# O-Semar
 
-RuangAdmin - Free Admin Control Panel Themes Based on Bootstrap 4
+O-Semar - Free Admin Control Panel Themes Based on Bootstrap 4
 
 -------------------
 
-**RuangAdmin** is responsive admin template. Based on Bootstrap 4 Framework. Highly customizable and easy to use. 
+**O-Semar** is responsive admin template. Based on Bootstrap 4 Framework. Highly customizable and easy to use. 
 
-**You can review it on [RuangAdmin - Demo](https://indrijunanda.github.io/RuangAdmin/)**
+**You can review it on [O-Semar - Demo](https://indrijunanda.github.io/O-Semar/)**
 
-!["RuangAdmin Screenshot"](https://indrijunanda.github.io/RuangAdmin/img/screenshot/ss2.png "RuangAdmin Screenshot")
+!["O-Semar Screenshot"](https://indrijunanda.github.io/O-Semar/img/screenshot/ss2.png "O-Semar Screenshot")
 
 ## Contribution 
 
 Here is how : 
 
 - Fork the repository
-- Clone with ```git clone https://github.com/indrijunanda/RuangAdmin.git```
+- Clone with ```git clone https://github.com/indrijunanda/O-Semar.git```
 - Or Download zip
 
 
@@ -27,7 +27,7 @@ Here is how :
 
 ## License
 
-RuangAdmin is an open source and licensed under **[MIT](http://opensource.org/licenses/MIT)**
+O-Semar is an open source and licensed under **[MIT](http://opensource.org/licenses/MIT)**
 
 
 

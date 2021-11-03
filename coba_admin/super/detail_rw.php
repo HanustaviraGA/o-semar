@@ -38,7 +38,7 @@
   <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Select2 -->
   <link href="../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
-  <!-- RuangAdmin CSS -->
+  <!-- O-Semar CSS -->
   <link href="../css/ruang-admin.min.css" rel="stylesheet">
 </head>
 
