@@ -5,8 +5,6 @@
     header("Location: ../login.php");
     exit;
   }
-  $sql = "SELECT * FROM suratketerangan";
-  $query = mysqli_query($koneksi,$sql);
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +22,8 @@
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <!-- Select2 -->
+  <link href="../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body id="page-top">
@@ -50,6 +50,100 @@
 
           <!-- Row -->
           <div class="row">
+          <?php if($_SESSION["keadaan"] == "sudah_login_admin"){ ?>
+            <!-- DataTable with Hover -->
+            <?php 
+              $sql = "SELECT * FROM suratketerangan";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                        <?php while($data = mysqli_fetch_array($query)):?> 
+                        <tr>
+                          <td><?= $data['no_surat'] ?></td>
+                          <td><?= $data['nama'] ?></td>
+                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['tanggal_pengajuan'] ?></td>
+                          <td>
+                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                              <button class="btn btn-primary">Detail</button>
+                            </a>
+                          </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          <?php } elseif($_SESSION["keadaan"] == "sudah_login_penduduk") { ?>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card mb-4">
+                  <div class="card-body">
+                  <form action="controller.php" method="POST" enctype="multipart/form">  
+                    <div class="form-group">
+                        <label for="select2SinglePlaceholder">Pilih Surat</label>
+                        <select class="kepentingan form-control" name="kepentingan" id="kepentingan">
+                          <option>Pilih</option>
+                          <option value="Surat Keterangan Tidak Mampu">Surat Keterangan Tidak Mampu</option>
+                          <option value="Surat Keterangan Usaha">Surat Keterangan Usaha</option>
+                          <option value="Surat Keterangan Domisili">Surat Keterangan Domisili</option>
+                          <option value="Surat Keterangan Belum Menikah">Surat Keterangan Belum Menikah</option>
+                          <option value="Surat Pengantar KTP">Surat Pengantar KTP</option>
+                          <option value="Surat Pengantar Akta Kelahiran">Surat Pengantar Akta Kelahiran</option>
+                          <option value="Surat Pengantar Nikah">Surat Pengantar Nikah</option>
+                          <option value="Surat Pengantar Cerai">Surat Pengantar Cerai</option>
+                        </select>  
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Nama</label>
+                      <input type="text" class="form-control" id="nama" value="<?php echo $_SESSION['nama_admin']; ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">NIK</label>
+                      <input type="text" class="form-control" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Berkas</label>
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="berkas">
+                        <label class="custom-file-label" for="customFile">Pilih file</label>
+                      </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <?php
+              $nik = $_SESSION['nik']; 
+              $sql = "SELECT * FROM suratketerangan WHERE nik=$nik";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
             <!-- DataTable with Hover -->
             <div class="col-lg-12">
               <div class="card mb-4">
@@ -92,6 +186,103 @@
                 </div>
               </div>
             </div>
+          <?php } elseif($_SESSION["keadaan"] == "sudah_login_rt") { ?>
+            <?php
+              $wil_rt = $_SESSION['rt'];
+              $sql = "SELECT * FROM suratketerangan WHERE id_rt = $wil_rt";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
+            <!-- DataTable with Hover -->
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                        <?php while($data = mysqli_fetch_array($query)):?> 
+                        <tr>
+                          <td><?= $data['no_surat'] ?></td>
+                          <td><?= $data['nama'] ?></td>
+                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['tanggal_pengajuan'] ?></td>
+                          <td>
+                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                              <button class="btn btn-primary">Detail</button>
+                            </a>
+                          </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          <?php } elseif($_SESSION["keadaan"] == "sudah_login_rw") { ?>
+            <?php
+              $wil_rw = $_SESSION['rw'];
+              $sql = "SELECT * FROM suratketerangan WHERE id_rw = $wil_rw";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
+            <!-- DataTable with Hover -->
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Tujuan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                        <?php while($data = mysqli_fetch_array($query)):?> 
+                        <tr>
+                          <td><?= $data['no_surat'] ?></td>
+                          <td><?= $data['nama'] ?></td>
+                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['tanggal_pengajuan'] ?></td>
+                          <td>
+                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                              <button class="btn btn-primary">Detail</button>
+                            </a>
+                          </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          <?php } ?>  
           </div>
           <!--Row-->
 
@@ -135,7 +326,8 @@
   <!-- Page level plugins -->
   <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+  <!-- Select2 -->
+  <script src="../vendor/select2/dist/js/select2.min.js"></script>                          
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
@@ -143,7 +335,20 @@
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });
   </script>
+  <script>
+    $(document).ready(function () {
 
+
+      $('.select2-single').select2();
+
+      // Select2 Single  with Placeholder
+      $('.kepentingan').select2({
+        placeholder: "Pilih",
+        allowClear: true
+      });
+
+    });
+  </script>
 </body>
 
 </html>

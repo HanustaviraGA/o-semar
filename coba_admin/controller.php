@@ -29,21 +29,29 @@
                 if($cekrt > 0 && $cekrw == 0 && $cekSA != 1){
                     $_SESSION['nama_admin'] = $data['nama'];
                     $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['rt'] = $data['id_rt'];
+                    $_SESSION['rw'] = $data['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_rt";
                 }
                 else if($cekrt == 0 && $cekrw > 0 && $cekSA != 1){
                     $_SESSION['nama_admin'] = $data['nama'];
                     $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['rt'] = $data['id_rt'];
+                    $_SESSION['rw'] = $data['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_rw";
                 }
                 else if($cekrt == 0 && $cekrw == 0 && $cekSA != 1){
                     $_SESSION['nama_admin'] = $data['nama'];
                     $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['rt'] = $data['id_rt'];
+                    $_SESSION['rw'] = $data['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_penduduk";
                 }
                 else if($cekrt == 0 && $cekrw == 0 && $cekSA == 1){
                     $_SESSION['nama_admin'] = $data['nama'];
                     $_SESSION['user_admin'] = $data['username'];
+                    $_SESSION['rt'] = $data['id_rt'];
+                    $_SESSION['rw'] = $data['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_admin";
                 }
 	            header("location:index.php");

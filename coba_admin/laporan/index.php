@@ -49,6 +49,12 @@
 
           <!-- Row -->
           <div class="row">
+          <?php if($_SESSION["keadaan"] == "sudah_login_admin"){ ?>
+            <!-- DataTable with Hover -->
+            <?php 
+              $sql = "SELECT * FROM pelaporan";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
             <!-- DataTable with Hover -->
             <div class="col-lg-12">
               <div class="card mb-4">
@@ -97,7 +103,204 @@
               </div>
             </div>
           </div>
-          <!--Row-->
+          <?php } elseif($_SESSION["keadaan"] == "sudah_login_penduduk") { ?>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card mb-4">
+                  <div class="card-body">
+                  <form action="controller.php" method="POST" enctype="multipart/form">  
+                    <div class="form-group">
+                        <label for="select2SinglePlaceholder">Pilih Kategori Laporan</label>
+                        <select class="kepentingan form-control" name="kepentingan" id="kepentingan">
+                          <option>Pilih</option>
+                          <option value="Surat Keterangan Tidak Mampu">Keamanan</option>
+                          <option value="Surat Keterangan Usaha">Sarana dan Prasarana</option>
+                          <option value="Surat Keterangan Domisili">Kebersihan</option>
+                          <option value="Surat Keterangan Belum Menikah">Tata Tertib</option>
+                        </select>  
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Nama</label>
+                      <input type="text" class="form-control" id="nama" value="<?php echo $_SESSION['nama_admin']; ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">NIK</label>
+                      <input type="text" class="form-control" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Foto</label>
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Pilih file</label>
+                      </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <?php
+              $nik = $_SESSION['nik']; 
+              $sql = "SELECT * FROM pelaporan WHERE nik=$nik";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Nama Pelapor</th>
+                        <th>Tujuan</th>
+                        <th>Keperluan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Nama Pelapor</th>
+                        <th>Tujuan</th>
+                        <th>Keperluan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                    
+                    <tbody>
+                    <?php while($data = mysqli_fetch_array($query)):?>
+                        <tr>
+                          <?php
+                            $nik = $data['nik']; 
+                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                            $queryID = mysqli_query($koneksi,$sqlID);
+                            $dataID = mysqli_fetch_array($queryID);
+                          ?>
+                          <td><?= $dataID['nama'] ?></td>
+                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['keperluan'] ?></td>
+                          <td><?= $data['tanggal_pelaporan'] ?></td>
+                          <td>
+                          DUMMY
+                          </td>
+                        </tr>
+                    <?php endwhile; ?>  
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <?php } elseif($_SESSION["keadaan"] == "sudah_login_rt") { ?>
+            <?php
+              $wil_rt = $_SESSION['rt'];
+              $sql = "SELECT * FROM pelaporan WHERE id_rt = $wil_rt";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Nama Pelapor</th>
+                        <th>Tujuan</th>
+                        <th>Keperluan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Nama Pelapor</th>
+                        <th>Tujuan</th>
+                        <th>Keperluan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                    
+                    <tbody>
+                    <?php while($data = mysqli_fetch_array($query)):?>
+                        <tr>
+                          <?php
+                            $nik = $data['nik']; 
+                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                            $queryID = mysqli_query($koneksi,$sqlID);
+                            $dataID = mysqli_fetch_array($queryID);
+                          ?>
+                          <td><?= $dataID['nama'] ?></td>
+                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['keperluan'] ?></td>
+                          <td><?= $data['tanggal_pelaporan'] ?></td>
+                          <td>
+                          DUMMY
+                          </td>
+                        </tr>
+                    <?php endwhile; ?>  
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <?php } elseif($_SESSION["keadaan"] == "sudah_login_rw") { ?>
+            <?php
+              $wil_rw = $_SESSION['rw'];
+              $sql = "SELECT * FROM pelaporan WHERE id_rw = $wil_rw";
+              $query = mysqli_query($koneksi,$sql);
+            ?>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Nama Pelapor</th>
+                        <th>Tujuan</th>
+                        <th>Keperluan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Nama Pelapor</th>
+                        <th>Tujuan</th>
+                        <th>Keperluan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                    
+                    <tbody>
+                    <?php while($data = mysqli_fetch_array($query)):?>
+                        <tr>
+                          <?php
+                            $nik = $data['nik']; 
+                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                            $queryID = mysqli_query($koneksi,$sqlID);
+                            $dataID = mysqli_fetch_array($queryID);
+                          ?>
+                          <td><?= $dataID['nama'] ?></td>
+                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['keperluan'] ?></td>
+                          <td><?= $data['tanggal_pelaporan'] ?></td>
+                          <td>
+                          DUMMY
+                          </td>
+                        </tr>
+                    <?php endwhile; ?>  
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          <?php } ?>  
+          </div>
+
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
