@@ -6,7 +6,6 @@
 
     switch($data['aksi']){
         case 'login' :
-            session_start();
             // menghubungkan dengan koneksi
             include '../koneksi.php';
             $username = $data['username'];
@@ -84,8 +83,6 @@
             }
             break;
         case 'logout' :
-            // mengaktifkan session
-            session_start();
             // $_SESSION['keadaan'] = "belum_login_user";
             unset($_SESSION['keadaan']);
             // mengalihkan halaman login

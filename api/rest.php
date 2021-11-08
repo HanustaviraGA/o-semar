@@ -10,10 +10,21 @@ if(function_exists($_GET['function'])){
 
 function get_penduduk_data(){
     global $koneksi;
-    $query = $koneksi->query("SELECT * FROM penduduk");
+
+    $filter_key = empty($_GET["filter_key"]) ? null : $_GET['filter_key'];
+    $filter_value = empty($_GET["filter_value"]) ? null : $_GET['filter_value'];
+
+    $sql = "SELECT * FROM penduduk";
+
+    if ($filter_key != null && $filter_value != null) {
+        $sql .= " WHERE $filter_key = '$filter_value'";
+    }
+
+    $query = $koneksi->query($sql);
     while($row = mysqli_fetch_object($query)){
         $data[] = $row;
     }
+
     $response=array(
         'status' => 1,
         'message' => 'Sukses',
@@ -23,11 +34,29 @@ function get_penduduk_data(){
     echo json_encode($response);
 }
 
+function generate_response($status, $message, $data = []) {
+    return array(
+        'status' => $status,
+        'message' => $message,
+        'data' => $data
+    );
+}
+
 
 function get_penduduk_id(){
     global $koneksi;
     if(!empty($_GET["id"])){
         $id = $_GET["id"];
+    }
+
+    if (empty($_GET['key'])) {
+        return 'key is required';
+    } else {
+        if ($_GET['key'] == 'some string') {
+            # code...
+        } else {
+            return 'unauthorized access';
+        }
     }
 
     $query = "SELECT * FROM penduduk WHERE nik=$id";
@@ -37,11 +66,13 @@ function get_penduduk_id(){
     }
     
     if($data){
-        $response=array(
-            'status' => 1,
-            'message' => 'Mantab gan!',
-            'data' => $data
-        );
+        // $response=array(
+        //     'status' => 1,
+        //     'message' => 'Mantab gan!',
+        //     'data' => $data
+        // );
+        $response=generateResponse(1, 'Mantul!', $data);
+        $response=generateResponse(0, 'Some error message!');
     }else{
         $response=array(
             'status' => 0,

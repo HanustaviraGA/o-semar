@@ -106,7 +106,7 @@
       <hr class="sidebar-divider">
       <div class="version" id="version-O-Semar"></div>
     <?php
-    } else if ($_SESSION["keadaan"] == "sudah_login_rt" || $_SESSION["keadaan"] == "sudah_login_rw" || $_SESSION['keadaan'] == "suda_login_penduduk") {
+    } else if ($_SESSION["keadaan"] == "sudah_login_rt" || $_SESSION["keadaan"] == "sudah_login_rw" || $_SESSION['keadaan'] == "sudah_login_penduduk") {
     ?>
       
     <?php
