@@ -32,23 +32,32 @@
         </div>
         <nav class="sidebar-menu">
             <a href="../index2.php" class="sidebar-link">
+                <i class="fas fa-tachometer-alt"></i>
                 <p>Dashboard</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
+            <div class="divider-horizontal"></div>
+            <p>Templates</p>
             <a href="../surat/index2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
                 <p>Tabel Data - Template</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
             <a href="../super/pengaturan2.php" class="sidebar-link sidebar-active">
+                <i class="fab fa-wpforms"></i>
                 <p>Form Data - Template</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
+            <div class="divider-horizontal"></div>
+            <p>Other</p>
             <a href="/" class="sidebar-link">
+                <i class="fab fa-laravel"></i>
                 <p>Laravel Introduction</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
         </nav>
     </aside>
+
     <main class="dashboard-content">
         
         <header class="panel-navbar">
@@ -80,6 +89,35 @@
             </div>
         </header>
         
+        <main class="form-panel">
+            <h1>Form</h1>
+            <form method="POST" class="form-content">
+                <div class="form-input">
+                    <label for="pelapor">Nama Pelapor</label>
+                    <input type="text" name="pelapor" id="pelapor">
+                </div>
+                <div class="form-input">
+                    <label for="laporan">Judul Laporan</label>
+                    <input type="text" name="laporan" id="laporan">
+                </div>
+                <div class="form-input">
+                    <label for="kategori">Kategori Laporan</label>
+                    <input type="text" name="kategori" id="kategori">
+                </div>
+                <div class="form-input">
+                    <label for="tanggal">Tanggal Laporan</label>
+                    <input type="date" name="tanggal" id="tanggal">
+                </div>
+                <div class="form-input">
+                    <label for="bukti">Bukti Laporan</label>
+                    <input type="file" name="bukti" id="bukti">
+                </div>
+                <div class="form-input">
+                    <button type="button">Verifikasi</button>
+                    <button type="button">Tolak</button>
+                </div>
+            </form>
+        </main>
         
         <main class="form-panel">
             

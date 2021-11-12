@@ -31,23 +31,32 @@
         </div>
         <nav class="sidebar-menu">
             <a href="../index2.php" class="sidebar-link">
+                <i class="fas fa-tachometer-alt"></i>
                 <p>Dashboard</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
+            <div class="divider-horizontal"></div>
+            <p>Templates</p>
             <a href="../surat/index2.php" class="sidebar-link sidebar-active">
+                <i class="fas fa-table"></i>
                 <p>Tabel Data - Template</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
             <a href="../super/pengaturan2.php" class="sidebar-link">
+                <i class="fab fa-wpforms"></i>
                 <p>Form Data - Template</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
+            <div class="divider-horizontal"></div>
+            <p>Other</p>
             <a href="/" class="sidebar-link">
+                <i class="fab fa-laravel"></i>
                 <p>Laravel Introduction</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
         </nav>
     </aside>
+
     <main class="dashboard-content">
         
         <header class="panel-navbar">
@@ -79,7 +88,6 @@
             </div>
         </header>
         
-        
         <main class="table-panel">
             <h1>Tabel Data</h1>
             <section class="table-content">
@@ -100,30 +108,26 @@
                         <input type="text" name="search" id="search">
                     </form>
                 </div>
-                <table class="table-data">
-                    <tr>
-                        <th>Nomor Surat</th>
-                        <th>Nama</th>
-                        <th>Tujuan</th>
-                        <th>Tanggal</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
+                <div class="table-data">
+                    <div class="header">
+                        <p>Nomor Surat</p>
+                        <p>Nama</p>
+                        <p>Tujuan</p>
+                        <p>Tanggal</p>
+                        <p>Status</p>
+                        <p>Aksi</p>
+                    </div>
                     <?php while($data = mysqli_fetch_array($query)):?>
-                    <tr>
-                        <td><?= $data['no_surat']; ?></td>
-                        <td><?= $data['nama']; ?></td>
-                        <td><?= $data['tujuan']; ?></td>
-                        <td><?= $data['tanggal_pengajuan']; ?></td>
-                        <td><?= $data['status']; ?></td>
-                        <td>
-                            <a href="www.google.com">
-                                <button>DETAIL</button>
-                            </a> 
-                        </td>
-                    </tr>
+                    <div>
+                        <p><?= $data['no_surat']; ?></p>
+                        <p><?= $data['nama']; ?></p>
+                        <p><?= $data['tujuan']; ?></p>
+                        <p><?= $data['tanggal_pengajuan']; ?></p>
+                        <p><?= $data['status']; ?></p>
+                        <div><button type="button">Detail</button></div>
+                    </div>
                     <?php endwhile; ?>
-                </table>
+                </div>
                 <div class="table-bot-nav">
                     <p>Showing 1 to 10 of ... entries</p>
                     <div class="table-btn-group">
@@ -135,6 +139,7 @@
                 </div>
             </section>
         </main>
+        
         
     </main>
     

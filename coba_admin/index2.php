@@ -50,29 +50,36 @@
     
     <aside class="sidebar">
         <div class="logo">
-            <h1 class="text-2xl">O-Mantab</h1>
+            <h1 class="text-2xl">O-Semar</h1>
         </div>
         <nav class="sidebar-menu">
             <a href="index2.php" class="sidebar-link sidebar-active">
+                <i class="fas fa-tachometer-alt"></i>
                 <p>Dashboard</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
+            <div class="divider-horizontal"></div>
+            <p>Templates</p>
             <a href="surat/index2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
                 <p>Tabel Data - Template</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
             <a href="super/pengaturan2.php" class="sidebar-link">
+                <i class="fab fa-wpforms"></i>
                 <p>Form Data - Template</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
+            <div class="divider-horizontal"></div>
+            <p>Other</p>
             <a href="/" class="sidebar-link">
+                <i class="fab fa-laravel"></i>
                 <p>Laravel Introduction</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
         </nav>
     </aside>
-    
-    
+
     <main class="dashboard-content">
         
         <header class="panel-navbar">

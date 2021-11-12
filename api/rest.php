@@ -42,49 +42,6 @@ function generate_response($status, $message, $data = []) {
     );
 }
 
-
-function get_penduduk_id(){
-    global $koneksi;
-    if(!empty($_GET["id"])){
-        $id = $_GET["id"];
-    }
-
-    if (empty($_GET['key'])) {
-        return 'key is required';
-    } else {
-        if ($_GET['key'] == 'some string') {
-            # code...
-        } else {
-            return 'unauthorized access';
-        }
-    }
-
-    $query = "SELECT * FROM penduduk WHERE nik=$id";
-    $result = $koneksi->query($query);
-    while($row = mysqli_fetch_object($result)){
-        $data[] = $row;
-    }
-    
-    if($data){
-        // $response=array(
-        //     'status' => 1,
-        //     'message' => 'Mantab gan!',
-        //     'data' => $data
-        // );
-        $response=generateResponse(1, 'Mantul!', $data);
-        $response=generateResponse(0, 'Some error message!');
-    }else{
-        $response=array(
-            'status' => 0,
-            'message' => 'raonok opo2'
-        );
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($response);
-}
-
-
 function regist_admin(){
     global $koneksi;
     $check = array('id' => '','nama' => '','nik' => '','email' => '','katasandi' => '','c_sandi' => '','kk' => '','username' => '','alamat' => '','tempatlahir' => '','tanggallahir' => '','gender' => '','posisi' => '');
