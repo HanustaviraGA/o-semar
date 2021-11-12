@@ -5,7 +5,23 @@ require_once "../koneksi.php";
 $masuk = $_REQUEST;
 
 if(function_exists($_GET['function'])){
-    $_GET['function']();
+    if (empty($_GET['key'])) {
+        echo 'key is required';
+    }else{
+        if ($_GET['key'] == 'buwinakeren') {
+            $_GET['function']();
+        } else {
+            echo 'unauthorized access';
+        }
+    }
+}
+
+function generate_response($status, $message, $data = []) {
+    return array(
+        'status' => $status,
+        'message' => $message,
+        'data' => $data
+    );
 }
 
 function get_penduduk_data(){
@@ -25,128 +41,40 @@ function get_penduduk_data(){
         $data[] = $row;
     }
 
-    $response=array(
-        'status' => 1,
-        'message' => 'Sukses',
-        'data' => $data
-    );
+    if($data){
+        $response=generate_response(1, 'Sukses', $data);
+    }else{
+        $response=generate_response(0, 'Tidak ada Data', $data);
+    }
     header('content-type: application/json');
     echo json_encode($response);
 }
 
-function generate_response($status, $message, $data = []) {
-    return array(
-        'status' => $status,
-        'message' => $message,
-        'data' => $data
-    );
-}
-
-function regist_admin(){
+function register(){
     global $koneksi;
-    $check = array('id' => '','nama' => '','nik' => '','email' => '','katasandi' => '','c_sandi' => '','kk' => '','username' => '','alamat' => '','tempatlahir' => '','tanggallahir' => '','gender' => '','posisi' => '');
-    $check_match = count(array_intersect_key($_POST, $check));
-    if ($check_match == count($check)) {
-        $result = mysqli_query($koneksi, "INSERT INTO admin SET
-        id = '$_POST[id]',
-        nama = '$_POST[nama]',
-        nik = '$_POST[nik]',
-        email = '$_POST[email]',
-        katasandi = '$_POST[katasandi]',
-        c_sandi = '$_POST[c_sandi]',
-        username = '$_POST[username]',
-        alamat = '$_POST[alamat]',
-        tempatlahir = '$_POST[tempatlahir]',
-        tanggallahir = '$_POST[tanggallahir]',
-        gender = '$_POST[gender]',
-        posisi = '$_POST[posisi]'");
-
-        if ($result) {
-            $response=array(
-                'status' => 1,
-                'message' => 'registrasinya berhasil beb <3'
-            );
-        }else{
-            $response=array(
-                'status' => 0,
-                'message' => 'gagal regis :('
-            );
-        }
-    }else{
-        $response=array(
-            'status' => 0,
-            'message' => 'parameternya salah'
-        );
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($response);
-}
-
-function update_admin(){
-    global $koneksi;
-    if (!empty($_GET["id"])) {
-        $id = $_GET["id"];
-    }
-    $check = array('id' => '','nama' => '','nik' => '','email' => '','katasandi' => '','c_sandi' => '','kk' => '','username' => '','alamat' => '','tempatlahir' => '','tanggallahir' => '','gender' => '','posisi' => '');
-    $check_match = count(array_intersect_key($_POST, $check));
-    if ($check_match == count($check)) {
-        $result = mysqli_query($koneksi, "UPDATE admin SET               
-        id = '$_POST[id]',
-        nama = '$_POST[nama]',
-        nik = '$_POST[nik]',
-        email = '$_POST[email]',
-        katasandi = '$_POST[katasandi]',
-        c_sandi = '$_POST[c_sandi]',
-        username = '$_POST[username]',
-        alamat = '$_POST[alamat]',
-        tempatlahir = '$_POST[tempatlahir]',
-        tanggallahir = '$_POST[tanggallahir]',
-        gender = '$_POST[gender]',
-        posisi = '$_POST[posisi]' WHERE id = $id");
-
-        if ($result) {
-            $response=array(
-                'status' => 1,
-                'message' =>'Berhasil di update beb' 
-            );
-        }else{
-            $response=array(
-                'status' => 0,
-                'message' =>'yah.. gagal di update :('
-            ); 
-        }
-    }else{
-        $response=array(
-            'status' => 0,
-            'message' =>'parameternya salah gan',
-            'data' => $id
-        ); 
-    }
-}
-
-function hapus_admin(){
-    global $koneksi;
-    $id = $_GET['id'];
-    $query = "DELETE FROM admin WHERE id=".$id;
-
-    if (mysqli_query($koneksi, $query)) {
+    // Pencegahan SQL Injection
+    $nik = $_POST['nik'];
+    $nama = $_POST['nama'];
+    
+    // Ek
+    $result = "INSERT INTO penduduk SET
+    nik = '$_POST[nik]',
+    nama = '$_POST[nama]',
+    tempat_lahir = '$_POST[tempat_lahir]'";
+    $query = $koneksi->query($result);
+    if ($query) {
         $response=array(
             'status' => 1,
-            'message' =>'Berhasil di hapus wkwkw bye!'
-        ); 
+            'message' => 'registrasinya berhasil beb <3'
+        );
     }else{
         $response=array(
             'status' => 0,
-            'message' =>'gagal wkwkw, banyak2 doa dah lu jangan ateis mulu'
-        ); 
+            'message' => 'gagal regis :('
+        );
     }
-
     header('Content-Type: application/json');
     echo json_encode($response);
 }
-
-
-
 
 ?>
