@@ -52,15 +52,15 @@ function get_penduduk_data(){
 
 function register(){
     global $koneksi;
-    // Pencegahan SQL Injection
     $nik = $_POST['nik'];
     $nama = $_POST['nama'];
-    
-    // Ek
-    $result = "INSERT INTO penduduk SET
-    nik = '$_POST[nik]',
-    nama = '$_POST[nama]',
-    tempat_lahir = '$_POST[tempat_lahir]'";
+    $tmp_lahir = $_POST['tempat_lahir'];
+    // Pencegahan SQL Injection
+    $cek_nik = mysqli_real_escape_string($koneksi, $nik);
+    $cek_nama = mysqli_real_escape_string($koneksi, $nama);
+    $cek_tmp_lahir = mysqli_real_escape_string($koneksi, $tmp_lahir);
+    $encode_nik = base64_encode($cek_nik);
+    $result = "INSERT INTO penduduk SET nik = '$encode_nik', nama = '$cek_nama', tempat_lahir = '$cek_tmp_lahir'";
     $query = $koneksi->query($result);
     if ($query) {
         $response=array(
