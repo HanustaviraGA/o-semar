@@ -80,6 +80,6 @@ $('.popover-dismiss').popover({
 
 // Version in Sidebar
 
-var version = document.getElementById('version-ruangadmin');
+var version = document.getElementById('version-O-Semar');
 
 version.innerHTML = "Version 1.1";
