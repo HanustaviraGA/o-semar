@@ -68,7 +68,7 @@ function register(){
     $encode_password = base64_encode($cek_password);
     // Eksekusi
     $result = "INSERT INTO penduduk SET
-    no_kk = $encode_nokk,
+    no_kk = '$encode_nokk',
     nik = '$encode_nik', 
     username = '$encode_username', 
     password = '$encode_password'";
