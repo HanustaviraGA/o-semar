@@ -64,12 +64,13 @@ function register(){
     // Encode
     $encode_nokk = base64_encode($cek_nokk);
     $encode_nik = base64_encode($cek_nik);
+    $encode_username = base64_encode($cek_username);
     $encode_password = base64_encode($cek_password);
     // Eksekusi
     $result = "INSERT INTO penduduk SET
     no_kk = $encode_nokk,
     nik = '$encode_nik', 
-    username = '$cek_username', 
+    username = '$encode_username', 
     password = '$encode_password'";
     $query = $koneksi->query($result);
     if ($query) {
