@@ -52,36 +52,25 @@ function get_penduduk_data(){
 
 function register(){
     global $koneksi;
-    $no_kk = $_POST['no_kk'];
     $nik = $_POST['nik'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $nama = $_POST['nama'];
+    $tmp_lahir = $_POST['tempat_lahir'];
     // Pencegahan SQL Injection
-    $cek_nokk = mysqli_real_escape_string($koneksi, $no_kk);
     $cek_nik = mysqli_real_escape_string($koneksi, $nik);
-    $cek_username = mysqli_real_escape_string($koneksi, $username);
-    $cek_password = mysqli_real_escape_string($koneksi, $password);
-    // Encode
-    $encode_nokk = base64_encode($cek_nokk);
+    $cek_nama = mysqli_real_escape_string($koneksi, $nama);
+    $cek_tmp_lahir = mysqli_real_escape_string($koneksi, $tmp_lahir);
     $encode_nik = base64_encode($cek_nik);
-    $encode_username = base64_encode($cek_username);
-    $encode_password = base64_encode($cek_password);
-    // Eksekusi
-    $result = "INSERT INTO penduduk SET
-    no_kk = '$encode_nokk',
-    nik = '$encode_nik', 
-    username = '$encode_username', 
-    password = '$encode_password'";
+    $result = "INSERT INTO penduduk SET nik = '$encode_nik', nama = '$cek_nama', tempat_lahir = '$cek_tmp_lahir'";
     $query = $koneksi->query($result);
     if ($query) {
         $response=array(
             'status' => 1,
-            'message' => 'Registrasi Berhasil'
+            'message' => 'registrasinya berhasil beb <3'
         );
     }else{
         $response=array(
             'status' => 0,
-            'message' => 'Registrasi Gagal'
+            'message' => 'gagal regis :('
         );
     }
     header('Content-Type: application/json');
