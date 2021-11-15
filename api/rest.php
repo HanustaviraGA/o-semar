@@ -8,7 +8,7 @@ if(function_exists($_GET['function'])){
     if (empty($_GET['key'])) {
         echo 'key is required';
     }else{
-        if ($_GET['key'] == 'buwinakeren') {
+        if (base64_encode($_GET['key']) == 'YnV3aW5ha2VyZW4=') {
             $_GET['function']();
         } else {
             echo 'unauthorized access';
@@ -52,25 +52,29 @@ function get_penduduk_data(){
 
 function register(){
     global $koneksi;
+    $no_kk = $_POST['no_kk'];
     $nik = $_POST['nik'];
-    $nama = $_POST['nama'];
-    $tmp_lahir = $_POST['tempat_lahir'];
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
     // Pencegahan SQL Injection
+    $cek_no_kk = mysqli_real_escape_string($koneksi, $no_kk);
     $cek_nik = mysqli_real_escape_string($koneksi, $nik);
-    $cek_nama = mysqli_real_escape_string($koneksi, $nama);
-    $cek_tmp_lahir = mysqli_real_escape_string($koneksi, $tmp_lahir);
-    $encode_nik = base64_encode($cek_nik);
-    $result = "INSERT INTO penduduk SET nik = '$encode_nik', nama = '$cek_nama', tempat_lahir = '$cek_tmp_lahir'";
+    $cek_email = mysqli_real_escape_string($koneksi, $email);
+    $cek_username = mysqli_real_escape_string($koneksi, $username);
+    $cek_password = mysqli_real_escape_string($koneksi, $password);
+    // Eksekusi
+    $result = "INSERT INTO penduduk SET no_kk = '$cek_no_kk', nik = '$cek_nik', email = '$cek_email', username = '$cek_username', password = '$cek_password'";
     $query = $koneksi->query($result);
     if ($query) {
         $response=array(
             'status' => 1,
-            'message' => 'registrasinya berhasil beb <3'
+            'message' => 'Registrasi Berhasil'
         );
     }else{
         $response=array(
             'status' => 0,
-            'message' => 'gagal regis :('
+            'message' => 'Registrasi Gagal'
         );
     }
     header('Content-Type: application/json');
