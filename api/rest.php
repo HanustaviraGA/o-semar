@@ -63,21 +63,23 @@ function register(){
     // Ambil Data
     $no_kk = $_POST['no_kk'];
     $nik = $_POST['nik'];
+    $nama = $_POST['nama'];
     $email = $_POST['email'];
     $username = $_POST['username'];
     $password = $_POST['password'];
     // Pencegahan SQL Injection
     $cek_no_kk = mysqli_real_escape_string($koneksi, $no_kk);
     $cek_nik = mysqli_real_escape_string($koneksi, $nik);
+    $cek_nama = mysqli_real_escape_string($koneksi, $nama);
     $cek_email = mysqli_real_escape_string($koneksi, $email);
     $cek_username = mysqli_real_escape_string($koneksi, $username);
     $cek_password = mysqli_real_escape_string($koneksi, $password);
     
     // Periksa Duplikat
-    $cek_id = "SELECT * FROM penduduk WHERE no_kk = '$cek_no_kk' AND nik = '$cek_nik'";
+    $cek_id = "SELECT * FROM penduduk WHERE no_kk = '$cek_no_kk' AND nik = '$cek_nik' AND nama = '$cek_nama' AND username = '$cek_username'";
     // Eksekusi Registrasi
-    $result = "INSERT INTO penduduk SET no_kk = '$cek_no_kk', nik = '$cek_nik', email = '$cek_email', username = '$cek_username', password = '$cek_password'";
-    // Jalankan cek
+    $result = "INSERT INTO penduduk SET no_kk = '$cek_no_kk', nik = '$cek_nik', nama = '$cek_nama', email = '$cek_email', username = '$cek_username', password = '$cek_password'";
+    
     $exec_cek = $koneksi->query($cek_id);
     $count = mysqli_num_rows($exec_cek);
     if($count > 0){
