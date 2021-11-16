@@ -6,12 +6,20 @@ $masuk = $_REQUEST;
 
 if(function_exists($_GET['function'])){
     if (empty($_GET['key'])) {
-        echo 'key is required';
+        echo 'Key is required';
+      	$response=array(
+            'status' => 403,
+            'message' => 'Forbidden'
+        );
     }else{
         if (base64_encode($_GET['key']) == 'YnV3aW5ha2VyZW4=') {
             $_GET['function']();
         } else {
             echo 'unauthorized access';
+          	$response=array(
+            'status' => 401,
+            'message' => 'Unauthorized'
+        );
         }
     }
 }
@@ -30,7 +38,12 @@ function get_penduduk_data(){
     $filter_key = empty($_GET["filter_key"]) ? null : $_GET['filter_key'];
     $filter_value = empty($_GET["filter_value"]) ? null : $_GET['filter_value'];
 
-    $sql = "SELECT * FROM penduduk";
+    $sql = "SELECT  
+    no_kk, nik, nama, tempat_lahir, tanggal lahir, alamat,
+    id_rt, id_rw, jenis_kelamin, agama, status_perkawinan,
+    pekerjaan, gol_darah, kewarganegaraan, status_ktp, foto_ktp,
+    email, username, no_hp, tanggal_reg
+    FROM penduduk";
 
     if ($filter_key != null && $filter_value != null) {
         $sql .= " WHERE $filter_key = '$filter_value'";
@@ -52,6 +65,9 @@ function get_penduduk_data(){
 
 function register(){
     global $koneksi;
+    // NoData SET
+    $no_data = 'Tidak Diketahui';
+    // Ambil Data
     $no_kk = $_POST['no_kk'];
     $nik = $_POST['nik'];
     $email = $_POST['email'];
