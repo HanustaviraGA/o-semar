@@ -38,12 +38,7 @@ function get_penduduk_data(){
     $filter_key = empty($_GET["filter_key"]) ? null : $_GET['filter_key'];
     $filter_value = empty($_GET["filter_value"]) ? null : $_GET['filter_value'];
 
-    $sql = "SELECT  
-    no_kk, nik, nama, tempat_lahir, tanggal lahir, alamat,
-    id_rt, id_rw, jenis_kelamin, agama, status_perkawinan,
-    pekerjaan, gol_darah, kewarganegaraan, status_ktp, foto_ktp,
-    email, username, no_hp, tanggal_reg
-    FROM penduduk";
+    $sql = "SELECT no_kk, nik, nama, tempat_lahir, tanggal_lahir, alamat, id_rt, id_rw, jenis_kelamin, agama, status_perkawinan, pekerjaan, gol_darah, kewarganegaraan, status_ktp, foto_ktp, email, username, no_hp, tanggal_reg FROM penduduk";
 
     if ($filter_key != null && $filter_value != null) {
         $sql .= " WHERE $filter_key = '$filter_value'";
@@ -65,8 +60,6 @@ function get_penduduk_data(){
 
 function register(){
     global $koneksi;
-    // NoData SET
-    $no_data = 'Tidak Diketahui';
     // Ambil Data
     $no_kk = $_POST['no_kk'];
     $nik = $_POST['nik'];
@@ -79,19 +72,32 @@ function register(){
     $cek_email = mysqli_real_escape_string($koneksi, $email);
     $cek_username = mysqli_real_escape_string($koneksi, $username);
     $cek_password = mysqli_real_escape_string($koneksi, $password);
-    // Eksekusi
+    
+    // Periksa Duplikat
+    $cek_id = "SELECT * FROM penduduk WHERE no_kk = '$cek_no_kk' AND nik = '$cek_nik'";
+    // Eksekusi Registrasi
     $result = "INSERT INTO penduduk SET no_kk = '$cek_no_kk', nik = '$cek_nik', email = '$cek_email', username = '$cek_username', password = '$cek_password'";
-    $query = $koneksi->query($result);
-    if ($query) {
+    // Jalankan cek
+    $exec_cek = $koneksi->query($cek_id);
+    $count = mysqli_num_rows($exec_cek);
+    if($count > 0){
         $response=array(
-            'status' => 1,
-            'message' => 'Registrasi Berhasil'
+            'status' => 2,
+            'message' => 'Terdapat Pengguna dengan Data yang Sama'
         );
     }else{
-        $response=array(
-            'status' => 0,
-            'message' => 'Registrasi Gagal'
-        );
+        $query = $koneksi->query($result);
+        if ($query) {
+            $response=array(
+                'status' => 1,
+                'message' => 'Registrasi Berhasil'
+            );
+        }else{
+            $response=array(
+                'status' => 0,
+                'message' => 'Registrasi Gagal'
+            );
+        }
     }
     header('Content-Type: application/json');
     echo json_encode($response);
