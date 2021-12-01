@@ -6,14 +6,20 @@
     exit;
   }
     $id = $_GET['id'];
-    $sqlID = "SELECT * FROM kartu_keluarga WHERE no_kk='$id'";
-    $queryID = mysqli_query($koneksi,$sqlID);
-    $dataID = mysqli_fetch_array($queryID);
-
-    $nik = $dataID['nik']; 
-    $sqlNama = "SELECT nama FROM penduduk WHERE nik='$nik'";
+    // Tabel Penduduk
+    $sqlNama = "SELECT * FROM penduduk WHERE no_kk='$id'";
     $queryNama = mysqli_query($koneksi,$sqlNama);
-    $dataNama = mysqli_fetch_array($queryNama);
+    // Tabel Penduduk 2
+    $sqlNama2 = "SELECT * FROM penduduk WHERE no_kk='$id'";
+    $queryNama2 = mysqli_query($koneksi,$sqlNama2);
+    // Wilayah
+    $sqlWil = "SELECT * FROM mssettings WHERE identifier='1'";
+    $queryWil = mysqli_query($koneksi,$sqlWil);
+    $dataWil = mysqli_fetch_array($queryWil);
+    // Identitas Kepala Keluarga
+    $sqlNamaKK = "SELECT * FROM penduduk WHERE no_kk='$id' AND kepala_keluarga=1";
+    $queryNamaKK = mysqli_query($koneksi,$sqlNamaKK);
+    $dataNamaKK = mysqli_fetch_array($queryNamaKK);
 ?>
 
 <!DOCTYPE html>
@@ -49,86 +55,161 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga No. <?php echo $id; ?></h1>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="./">Kembali</a></li>
+              <li class="breadcrumb-item"><a href="./">Home</a></li>
+              <li class="breadcrumb-item">Forms</li>
+              <li class="breadcrumb-item active" aria-current="page">Form Basics</li>
             </ol>
           </div>
 
-          <!-- Row -->
           <div class="row">
-            <!-- DataTable with Hover -->
-            <div class="col-lg-12">
+            <div class="col-lg-6">
+              <!-- Form Basic -->
               <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Detail Iuran - <?= $dataNama['nama'] ?></h6>
-                </div>
-                <div class="card mb-4">
                 <div class="card-body">
                   <form>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Nomor KK</label>
-                      <input type="text" class="form-control" value="<?= $dataID['no_kk'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">NIK</label>
-                      <input type="text" class="form-control" value="<?= $dataID['nik'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Status Hubungan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['status_hubungan'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Nomor Paspor</label>
-                      <input type="text" class="form-control" value="<?= $dataID['no_paspor'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Nomor Kitas</label>
-                      <input type="text" class="form-control" value="<?= $dataID['no_kitas'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Kepala Keluarga</label>
-                      <input type="text" class="form-control" value="<?= $dataID['kepala_keluarga'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Nama Ayah</label>
-                      <input type="text" class="form-control" value="<?= $dataID['nama_ayah'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Nama Ibu</label>
-                      <input type="text" class="form-control" value="<?= $dataID['nama_ibu'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">id rt</label>
-                      <input type="text" class="form-control" value="<?= $dataID['id_rt'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">id rw</label>
-                      <input type="text" class="form-control" value="<?= $dataID['id_rw'] ?>" readonly>
+                      <label for="exampleInputEmail1">Nama Kepala Keluarga</label>
+                      <input type="text" class="form-control" id="text"  value="<?= $dataNamaKK['nama'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Alamat</label>
-                      <input type="text" class="form-control" value="<?= $dataID['alamat'] ?>" readonly>
+                      <input type="text" class="form-control" id="text" value="<?= $dataNamaKK['alamat'] ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Tanggal Pengeluaran</label>
-                      <input type="text" class="form-control" value="<?= $dataID['tanggal_pengeluaran'] ?>" readonly>
+                      <label for="exampleInputPassword1">RT / RW</label>
+                      <input type="text" class="form-control" id="text" value="<?= $dataNamaKK['id_rt'] ?> / <?= $dataNamaKK['id_rw'] ?>" readonly>
                     </div>
-                    <div>
-                        <input type="hidden" name="aksi" value="bukti">
-                        <input type="hidden" name="file" value="<?= $dataID['foto_kk'] ?>">
-                        <button class="btn btn-primary">foto kk</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
-                          id="#modalCenter">Preview</button>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Desa / Kelurahan</label>
+                      <input type="text" class="form-control" id="text" value="<?= $dataWil['nama_kelurahan'] ?>" readonly>
                     </div>
-                  <br>
                   </form>
-                  <!-- batas -->
                 </div>
               </div>
+            </div>
+
+            <div class="col-lg-6">
+              <!-- General Element -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Kecamatan</label>
+                      <input type="text" class="form-control" id="text" value="<?= $dataWil['nama_kecamatan'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Kabupaten / Kota</label>
+                      <input type="text" class="form-control" id="text" value="<?= $dataWil['nama_kabkota'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Kode Pos</label>
+                      <input type="text" class="form-control" id="text" value="<?= $dataWil['kode_pos'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Provinsi</label>
+                      <input type="text" class="form-control" id="text" value="<?= $dataWil['nama_provinsi'] ?>" readonly>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
           <!--Row-->
+          <!-- DataTable with Hover -->
+          <div class="col-lg-12">
+            <div class="card mb-4">
+              <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Lengkap</th>
+                      <th>NIK</th>
+                      <th>Jenis Kelamin</th>
+                      <th>Tempat Lahir</th>
+                      <th>Tanggal Lahir</th>
+                      <th>Pendidikan</th>
+                      <th>Jenis Pekerjaan</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Lengkap</th>
+                      <th>NIK</th>
+                      <th>Jenis Kelamin</th>
+                      <th>Tempat Lahir</th>
+                      <th>Tanggal Lahir</th>
+                      <th>Pendidikan</th>
+                      <th>Jenis Pekerjaan</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <?php $a = 1; while($dataNama2 = mysqli_fetch_array($queryNama2)):?>
+                    <tr>
+                      <td><?= $a++ ?></td>
+                      <td><?= $dataNama2['nama'] ?></td>
+                      <td><?= $dataNama2['nik'] ?></td>
+                      <td><?= $dataNama2['jenis_kelamin'] ?></td>
+                      <td><?= $dataNama2['tempat_lahir'] ?></td>
+                      <td><?= $dataNama2['tanggal_lahir'] ?></td>
+                      <td><?= $dataNama2['pendidikan'] ?></td>
+                      <td><?= $dataNama2['pekerjaan'] ?></td>
+                    </tr>
+                  <?php endwhile; ?>  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="card mb-4">
+              <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>No</th>
+                      <th>Status Pernikahan</th>
+                      <th>Status Hubungan Dalam Keluarga</th>
+                      <th>Kewarganegaraan</th>
+                      <th>No. Paspor</th>
+                      <th>No. KITAS/KITAP</th>
+                      <th>Nama Ayah</th>
+                      <th>Nama Ibu</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>No</th>
+                      <th>Status Pernikahan</th>
+                      <th>Status Hubungan Dalam Keluarga</th>
+                      <th>Kewarganegaraan</th>
+                      <th>No. Paspor</th>
+                      <th>No. KITAS/KITAP</th>
+                      <th>Nama Ayah</th>
+                      <th>Nama Ibu</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <?php $a = 1; while($dataNama = mysqli_fetch_array($queryNama)):?>
+                    <tr>
+                      <td><?= $a++ ?></td>
+                      <td><?= $dataNama['status_perkawinan'] ?></td>
+                      <td><?= $dataNama['status_hubungan_keluarga'] ?></td>
+                      <td><?= $dataNama['kewarganegaraan'] ?></td>
+                      <td><?= $dataNama['no_paspor'] ?></td>
+                      <td><?= $dataNama['no_kitas'] ?></td>
+                      <td><?= $dataNama['nama_ayah'] ?></td>
+                      <td><?= $dataNama['nama_ibu'] ?></td>
+                    </tr>
+                  <?php endwhile; ?>  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"

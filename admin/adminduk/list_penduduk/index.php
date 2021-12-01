@@ -1,12 +1,30 @@
 <?php
   include '../../../koneksi.php';
   session_start();
-  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+  if (!isset($_SESSION['keadaan'])) {
     header("Location: ../login.php");
     exit;
   }
-  $sql = "SELECT * FROM penduduk";
-  $query = mysqli_query($koneksi,$sql);
+  // Status login
+  $status = $_SESSION['keadaan'];
+  if(isset($status) && $status == "sudah_login_admin"){
+    $sql = "SELECT * FROM penduduk";
+    $query = mysqli_query($koneksi,$sql);
+  }else if(isset($status) && $status == "sudah_login_rt"){
+    $rt = $_SESSION['rt'];
+    $rw = $_SESSION['rw'];
+    $sql = "SELECT * FROM penduduk WHERE id_rt = $rt AND id_rw = $rw";
+    $query = mysqli_query($koneksi,$sql);
+  }else if(isset($status) && $status == "sudah_login_rw"){
+    $rw = $_SESSION['rw'];
+    $sql = "SELECT * FROM penduduk WHERE id_rw = $rw";
+    $query = mysqli_query($koneksi,$sql);
+  }else if(isset($status) && $status == "sudah_login_penduduk"){
+    $nik = $_SESSION['nik'];
+    $sql = "SELECT * FROM penduduk WHERE nik = $nik";
+    $query = mysqli_query($koneksi,$sql);
+  }
+  
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +60,15 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk</h1>
+            <?php if(isset($status) && $status == "sudah_login_admin"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk</h1>
+            <?php } else if(isset($status) && $status == "sudah_login_rt"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk RT <?php echo $rt; ?> RW <?php echo $rw; ?></h1>
+            <?php } else if(isset($status) && $status == "sudah_login_rw"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk RW <?php echo $rw; ?></h1>
+            <?php } else if(isset($status) && $status == "sudah_login_penduduk"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Forbidden</h1>
+            <?php } ?>  
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Refresh</a></li>
             </ol>

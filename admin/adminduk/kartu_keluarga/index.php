@@ -5,8 +5,25 @@
     header("Location: ../login.php");
     exit;
   }
-  $sql = "SELECT * FROM kartu_keluarga";
-  $query = mysqli_query($koneksi,$sql);
+  // Status login
+  $status = $_SESSION['keadaan'];
+  if(isset($status) && $status == "sudah_login_admin"){
+    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1";
+    $query = mysqli_query($koneksi, $sql);
+  }else if(isset($status) && $status == "sudah_login_rt"){
+    $rt = $_SESSION['rt'];
+    $rw = $_SESSION['rw'];
+    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rt=$rt AND id_rw=$rw";
+  $query = mysqli_query($koneksi, $sql);
+  }else if(isset($status) && $status == "sudah_login_rw"){
+    $rw = $_SESSION['rw'];
+    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rw=$rw";
+    $query = mysqli_query($koneksi, $sql);
+  }else if(isset($status) && $status == "sudah_login_penduduk"){
+    $nik = $_SESSION['nik'];
+    $sql = "SELECT * FROM penduduk WHERE nik = $nik";
+    $query = mysqli_query($koneksi,$sql);
+  }
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +76,6 @@
                       <tr>
                         <th>Nomor KK</th>
                         <th>Kepala Keluarga</th>
-                        <th>Jumlah Anggota Keluarga</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
@@ -67,22 +83,14 @@
                       <tr>
                         <th>Nomor KK</th>
                         <th>Kepala Keluarga</th>
-                        <th>Jumlah Anggota Keluarga</th>
                         <th>Aksi</th>
                       </tr>
                     </tfoot>
                     <tbody>
                       <?php while($data = mysqli_fetch_array($query)):?>
                         <tr>
-                          <?php
-                            $nik = $data['nik'];
-                            $sqlid = "SELECT nama FROM penduduk WHERE nik='$nik'";
-                            $queryID = mysqli_query($koneksi, $sqlid);
-                            $dataID = mysqli_fetch_array($queryID);
-                          ?>
                           <td><?= $data['no_kk']?></td>
-                          <td><?= $data['kepala_keluarga']?></td>
-                          <td>DUMMY</td>
+                          <td><?= $data['nama']?></td>
                           <td>
                             <a href="detail.php?id=<?= $data['no_kk'] ?>">
                               <button class="btn btn-primary">Detail</button>

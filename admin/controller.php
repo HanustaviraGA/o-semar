@@ -13,10 +13,10 @@
             $result = mysqli_query($koneksi,"SELECT * FROM penduduk where username='$username' and password='$password'");
             $cek = mysqli_num_rows($result);
             if($cek > 0) {
-                $data = mysqli_fetch_assoc($result);
+                $identitas = mysqli_fetch_assoc($result);
                 //menyimpan session user, nama, status dan id login
-                $_SESSION['nik'] = $data['nik'];
-                $ceknik = $data['nik'];
+                $_SESSION['nik'] = $identitas['nik'];
+                $ceknik = $identitas['nik'];
 
                 $rt = mysqli_query($koneksi,"SELECT * FROM msrt where nik_ketuart='$ceknik'");
                 $cekrt = mysqli_num_rows($rt);
@@ -24,33 +24,38 @@
                 $cekrw = mysqli_num_rows($rw);
                 $SA = mysqli_query($koneksi,"SELECT * FROM msadmin where nik='$ceknik'");
                 $cekSA = mysqli_num_rows($SA);
-
+                // RT
                 if($cekrt > 0 && $cekrw == 0 && $cekSA != 1){
-                    $_SESSION['nama_admin'] = $data['nama'];
-                    $_SESSION['user_admin'] = $data['username'];
-                    $_SESSION['rt'] = $data['id_rt'];
-                    $_SESSION['rw'] = $data['id_rw'];
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_rt";
                 }
+                // RW
                 else if($cekrt == 0 && $cekrw > 0 && $cekSA != 1){
-                    $_SESSION['nama_admin'] = $data['nama'];
-                    $_SESSION['user_admin'] = $data['username'];
-                    $_SESSION['rt'] = $data['id_rt'];
-                    $_SESSION['rw'] = $data['id_rw'];
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_rw";
                 }
                 else if($cekrt == 0 && $cekrw == 0 && $cekSA != 1){
-                    $_SESSION['nama_admin'] = $data['nama'];
-                    $_SESSION['user_admin'] = $data['username'];
-                    $_SESSION['rt'] = $data['id_rt'];
-                    $_SESSION['rw'] = $data['id_rw'];
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_penduduk";
                 }
                 else if($cekrt == 0 && $cekrw == 0 && $cekSA == 1){
-                    $_SESSION['nama_admin'] = $data['nama'];
-                    $_SESSION['user_admin'] = $data['username'];
-                    $_SESSION['rt'] = $data['id_rt'];
-                    $_SESSION['rw'] = $data['id_rw'];
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_admin";
                 }
 	            header("location:index.php");
