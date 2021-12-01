@@ -59,7 +59,15 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga</h1>
+            <?php if(isset($status) && $status == "sudah_login_admin"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga</h1>
+            <?php } else if(isset($status) && $status == "sudah_login_rt"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga RT <?php echo $rt; ?> / RW <?php echo $rw; ?></h1>
+            <?php } else if(isset($status) && $status == "sudah_login_rw"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga RW <?php echo $rw; ?></h1>
+            <?php } else if(isset($status) && $status == "sudah_login_penduduk"){ ?>
+              <h1 class="h3 mb-0 text-gray-800">Forbidden</h1>
+            <?php } ?>  
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Refresh</a></li>
             </ol>

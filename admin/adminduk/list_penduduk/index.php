@@ -63,7 +63,7 @@
             <?php if(isset($status) && $status == "sudah_login_admin"){ ?>
               <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk</h1>
             <?php } else if(isset($status) && $status == "sudah_login_rt"){ ?>
-              <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk RT <?php echo $rt; ?> RW <?php echo $rw; ?></h1>
+              <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk RT <?php echo $rt; ?> / RW <?php echo $rw; ?></h1>
             <?php } else if(isset($status) && $status == "sudah_login_rw"){ ?>
               <h1 class="h3 mb-0 text-gray-800">Daftar Penduduk RW <?php echo $rw; ?></h1>
             <?php } else if(isset($status) && $status == "sudah_login_penduduk"){ ?>

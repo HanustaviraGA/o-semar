@@ -32,7 +32,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>O-SEMAR Admin - List Pengajuan</title>
+  <title>O-SEMAR Admin - KK No. <?php echo $id; ?></title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -57,9 +57,9 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga No. <?php echo $id; ?></h1>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Forms</li>
-              <li class="breadcrumb-item active" aria-current="page">Form Basics</li>
+              <a href="berkas/<?php echo $dataNamaKK['foto_kk']; ?>">
+                <button class="btn btn-primary">Foto KK</button>
+              </a>
             </ol>
           </div>
 
@@ -167,7 +167,7 @@
           <div class="col-lg-12">
             <div class="card mb-4">
               <div class="table-responsive p-3">
-                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHovers">
                   <thead class="thead-light">
                     <tr>
                       <th>No</th>
@@ -210,7 +210,7 @@
               </div>
             </div>
           </div>
-
+                      
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
             aria-hidden="true">
@@ -227,30 +227,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Modal Center -->
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalCenterTitle">Modal Vertically Centered</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div id="pdf" class="modal-body">
-                  <script src="pdfobject.js"></script>
-                  <script>PDFObject.embed("berkas/dosen.pdf", "#pdf");</script>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <a href="../../controller.php?aksi=logout" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>
@@ -279,19 +256,25 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../../vendor/jquery/jquery.min.js"></script>
+  <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../../js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../../vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('#dataTables').DataTable(); // ID From dataTable 
+      $('#dataTableHovers').DataTable(); // ID From dataTable with Hover
     });
   </script>
 
