@@ -5,6 +5,8 @@
     header("Location: ../login.php");
     exit;
   }
+  $sql = "SELECT * FROM pelaporan";
+  $query = mysqli_query($koneksi,$sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,9 +18,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="../css/app.css">
-    
-    <!-- <script src="http://127.0.0.1:8000/js/app.js"></script> -->
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
         integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
         crossorigin="anonymous"></script>
@@ -114,37 +113,62 @@
             </div>
         </header>
         
-            <main class="form-panel">
-            <form action="controller.php?aksi=update" method="POST" class="form-content">
-                <h1>Pengaturan Wilayah</h1>
-                    <div class="form-input">
-                        <label for="pelapor">Provinsi</label>
-                        <input type="text" name="provinsi" id="provinsi" >
+        <main class="table-panel">
+            <h1>Pelaporan</h1>
+            <section class="table-content">
+                <div class="table-nav">
+                    <div class="entry-menu">
+                        <p>Show</p>
+                        <select name="entry" id="entry">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <p>entries</p>
                     </div>
-                    <div class="form-input">
-                        <label for="laporan">Kabupaten / Kota</label>
-                        <input type="text" name="kabkota" id="kabkota">
+                    <form method="POST" class="searchbar">
+                        <label for="search">Search: </label>
+                        <input type="text" name="search" id="search">
+                    </form>
+                </div>
+                <div class="table-data">
+                    <div class="header">
+                        <p>ID Laporan</p>
+                        <p>Nama Pelapor</p>
+                        <p>Keterangan</p>
+                        <p>Tanggal Laporan</p>
+                        <p>Aksi</p>
                     </div>
-                    <div class="form-input-2">
+                    <?php while($data = mysqli_fetch_array($query)):?>
+                    <div>
+                        <?php
+                            $nik = $data['nik']; 
+                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                            $queryID = mysqli_query($koneksi,$sqlID);
+                            $dataID = mysqli_fetch_array($queryID);
+                        ?>
+                        <p><?= $data['id_pelaporan']; ?></p>
+                        <p><?= $dataID['nama']; ?></p>
+                        <p><?= $data['keterangan']; ?></p>
+                        <p><?= $data['tanggal_pelaporan']; ?></p>
+                        <div><button type="button">Detail</button></div>
                     </div>
-                <div class="form-input">
-                    <label for="kategori">Kecamatan</label>
-                    <input type="text" name="kecamatan" id="kecamatan">
+                    <?php endwhile; ?>
                 </div>
-                <div class="form-input">
-                    <label for="kategori">Desa / Kelurahan</label>
-                    <input type="text" name="desa_kelurahan" id="desa_kelurahan">
+                <div class="table-bot-nav">
+                    <p>Showing 1 to 10 of ... entries</p>
+                    <div class="table-btn-group">
+                        <a href="">Previous</a>
+                        <a href="" class="active">1</a>
+                        <a href="" class="">2</a>
+                        <a href="">Next</a>
+                    </div>
                 </div>
-                <div class="form-input">
-                    <button type="submit">Submit</button>
-                </div>
-            </form>     
-            </main>
-           
-        
-        <main class="form-panel">
-            
+            </section>
         </main>
+        
         
     </main>
     

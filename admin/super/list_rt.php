@@ -5,7 +5,7 @@
     header("Location: ../login.php");
     exit;
   }
-  $sql = "SELECT * FROM pelaporan";
+  $sql = "SELECT * FROM msrt";
   $query = mysqli_query($koneksi,$sql);
 ?>
 <!DOCTYPE html>

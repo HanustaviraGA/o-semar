@@ -114,33 +114,35 @@
             </div>
         </header>
         
-            <main class="form-panel">
-            <form action="controller.php?aksi=update" method="POST" class="form-content">
-                <h1>Pengaturan Wilayah</h1>
-                    <div class="form-input">
-                        <label for="pelapor">Provinsi</label>
-                        <input type="text" name="provinsi" id="provinsi" >
-                    </div>
-                    <div class="form-input">
-                        <label for="laporan">Kabupaten / Kota</label>
-                        <input type="text" name="kabkota" id="kabkota">
-                    </div>
-                    <div class="form-input-2">
-                    </div>
+        <main class="form-panel">
+            <h1>Form</h1>
+            <form method="POST" class="form-content">
                 <div class="form-input">
-                    <label for="kategori">Kecamatan</label>
-                    <input type="text" name="kecamatan" id="kecamatan">
+                    <label for="pelapor">Nama Pelapor</label>
+                    <input type="text" name="pelapor" id="pelapor">
                 </div>
                 <div class="form-input">
-                    <label for="kategori">Desa / Kelurahan</label>
-                    <input type="text" name="desa_kelurahan" id="desa_kelurahan">
+                    <label for="laporan">Judul Laporan</label>
+                    <input type="text" name="laporan" id="laporan">
                 </div>
                 <div class="form-input">
-                    <button type="submit">Submit</button>
+                    <label for="kategori">Kategori Laporan</label>
+                    <input type="text" name="kategori" id="kategori">
                 </div>
-            </form>     
-            </main>
-           
+                <div class="form-input">
+                    <label for="tanggal">Tanggal Laporan</label>
+                    <input type="date" name="tanggal" id="tanggal">
+                </div>
+                <div class="form-input">
+                    <label for="bukti">Bukti Laporan</label>
+                    <input type="file" name="bukti" id="bukti">
+                </div>
+                <div class="form-input">
+                    <button type="button">Verifikasi</button>
+                    <button type="button">Tolak</button>
+                </div>
+            </form>
+        </main>
         
         <main class="form-panel">
             

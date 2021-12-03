@@ -53,28 +53,53 @@
             <h1 class="text-2xl">O-Semar</h1>
         </div>
         <nav class="sidebar-menu">
-            <a href="index2.php" class="sidebar-link sidebar-active">
+            <a href="index2.php" class="sidebar-link">
                 <i class="fas fa-tachometer-alt"></i>
                 <p>Dashboard</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
             <div class="divider-horizontal"></div>
-            <p>Templates</p>
+            <p>Layanan</p>
             <a href="surat/index2.php" class="sidebar-link">
                 <i class="fas fa-table"></i>
-                <p>Tabel Data - Template</p>
+                <p>Pengajuan Surat</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
-            <a href="super/pengaturan2.php" class="sidebar-link">
-                <i class="fab fa-wpforms"></i>
-                <p>Form Data - Template</p>
+            <a href="iuran/index2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
+                <p>Pembayaran Iuran</p>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="laporan/index2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
+                <p>Pelaporan</p>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="adminduk/kartu_keluarga/index2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
+                <p>Kartu Keluarga</p>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="adminduk/list_penduduk/index2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
+                <p>Daftar Penduduk</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
             <div class="divider-horizontal"></div>
-            <p>Other</p>
-            <a href="/" class="sidebar-link">
-                <i class="fab fa-laravel"></i>
-                <p>Laravel Introduction</p>
+            <p>Administrator</p>
+            <a href="super/pengaturan2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
+                <p>Pengaturan Wilayah</p>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="super/list_rt2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
+                <p>Pengaturan RT</p>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="super/list_rw2.php" class="sidebar-link">
+                <i class="fas fa-table"></i>
+                <p>Pengaturan RW</p>
                 <i class="fas fa-chevron-right"></i>
             </a>
         </nav>
