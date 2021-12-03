@@ -103,10 +103,10 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="controller.php" method="POST" enctype="multipart/form">  
-                    <div class="form-group">
+                  <form action="tambah.php" method="POST" enctype="multipart/form-data">  
+                  <div class="form-group">
                         <label for="select2SinglePlaceholder">Pilih Surat</label>
-                        <select class="kepentingan form-control" name="kepentingan" id="kepentingan">
+                        <select class="jenis form-control" name="jenis" id="jenis" onchange="yesnoCheck(this);">
                           <option>Pilih</option>
                           <option value="Surat Keterangan Tidak Mampu">Surat Keterangan Tidak Mampu</option>
                           <option value="Surat Keterangan Usaha">Surat Keterangan Usaha</option>
@@ -116,7 +116,12 @@
                           <option value="Surat Pengantar Akta Kelahiran">Surat Pengantar Akta Kelahiran</option>
                           <option value="Surat Pengantar Nikah">Surat Pengantar Nikah</option>
                           <option value="Surat Pengantar Cerai">Surat Pengantar Cerai</option>
+                          <option>Lainnya</option>
                         </select>  
+                    </div>
+                    <div class="form-group" id="ifYes" style="display: none;">
+                      <label for="exampleInputEmail1">Silahkan Ketik Jenis Surat Anda</label>
+                      <input type="text" class="form-control" name="jenis" id="jenis">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nama</label>
@@ -127,16 +132,29 @@
                       <input type="text" class="form-control" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
                     </div>
                     <div class="form-group">
+                      <label for="exampleInputEmail1">Keperluan</label>
+                      <input type="text" class="form-control" id="keperluan">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Keterangan</label>
+                      <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
+                    </div>
+                    <div class="form-group">
                       <label for="exampleInputEmail1">Berkas</label>
-                      <div class="file-field">
+                      <button type="button" class="btn btn-primary ml-2 mb-2" id="plusInput" style="font-size: 10px"><i class="fas fa-plus"></i></button>
+                      
+                      <div class="file-field1" name="berkas" id="berkas">
                         <div class="btn btn-primary btn-sm float-left">
-                          <input type="file" id="berkas">
+                          <input type="file" id="files[]" name="files[]">
                         </div>
                       </div>
-                    </div>
-                    <br>  
+                      <div id="target">
+
+                      </div>
+                      <br>
                     <br>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                   </div>
                   </form>
                 </div>
@@ -154,20 +172,18 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Nomor Surat</th>
-                        <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Kode Pengajuan</th>
+                        <th>Jenis Surat</th>
                         <th>Tanggal</th>
-                        <th>Aksi</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Nomor Surat</th>
-                        <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Kode Pengajuan</th>
+                        <th>Jenis Surat</th>
                         <th>Tanggal</th>
-                        <th>Aksi</th>
+                        <th>Status</th>
                       </tr>
                     </tfoot>
                     <tbody>
@@ -351,6 +367,27 @@
       });
 
     });
+  </script>
+  <script>
+    function yesnoCheck(that) {
+    if (that.value == "Lainnya") {
+    alert("Pastikan anda mengetik jenis surat dengan jelas");
+        document.getElementById("ifYes").style.display = "block";
+    } else {
+        document.getElementById("ifYes").style.display = "none";
+    }
+}
+  </script>
+  <script>
+    $('#plusInput').on('click', function () {
+        var shot =
+            '<div class="file-field1" name="berkas1" id="berkas1"><div class="btn btn-primary btn-sm float-left"><input type="file" id="files[]" name="files[]"></div></div>';
+        $('#target').append(shot);
+    });
+
+    function del(a) {
+        a.closest('.parent').remove();
+    }
   </script>
 </body>
 

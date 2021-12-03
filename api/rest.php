@@ -104,5 +104,56 @@ function register(){
     header('Content-Type: application/json');
     echo json_encode($response);
 }
+function login() {
+    global $koneksi;
+    if(isset($_POST['username']) && $_POST['password']){
+        // Tangkap kiriman data dan antisipasi SQL injection
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $esc_username = mysqli_real_escape_string($koneksi, $username);
+        $esc_password = mysqli_real_escape_string($koneksi, $password);
+        // Cek database
+        $query = "SELECT no_kk, nik, nama, tempat_lahir, tanggal_lahir, 
+        alamat, id_rt, id_rw, jenis_kelamin, agama, status_perkawinan, 
+        pekerjaan, gol_darah, kewarganegaraan, status_ktp, foto_ktp, 
+        email, username, no_hp, status_hubungan_keluarga, no_paspor, no_kitas,
+        no_kitas, kepala_keluarga, nama_ayah, nama_ibu, virtual_account_id, foto_kk, 
+        pendidikan, tanggal_pengeluaran_kk, tanggal_reg 
+        FROM penduduk WHERE username='$esc_username' AND password='$esc_password'";
+        $result = mysqli_query($koneksi,$query);
+        $data = mysqli_fetch_assoc($result);
+        if($data){
+            $response=generate_response(1, 'Sukses', $data);
+            header('content-type: application/json');
+            echo json_encode($response);
+        }else{
+            $response=generate_response(0, 'Gagal');
+            header('content-type: application/json');
+            echo json_encode($response);
+        }
+    }else{
+        $response=generate_response(3, 'Kosong');
+        header('content-type: application/json');
+        echo json_encode($response);
+    }
+}
+function lihat_kk(){
+    global $koneksi;
+    // Tangkap NO KK
+    $kk = $_POST['no_kk'];
+    $esc_kk = mysqli_real_escape_string($koneksi, $kk);
+    $sql = "SELECT * FROM penduduk WHERE no_kk = '$esc_kk'";
+    $query = $koneksi->query($sql);
+    while($row = mysqli_fetch_object($query)){
+        $data[] = $row;
+    }
+    if($data){
+        $response=generate_response(1, 'Sukses', $data);
+    }else{
+        $response=generate_response(0, 'Gagal', $data);
+    }
+    header('content-type: application/json');
+    echo json_encode($response);
+}
 
 ?>

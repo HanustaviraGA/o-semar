@@ -29,6 +29,7 @@
                     $_SESSION['nama_admin'] = $identitas['nama'];
                     $_SESSION['user_admin'] = $identitas['username'];
                     $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
                     $_SESSION['rt'] = $identitas['id_rt'];
                     $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_rt";
@@ -38,6 +39,7 @@
                     $_SESSION['nama_admin'] = $identitas['nama'];
                     $_SESSION['user_admin'] = $identitas['username'];
                     $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
                     $_SESSION['rt'] = $identitas['id_rt'];
                     $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_rw";
@@ -46,6 +48,7 @@
                     $_SESSION['nama_admin'] = $identitas['nama'];
                     $_SESSION['user_admin'] = $identitas['username'];
                     $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
                     $_SESSION['rt'] = $identitas['id_rt'];
                     $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_penduduk";
@@ -54,6 +57,7 @@
                     $_SESSION['nama_admin'] = $identitas['nama'];
                     $_SESSION['user_admin'] = $identitas['username'];
                     $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
                     $_SESSION['rt'] = $identitas['id_rt'];
                     $_SESSION['rw'] = $identitas['id_rw'];
                     $_SESSION['keadaan'] = "sudah_login_admin";

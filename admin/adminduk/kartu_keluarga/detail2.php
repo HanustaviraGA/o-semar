@@ -1,43 +1,40 @@
 <?php
   include '../../../koneksi.php';
   session_start();
-  if (!isset($_SESSION['keadaan'])) {
+  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
     header("Location: ../login.php");
     exit;
   }
-  // Status login
-  $status = $_SESSION['keadaan'];
-  if(isset($status) && $status == "sudah_login_admin"){
-    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1";
-    $query = mysqli_query($koneksi, $sql);
-  }else if(isset($status) && $status == "sudah_login_rt"){
-    $rt = $_SESSION['rt'];
-    $rw = $_SESSION['rw'];
-    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rt=$rt AND id_rw=$rw";
-  $query = mysqli_query($koneksi, $sql);
-  }else if(isset($status) && $status == "sudah_login_rw"){
-    $rw = $_SESSION['rw'];
-    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rw=$rw";
-    $query = mysqli_query($koneksi, $sql);
-  }else if(isset($status) && $status == "sudah_login_penduduk"){
-    $nik = $_SESSION['nik'];
-    $sql = "SELECT * FROM penduduk WHERE nik = $nik";
-    $query = mysqli_query($koneksi,$sql);
-  }
+    $id = $_GET['id'];
+    // Tabel Penduduk
+    $sqlNama = "SELECT * FROM penduduk WHERE no_kk='$id'";
+    $queryNama = mysqli_query($koneksi,$sqlNama);
+    // Tabel Penduduk 2
+    $sqlNama2 = "SELECT * FROM penduduk WHERE no_kk='$id'";
+    $queryNama2 = mysqli_query($koneksi,$sqlNama2);
+    // Wilayah
+    $sqlWil = "SELECT * FROM mssettings WHERE identifier='1'";
+    $queryWil = mysqli_query($koneksi,$sqlWil);
+    $dataWil = mysqli_fetch_array($queryWil);
+    // Identitas Kepala Keluarga
+    $sqlNamaKK = "SELECT * FROM penduduk WHERE no_kk='$id' AND kepala_keluarga=1";
+    $queryNamaKK = mysqli_query($koneksi,$sqlNamaKK);
+    $dataNamaKK = mysqli_fetch_array($queryNamaKK);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Tabel Data</title>
+    <title>Dashboard</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="../../css/app.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
-        integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
-        crossorigin="anonymous"></script>
+    
+    <!-- <script src="http://127.0.0.1:8000/js/app.js"></script> -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js" integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg==" crossorigin="anonymous"></script>
 </head>
 
 <body class="flex">
@@ -130,6 +127,65 @@
             </div>
         </header>
         
+        
+        <main class="dashboard-panel">
+            <section class="report-info">
+                <div class="pengajuan">
+                <h1>Kartu Keluarga No. <?php echo $id; ?></h1>
+                <main class="form-panel">
+                <form action="controller.php?aksi=update" method="POST" class="form-content">
+                        <div class="form-input">
+                            <label for="pelapor">Nama Kepala Keluarga</label>
+                            <input type="text" name="provinsi" id="provinsi" value="<?= $dataNamaKK['nama'] ?>" readonly>
+                        </div>
+                        <div class="form-input">
+                            <label for="laporan">Alamat</label>
+                            <input type="text" name="kabkota" id="kabkota" value="<?= $dataNamaKK['alamat'] ?>" readonly>
+                        </div>
+                        <div class="form-input-2">
+                        </div>
+                    <div class="form-input">
+                        <label for="kategori">RT / RW</label>
+                        <input type="text" name="kecamatan" id="kecamatan" value="<?= $dataNamaKK['id_rt'] ?> / <?= $dataNamaKK['id_rw'] ?>" readonly>
+                    </div>
+                    <div class="form-input">
+                        <label for="kategori">Desa / Kelurahan</label>
+                        <input type="text" name="desa_kelurahan" id="desa_kelurahan" value="<?= $dataWil['nama_kelurahan'] ?>" readonly>
+                    </div>
+                    <div class="form-input-2">
+                        </div>
+                </form>     
+                </main>
+                </div>
+                <div class="pelaporan">
+                <h1>Kartu Keluarga No. <?php echo $id; ?></h1>
+                <main class="form-panel">
+                <form action="controller.php?aksi=update" method="POST" class="form-content">
+                        <div class="form-input">
+                            <label for="pelapor">Kecamatan</label>
+                            <input type="text" name="provinsi" id="provinsi" value="<?= $dataWil['nama_kecamatan'] ?>" readonly>
+                        </div>
+                        <div class="form-input">
+                            <label for="laporan">Kabupaten / Kota</label>
+                            <input type="text" name="kabkota" id="kabkota" value="<?= $dataWil['nama_kabkota'] ?>" readonly>
+                        </div>
+                        <div class="form-input-2">
+                        </div>
+                    <div class="form-input">
+                        <label for="kategori">Kode Pos</label>
+                        <input type="text" name="kecamatan" id="kecamatan" value="<?= $dataWil['kode_pos'] ?>" readonly>
+                    </div>
+                    <div class="form-input">
+                        <label for="kategori">Provinsi</label>
+                        <input type="text" name="desa_kelurahan" id="desa_kelurahan" value="<?= $dataWil['nama_provinsi'] ?>" readonly>
+                    </div>
+                    <div class="form-input-2">
+                        </div>
+                </form>     
+                </main>
+                </div>
+            </section>
+        </main>
         <main class="table-panel">
             <?php if(isset($status) && $status == "sudah_login_admin"){ ?>
               <h1>Kartu Keluarga</h1>
@@ -160,17 +216,23 @@
                 </div>
                 <div class="table-data">
                     <div class="header">
-                        <p>Nomor KK</p>
-                        <p>Kepala Keluarga</p>
-                        <p>Aksi</p>
+                        <p>Nama Lengkap</p>
+                        <p>NIK</p>
+                        <p>Jenis Kelamin</p>
+                        <p>Tempat Lahir</p>
+                        <p>Tanggal Lahir</p>
+                        <p>Pendidikan</p>
+                        <p>Jenis Pekerjaan</p>
                     </div>
-                    <?php while($data = mysqli_fetch_array($query)):?>
+                    <?php $a = 1; while($dataNama2 = mysqli_fetch_array($queryNama2)):?>
                     <div>
-                        <p><?= $data['no_kk']; ?></p>
-                        <p><?= $data['nama']; ?></p>
-                        <a href="detail2.php?id=<?=$data['no_kk'] ?>">
-                            <div><button type="button">Detail</button></div>
-                        </a>    
+                        <p><?= $dataNama2['nama'] ?></p>
+                        <p><?= $dataNama2['nik'] ?></p>
+                        <p><?= $dataNama2['jenis_kelamin'] ?></p>
+                        <p><?= $dataNama2['tempat_lahir'] ?></p>
+                        <p><?= $dataNama2['tanggal_lahir'] ?></p>
+                        <p><?= $dataNama2['pendidikan'] ?></p>
+                        <p><?= $dataNama2['pekerjaan'] ?></p>
                     </div>
                     <?php endwhile; ?>
                 </div>
@@ -185,9 +247,8 @@
                 </div>
             </section>
         </main>
-        
-        
     </main>
+    
     
 </body>
 

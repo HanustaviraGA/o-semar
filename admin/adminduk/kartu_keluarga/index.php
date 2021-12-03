@@ -20,8 +20,8 @@
     $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rw=$rw";
     $query = mysqli_query($koneksi, $sql);
   }else if(isset($status) && $status == "sudah_login_penduduk"){
-    $nik = $_SESSION['nik'];
-    $sql = "SELECT * FROM penduduk WHERE nik = $nik";
+    $no_kk = $_SESSION['no_kk'];
+    $sql = "SELECT * FROM penduduk WHERE no_kk = $no_kk";
     $query = mysqli_query($koneksi,$sql);
   }
 ?>

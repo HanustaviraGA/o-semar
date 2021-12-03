@@ -111,13 +111,13 @@
                   <form action="controller.php" method="POST" enctype="multipart/form-data">  
                     <div class="form-group">
                         <label for="select2SinglePlaceholder">Pilih Kategori Laporan</label>
-                        <select class="kepentingan form-control" name="kategori" id="kategori" onchange="yesnoCheck(this);">
+                        <select class="form-control" name="kategori" id="kategori" onchange="yesnoCheck(this);">
                           <option>Pilih</option>
                           <option value="Keamanan">Keamanan</option>
                           <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
                           <option value="Kebersihan">Kebersihan</option>
                           <option value="Tata Tertib">Tata Tertib</option>
-                          <option value="Lainnya">Lainnya</option>
+                          <option>Lainnya</option>
                         </select>  
                     </div>
                     <div class="form-group" id="ifYes" style="display: none;">
@@ -151,7 +151,7 @@
                       <br>
                     <br>
                     </div>
-                    <input type="submit" name="submit" class="btn btn-primary"></input>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                   </div>
                   </form>
                 </div>
@@ -172,7 +172,7 @@
                         <th>Kategori</th>
                         <th>Keterangan</th>
                         <th>Tanggal</th>
-                        <th>Aksi</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tfoot>
@@ -181,7 +181,7 @@
                         <th>Kategori</th>
                         <th>Keterangan</th>
                         <th>Tanggal</th>
-                        <th>Aksi</th>
+                        <th>Status</th>
                       </tr>
                     </tfoot>
                     
@@ -380,7 +380,7 @@
     function del(a) {
         a.closest('.parent').remove();
     }
-    </script>
+  </script>
 </body>
 
 </html>
