@@ -1,13 +1,29 @@
 <?php
   include '../../koneksi.php';
   session_start();
-  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+  if (!isset($_SESSION['keadaan'])) {
     header("Location: ../login.php");
     exit;
   }
-  $sql = "SELECT * FROM tagihan";
-  $query = mysqli_query($koneksi,$sql);
-
+  // Status login
+  $status = $_SESSION['keadaan'];
+  if(isset($status) && $status == "sudah_login_admin"){
+    $sql = "SELECT * FROM tagihan";
+    $query = mysqli_query($koneksi,$sql);
+  }else if(isset($status) && $status == "sudah_login_rt"){
+    $rt = $_SESSION['rt'];
+    $rw = $_SESSION['rw'];
+    $sql = "SELECT * FROM tagihan WHERE id_rt=$rt AND id_rw = $rw";
+    $query = mysqli_query($koneksi,$sql);
+  }else if(isset($status) && $status == "sudah_login_rw"){
+    $rw = $_SESSION['rw'];
+    $sql = "SELECT * FROM tagihan WHERE id_rw=$rw";
+    $query = mysqli_query($koneksi,$sql);
+  }else if(isset($status) && $status == "sudah_login_penduduk"){
+    $nik = $_SESSION['nik'];
+    $sql = "SELECT * FROM tagihan WHERE nik = $nik";
+    $query = mysqli_query($koneksi,$sql);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">

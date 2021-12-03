@@ -66,7 +66,7 @@
             <?php } else if(isset($status) && $status == "sudah_login_rw"){ ?>
               <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga RW <?php echo $rw; ?></h1>
             <?php } else if(isset($status) && $status == "sudah_login_penduduk"){ ?>
-              <h1 class="h3 mb-0 text-gray-800">Forbidden</h1>
+              <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga Anda</h1>
             <?php } ?>  
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Refresh</a></li>

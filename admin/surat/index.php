@@ -1,10 +1,11 @@
 <?php
   include '../../koneksi.php';
   session_start();
-  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+  if (!isset($_SESSION['keadaan'])) {
     header("Location: ../login.php");
     exit;
   }
+  
 ?>
 
 <!DOCTYPE html>
@@ -127,11 +128,13 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Berkas</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="berkas">
-                        <label class="custom-file-label" for="customFile">Pilih file</label>
+                      <div class="file-field">
+                        <div class="btn btn-primary btn-sm float-left">
+                          <input type="file" id="berkas">
+                        </div>
                       </div>
                     </div>
+                    <br>  
                     <br>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>

@@ -108,16 +108,21 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="controller.php" method="POST" enctype="multipart/form">  
+                  <form action="controller.php" method="POST" enctype="multipart/form-data">  
                     <div class="form-group">
                         <label for="select2SinglePlaceholder">Pilih Kategori Laporan</label>
-                        <select class="kepentingan form-control" name="kepentingan" id="kepentingan">
+                        <select class="kepentingan form-control" name="kategori" id="kategori" onchange="yesnoCheck(this);">
                           <option>Pilih</option>
-                          <option value="Surat Keterangan Tidak Mampu">Keamanan</option>
-                          <option value="Surat Keterangan Usaha">Sarana dan Prasarana</option>
-                          <option value="Surat Keterangan Domisili">Kebersihan</option>
-                          <option value="Surat Keterangan Belum Menikah">Tata Tertib</option>
+                          <option value="Keamanan">Keamanan</option>
+                          <option value="Sarana dan Prasarana">Sarana dan Prasarana</option>
+                          <option value="Kebersihan">Kebersihan</option>
+                          <option value="Tata Tertib">Tata Tertib</option>
+                          <option value="Lainnya">Lainnya</option>
                         </select>  
+                    </div>
+                    <div class="form-group" id="ifYes" style="display: none;">
+                      <label for="exampleInputEmail1">Silahkan Ketik Kategori Laporan Anda</label>
+                      <input type="text" class="form-control" name="kategori" id="kategori">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nama</label>
@@ -128,14 +133,25 @@
                       <input type="text" class="form-control" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Foto</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Pilih file</label>
-                      </div>
+                      <label for="exampleInputEmail1">Keterangan</label>
+                      <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
                     </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Foto</label>
+                      <button type="button" class="btn btn-primary ml-2 mb-2" id="plusInput" style="font-size: 10px"><i class="fas fa-plus"></i></button>
+                      
+                      <div class="file-field1" name="foto1" id="foto1">
+                        <div class="btn btn-primary btn-sm float-left">
+                          <input type="file" id="files[]" name="files[]">
+                        </div>
+                      </div>
+                      <div id="target">
+
+                      </div>
+                      <br>
                     <br>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <input type="submit" name="submit" class="btn btn-primary"></input>
                   </div>
                   </form>
                 </div>
@@ -350,7 +366,27 @@
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });
   </script>
+  <script>
+    function yesnoCheck(that) {
+    if (that.value == "Lainnya") {
+    alert("Pastikan anda mengetik kategori laporan dengan jelas");
+        document.getElementById("ifYes").style.display = "block";
+    } else {
+        document.getElementById("ifYes").style.display = "none";
+    }
+}
+  </script>
+  <script>
+    $('#plusInput').on('click', function () {
+        var shot =
+            '<div class="file-field1" name="foto1" id="foto1"><div class="btn btn-primary btn-sm float-left"><input type="file" id="files[]" name="files[]"></div></div>';
+        $('#target').append(shot);
+    });
 
+    function del(a) {
+        a.closest('.parent').remove();
+    }
+    </script>
 </body>
 
 </html>
