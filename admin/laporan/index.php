@@ -168,18 +168,18 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kode Laporan</th>
+                        <th>Kategori</th>
+                        <th>Keterangan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kode Laporan</th>
+                        <th>Kategori</th>
+                        <th>Keterangan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -188,15 +188,9 @@
                     <tbody>
                     <?php while($data = mysqli_fetch_array($query)):?>
                         <tr>
-                          <?php
-                            $nik = $data['nik']; 
-                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
-                            $queryID = mysqli_query($koneksi,$sqlID);
-                            $dataID = mysqli_fetch_array($queryID);
-                          ?>
-                          <td><?= $dataID['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
-                          <td><?= $data['keperluan'] ?></td>
+                          <td><?= $data['id_pelaporan'] ?></td>
+                          <td><?= $data['kategori'] ?></td>
+                          <td><?= $data['keterangan'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
                           DUMMY

@@ -8,7 +8,6 @@
     if(isset($_POST['submit'])){
         $kategori = $_POST['kategori'];
         $nama = $_POST['nama'];
-        $nik = $_POST['nik'];
         $keterangan = $_POST['keterangan'];
         $prefix = 'LPR';
         $uniqid = uniqid($prefix);
@@ -24,33 +23,23 @@
                 // check extension and upload
                 if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp'))) {
                     $filename_without_ext = basename($original_filename, '.'.$ext);
-                    $new_filename = str_replace(' ', '_', $filename_without_ext) . '_' . $nik . '.' . $ext;
+                    $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
                     move_uploaded_file($file_tmp,'berkas/'.$new_filename);
                     // Masuk Lampiran
                     $sql = "INSERT INTO lampiran(nik, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
                     VALUES('$nik', '$new_filename', 'Laporan Masyarakat', '$tanggal', 'Pending', '-')";
                     $query = mysqli_query($koneksi, $sql);
-                    $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, keterangan, tanggal_pelaporan, status)
-                    VALUES ('$uniqid', '$nik', '$rt', '$rw', '$keterangan', '$tanggal', 'Pending')";
+                    $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
+                    VALUES ('$uniqid', '$nik', '$rt', '$rw', '$kategori', '$keterangan', '$tanggal', 'Pending')";
                     $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
-                    if($query && $query_pelaporan){
-                        header("Location: index.php?pesan=Berhasil");
-                    }else{
-                        header("Location: index.php?pesan=Gagal");
-                    }
-                }else{
+                    header("Location: index.php?pesan=Berhasil");
+                }
+                else{
                     header("Location: index.php?pesan=Gagal");
                 }
             }
         }else{
-            $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, keterangan, tanggal_pelaporan, status)
-            VALUES ('$uniqid', '$nik', '$rt', '$rw', '$keterangan', '$tanggal', 'Pending')";
-            $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
-            if($query_pelaporan){
-                header("Location: index.php?pesan=Berhasil");
-            }else{
-                header("Location: index.php?pesan=Gagal");
-            }
+
         }
         
     }                  
