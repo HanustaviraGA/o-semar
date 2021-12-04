@@ -8,7 +8,7 @@
   // Status login
   $status = $_SESSION['keadaan'];
   if(isset($status) && $status == "sudah_login_admin"){
-    $sql = "SELECT * FROM tagihan";
+    $sql = "SELECT * FROM pengumuman";
     $query = mysqli_query($koneksi,$sql);
   }else if(isset($status) && $status == "sudah_login_rt"){
     $rt = $_SESSION['rt'];
@@ -74,7 +74,7 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Kode Pengumuman</th>
+                        <th>Kode</th>
                         <th>Perihal</th>
                         <th>Tanggal</th>
                         <th>RT</th>
@@ -85,7 +85,7 @@
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Kode Pengumuman</th>
+                        <th>Kode</th>
                         <th>Perihal</th>
                         <th>Tanggal</th>
                         <th>RT</th>

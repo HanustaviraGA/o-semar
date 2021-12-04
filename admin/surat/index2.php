@@ -137,16 +137,22 @@
                     <div class="header">
                         <p>Nomor Surat</p>
                         <p>Nama</p>
-                        <p>Tujuan</p>
+                        <p>Keperluan</p>
                         <p>Tanggal</p>
                         <p>Status</p>
                         <p>Aksi</p>
                     </div>
                     <?php while($data = mysqli_fetch_array($query)):?>
                     <div>
+                        <?php 
+                          $nik = $data['nik'];
+                          $sqlID = "SELECT * FROM penduduk WHERE nik = '$nik'";
+                          $queryID = mysqli_query($koneksi,$sqlID);
+                          $result = mysqli_fetch_array($queryID);
+                        ?>
                         <p><?= $data['no_surat']; ?></p>
-                        <p><?= $data['nama']; ?></p>
-                        <p><?= $data['tujuan']; ?></p>
+                        <p><?= $result['nama']; ?></p>
+                        <p><?= $data['keperluan']; ?></p>
                         <p><?= $data['tanggal_pengajuan']; ?></p>
                         <p><?= $data['status']; ?></p>
                         <div><button type="button">Detail</button></div>

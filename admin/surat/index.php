@@ -65,7 +65,7 @@
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -74,7 +74,7 @@
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -82,9 +82,15 @@
                     <tbody>
                         <?php while($data = mysqli_fetch_array($query)):?> 
                         <tr>
+                        <?php 
+                          $nik = $data['nik'];
+                          $sqlID = "SELECT * FROM penduduk WHERE nik = '$nik'";
+                          $queryID = mysqli_query($koneksi,$sqlID);
+                          $result = mysqli_fetch_array($queryID);
+                        ?>
                           <td><?= $data['no_surat'] ?></td>
-                          <td><?= $data['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $result['nama'] ?></td>
+                          <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
                             <a href="detail.php?id=<?= $data['no_surat'] ?>">
@@ -172,27 +178,40 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Kode Pengajuan</th>
-                        <th>Jenis Surat</th>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
-                        <th>Status</th>
+                        <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Kode Pengajuan</th>
-                        <th>Jenis Surat</th>
+                        <th>Nomor Surat</th>
+                        <th>Nama</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
-                        <th>Status</th>
+                        <th>Aksi</th>
                       </tr>
                     </tfoot>
                     <tbody>
                         <?php while($data = mysqli_fetch_array($query)):?> 
                         <tr>
+                        <?php 
+                          $nik = $data['nik'];
+                          $sqlID = "SELECT * FROM penduduk WHERE nik = '$nik'";
+                          $queryID = mysqli_query($koneksi,$sqlID);
+                          $result = mysqli_fetch_array($queryID);
+                        ?>
                           <td><?= $data['no_surat'] ?></td>
-                          <td><?= $data['jenis'] ?></td>
+                          <td><?= $result['nama'] ?></td>
+                          <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
-                          <td><?= $data['status'] ?></td>
+                          <td>
+                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                              <button class="btn btn-primary">Detail</button>
+                            </a>
+                          </td>
                         </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -215,7 +234,7 @@
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -224,7 +243,7 @@
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -232,9 +251,15 @@
                     <tbody>
                         <?php while($data = mysqli_fetch_array($query)):?> 
                         <tr>
+                        <?php 
+                          $nik = $data['nik'];
+                          $sqlID = "SELECT * FROM penduduk WHERE nik = '$nik'";
+                          $queryID = mysqli_query($koneksi,$sqlID);
+                          $result = mysqli_fetch_array($queryID);
+                        ?>
                           <td><?= $data['no_surat'] ?></td>
-                          <td><?= $data['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $result['nama'] ?></td>
+                          <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
                             <a href="detail.php?id=<?= $data['no_surat'] ?>">
@@ -263,7 +288,7 @@
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -272,7 +297,7 @@
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
-                        <th>Tujuan</th>
+                        <th>Keperluan</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -280,9 +305,15 @@
                     <tbody>
                         <?php while($data = mysqli_fetch_array($query)):?> 
                         <tr>
+                        <?php 
+                          $nik = $data['nik'];
+                          $sqlID = "SELECT * FROM penduduk WHERE nik = '$nik'";
+                          $queryID = mysqli_query($koneksi,$sqlID);
+                          $result = mysqli_fetch_array($queryID);
+                        ?>
                           <td><?= $data['no_surat'] ?></td>
-                          <td><?= $data['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $result['nama'] ?></td>
+                          <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
                             <a href="detail.php?id=<?= $data['no_surat'] ?>">

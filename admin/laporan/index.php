@@ -63,8 +63,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kategori</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -72,8 +71,7 @@
                     <tfoot>
                       <tr>
                         <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kategori</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -89,8 +87,7 @@
                             $dataID = mysqli_fetch_array($queryID);
                           ?>
                           <td><?= $dataID['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
-                          <td><?= $data['keperluan'] ?></td>
+                          <td><?= $data['kategori'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
                           DUMMY
@@ -168,29 +165,32 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Kode Laporan</th>
+                        <th>Nama Pelapor</th>
                         <th>Kategori</th>
-                        <th>Keterangan</th>
                         <th>Tanggal</th>
-                        <th>Status</th>
+                        <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Kode Laporan</th>
+                        <th>Nama Pelapor</th>
                         <th>Kategori</th>
-                        <th>Keterangan</th>
                         <th>Tanggal</th>
-                        <th>Status</th>
+                        <th>Aksi</th>
                       </tr>
                     </tfoot>
                     
                     <tbody>
                     <?php while($data = mysqli_fetch_array($query)):?>
                         <tr>
-                          <td><?= $data['id_pelaporan'] ?></td>
+                          <?php
+                            $nik = $data['nik']; 
+                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                            $queryID = mysqli_query($koneksi,$sqlID);
+                            $dataID = mysqli_fetch_array($queryID);
+                          ?>
+                          <td><?= $dataID['nama'] ?></td>
                           <td><?= $data['kategori'] ?></td>
-                          <td><?= $data['keterangan'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
                           DUMMY
@@ -216,8 +216,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kategori</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -225,8 +224,7 @@
                     <tfoot>
                       <tr>
                         <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kategori</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -242,8 +240,7 @@
                             $dataID = mysqli_fetch_array($queryID);
                           ?>
                           <td><?= $dataID['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
-                          <td><?= $data['keperluan'] ?></td>
+                          <td><?= $data['kategori'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
                           DUMMY
@@ -269,8 +266,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kategori</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -278,8 +274,7 @@
                     <tfoot>
                       <tr>
                         <th>Nama Pelapor</th>
-                        <th>Tujuan</th>
-                        <th>Keperluan</th>
+                        <th>Kategori</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -295,8 +290,7 @@
                             $dataID = mysqli_fetch_array($queryID);
                           ?>
                           <td><?= $dataID['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
-                          <td><?= $data['keperluan'] ?></td>
+                          <td><?= $data['kategori'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
                           DUMMY
@@ -307,6 +301,7 @@
                   </table>
                 </div>
               </div>
+            </div>
             </div>
           <?php } ?>  
           </div>

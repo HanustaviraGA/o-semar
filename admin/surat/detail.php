@@ -59,10 +59,16 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Detail Surat - <?= $dataID['nama'] ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Surat - <?= $id ?></h6>
                 </div>
                 <div class="card mb-4">
                 <div class="card-body">
+                        <?php 
+                          $nik = $dataID['nik'];
+                          $sqlID = "SELECT * FROM penduduk WHERE nik = '$nik'";
+                          $queryID = mysqli_query($koneksi,$sqlID);
+                          $result = mysqli_fetch_array($queryID);
+                        ?>
                   <form action="controller.php" method="POST">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nomor Surat</label>
@@ -74,19 +80,11 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Nama Pengaju</label>
-                      <input type="text" class="form-control" value="<?= $dataID['nama'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Tujuan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['tujuan'] ?>" readonly>
+                      <input type="text" class="form-control" value="<?= $result['nama'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Keperluan</label>
                       <input type="text" class="form-control" value="<?= $dataID['keperluan'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Tempat Pengajuan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['tempat_pengajuan'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Tanggal Pengajuan</label>

@@ -169,7 +169,7 @@
                             </div>
                             <div class="report-assigner">
                                 <img src="" alt="Warga">
-                                <p><?= $data['nama']; ?></p>
+                                <p><?= $data['nik']; ?></p>
                             </div>
                         </div>
                     </div>
