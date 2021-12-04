@@ -125,15 +125,15 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nama</label>
-                      <input type="text" class="form-control" id="nama" value="<?php echo $_SESSION['nama_admin']; ?>" readonly>
+                      <input type="text" class="form-control" name="nama" id="nama" value="<?php echo $_SESSION['nama_admin']; ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">NIK</label>
-                      <input type="text" class="form-control" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
+                      <input type="text" class="form-control" name="nik" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Keperluan</label>
-                      <input type="text" class="form-control" id="keperluan">
+                      <input type="text" class="form-control" name="keperluan" id="keperluan">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Keterangan</label>
@@ -190,14 +190,9 @@
                         <?php while($data = mysqli_fetch_array($query)):?> 
                         <tr>
                           <td><?= $data['no_surat'] ?></td>
-                          <td><?= $data['nama'] ?></td>
-                          <td><?= $data['tujuan'] ?></td>
+                          <td><?= $data['jenis'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
-                          <td>
-                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
-                              <button class="btn btn-primary">Detail</button>
-                            </a>
-                          </td>
+                          <td><?= $data['status'] ?></td>
                         </tr>
                         <?php endwhile; ?>
                     </tbody>

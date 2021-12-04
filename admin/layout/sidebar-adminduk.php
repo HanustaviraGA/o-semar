@@ -72,6 +72,12 @@
           <span>Kartu Keluarga</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../../pengumuman/index.php">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Pengumuman Warga</span>
+        </a>
+      </li>
       <?php if($_SESSION["keadaan"] == "sudah_login_rt" || $_SESSION["keadaan"] == "sudah_login_rw" || $_SESSION['keadaan'] == "sudah_login_admin") { ?>
       <li class="nav-item">
         <a class="nav-link" href="../../adminduk/list_penduduk/index.php">
