@@ -195,7 +195,7 @@ function buat_surat(){
                 move_uploaded_file($file_tmp,'../admin/surat/berkas/'.$new_filename);
                 // Masuk Lampiran
                 $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                VALUES('$nik', '$uniqid', '$new_filename', 'Laporan Masyarakat', '$tanggal', 'Pending', '-')";
+                VALUES('$nik', '$uniqid', '$new_filename', 'Pengajuan Surat', '$tanggal', 'Pending', '-')";
                 $query = mysqli_query($koneksi, $sql);
                 // Masuk Surat Keterangan
                 $sql_pelaporan = "INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, keterangan, status)
@@ -225,6 +225,104 @@ function buat_surat(){
             echo json_encode($response);
         }
     }
+}
+function lihat_daftar_surat(){
+    global $koneksi;
+    $nik = $_POST['nik'];
+    $esc_nik = mysqli_real_escape_string($koneksi, $nik); 
+    $sql = "SELECT * FROM suratketerangan WHERE nik=$esc_nik";
+    $query = $koneksi->query($sql);
+    while($row = mysqli_fetch_object($query)){
+        $data[] = $row;
+    }
+    if($data){
+        $response=generate_response(1, 'Sukses', $data);
+    }else{
+        $response=generate_response(0, 'Gagal');
+    }
+    header('content-type: application/json');
+    echo json_encode($response);
+}
+
+function buat_laporan(){
+    global $koneksi;
+    // Ambil data form
+    $nik = $_POST['nik'];
+    $rt = $_POST['id_rt'];
+    $rw = $_POST['id_rw'];
+    $kategori = $_POST['kategori'];
+    $keterangan = $_POST['keterangan'];
+    $tanggal = date("Y-m-d");
+    // Default value
+    $prefix = 'LPR';
+    $uniqid = uniqid($prefix);
+    // Masukkan tabel di DB
+    if(isset($_FILES["files"]) && !empty($_FILES["files"]["name"])){
+        foreach($_FILES['files']['tmp_name'] as $key => $tmp_name ){
+            $file_name = $key.$_FILES['files']['name'][$key];
+            $file_size =$_FILES['files']['size'][$key];
+            $file_tmp =$_FILES['files']['tmp_name'][$key];
+            $file_type=$_FILES['files']['type'][$key];
+            
+            $original_filename = $_FILES['files']['name'][$key];
+            $ext = strtolower(pathinfo($_FILES["files"]["name"][$key], PATHINFO_EXTENSION));
+            // check extension and upload
+            if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp'))) {
+                $filename_without_ext = basename($original_filename, '.'.$ext);
+                $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
+                move_uploaded_file($file_tmp,'../admin/laporan/berkas/'.$new_filename);
+                // Masuk Lampiran
+                $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                VALUES('$nik', '$uniqid', '$new_filename', 'Laporan Masyarakat', '$tanggal', 'Pending', '-')";
+                $query = mysqli_query($koneksi, $sql);
+                // Masuk Pelaporan
+                $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
+                VALUES ('$uniqid', '$nik', '$rt', '$rw', '$kategori', '$keterangan', '$tanggal', 'Pending')";
+                $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
+                $response=generate_response(1, 'Sukses');
+                header('content-type: application/json');
+                echo json_encode($response);
+            }
+            else{
+                $response=generate_response(2, 'Ekstensi file tidak dapat diterima');
+                echo json_encode($response);
+            }
+        }
+    }else{
+        // Masuk Surat Keterangan
+        $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
+        VALUES ('$uniqid', '$nik', '$rt', '$rw', '$kategori', '$keterangan', '$tanggal', 'Pending')";
+        $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
+        if($query_pelaporan){
+            $response=generate_response(1, 'Sukses');
+            header('content-type: application/json');
+            echo json_encode($response);
+        }else{
+            $response=generate_response(0, 'Gagal');
+            header('content-type: application/json');
+            echo json_encode($response);
+        }
+    }
+}
+function lihat_iuran(){
+    global $koneksi;
+}
+function lihat_pengumuman(){
+    global $koneksi;
+    $rt = $_POST['id_rt'];
+    $rw = $_POST['id_rw'];
+    $sql = "SELECT * FROM pengumuman WHERE id_rt=$rt AND id_rw = $rw";
+    $query = $koneksi->query($sql);
+    while($row = mysqli_fetch_object($query)){
+        $data[] = $row;
+    }
+    if($data){
+        $response=generate_response(1, 'Sukses', $data);
+    }else{
+        $response=generate_response(0, 'Gagal');
+    }
+    header('content-type: application/json');
+    echo json_encode($response);
 }
 
 ?>
