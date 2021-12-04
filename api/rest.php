@@ -74,11 +74,12 @@ function register(){
     $cek_email = mysqli_real_escape_string($koneksi, $email);
     $cek_username = mysqli_real_escape_string($koneksi, $username);
     $cek_password = mysqli_real_escape_string($koneksi, $password);
-    
+    // Enkripsi
+    $hash_pw = hash('sha256', $cek_password);
     // Periksa Duplikat
     $cek_id = "SELECT * FROM penduduk WHERE no_kk = '$cek_no_kk' AND nik = '$cek_nik' AND nama = '$cek_nama' AND username = '$cek_username'";
     // Eksekusi Registrasi
-    $result = "INSERT INTO penduduk SET no_kk = '$cek_no_kk', nik = '$cek_nik', nama = '$cek_nama', email = '$cek_email', username = '$cek_username', password = '$cek_password'";
+    $result = "INSERT INTO penduduk SET no_kk = '$cek_no_kk', nik = '$cek_nik', nama = '$cek_nama', email = '$cek_email', username = '$cek_username', password = '$hash_pw'";
     
     $exec_cek = $koneksi->query($cek_id);
     $count = mysqli_num_rows($exec_cek);
@@ -112,6 +113,7 @@ function login() {
         $password = $_POST['password'];
         $esc_username = mysqli_real_escape_string($koneksi, $username);
         $esc_password = mysqli_real_escape_string($koneksi, $password);
+        $hash_pw = hash('sha256', $esc_password);
         // Cek database
         $query = "SELECT no_kk, nik, nama, tempat_lahir, tanggal_lahir, 
         alamat, id_rt, id_rw, jenis_kelamin, agama, status_perkawinan, 
@@ -119,7 +121,7 @@ function login() {
         email, username, no_hp, status_hubungan_keluarga, no_paspor, no_kitas,
         no_kitas, kepala_keluarga, nama_ayah, nama_ibu, virtual_account_id, foto_kk, 
         pendidikan, tanggal_pengeluaran_kk, tanggal_reg 
-        FROM penduduk WHERE username='$esc_username' AND password='$esc_password'";
+        FROM penduduk WHERE username='$esc_username' AND password='$hash_pw'";
         $result = mysqli_query($koneksi,$query);
         $data = mysqli_fetch_assoc($result);
         if($data){

@@ -10,7 +10,9 @@
             include '../koneksi.php';
             $username = $data['username'];
             $password = $data['password'];
-            $result = mysqli_query($koneksi,"SELECT * FROM penduduk where username='$username' and password='$password'");
+            $esc_pw = mysqli_real_escape_string($koneksi, $password);
+            $hash_pw = hash('sha256', $esc_pw);
+            $result = mysqli_query($koneksi,"SELECT * FROM penduduk where username='$username' and password='$hash_pw'");
             $cek = mysqli_num_rows($result);
             if($cek > 0) {
                 $identitas = mysqli_fetch_assoc($result);
@@ -72,6 +74,10 @@
             $username = $data['username'];
             $password = $data['password'];
             $c_password = $data['c_password'];
+            $esc_pw = mysqli_real_escape_string($koneksi, $password);
+            $esc_pwc = mysqli_real_escape_string($koneksi, $c_password);
+            $hash_pw = hash('sha256', $esc_pw);
+            $hash_pwc = hash('sha256', $esc_pwc);
             $kk = $data['kk'];
             $alamat = $data['alamat'];
             $ttl = $data['ttl'];
@@ -79,12 +85,12 @@
             $posisi = $data['posisi'];
             $ubah_nama = mysqli_real_escape_string($koneksi, $nama);
 
-            if($password != $c_password){
+            if($hash_pw != $hash_pwc){
                 header("location:register.php?pesan=Konfirmasi password harus sama dengan password !");
                 exit;
             }
-            if((!empty($ubah_nama)) && (!empty($username)) && (!empty($password))){
-                $query = mysqli_query($koneksi,"INSERT INTO `admin` (`nama`, `username`, `password`, `no_kk`, `alamat`, `ttl` ,`gender`, `posisi` ) VALUES ('$ubah_nama', '$username', '$password', '$kk', '$alamat', '$ttl', '$gender', '$posisi');");
+            if((!empty($ubah_nama)) && (!empty($username)) && (!empty($hash_pw))){
+                $query = mysqli_query($koneksi,"INSERT INTO `admin` (`nama`, `username`, `password`, `no_kk`, `alamat`, `ttl` ,`gender`, `posisi` ) VALUES ('$ubah_nama', '$username', '$hash_pw', '$kk', '$alamat', '$ttl', '$gender', '$posisi');");
                 header("location:register.php?pesan=Pendaftaran Berhasil !");
             }
             else{
