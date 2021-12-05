@@ -1,8 +1,10 @@
-<?php 
-	$host = "localhost";
-	$user = "root";
-	$pass = "";
-	$db = "new_osemar";
+<?php
+	require 'autoload.php';
+
+	$host = $_ENV['DB_HOST'];
+	$user = $_ENV['DB_USERNAME'];
+	$pass = $_ENV['DB_PASSWORD'];
+	$db = $_ENV['DB_DATABASE'];
 
 	$koneksi = mysqli_connect($host, $user, $pass, $db);
 
