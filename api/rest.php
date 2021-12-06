@@ -298,8 +298,8 @@ function buat_surat(){
                 // $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
 
                 // Masuk Surat Keterangan
-                $sql_pelaporan = "INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, keterangan, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending')";
+                $sql_pelaporan = "INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, keterangan, status, alasan)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', '-')";
                 $query_pelaporan = query($koneksi, $sql_pelaporan, 'ssssssss', [$uniqid, $nik, $rt, $rw, $jenis, $keperluan, $tanggal, $keterangan]);
                 $response  = generate_response(1, 'Sukses');
                 header('Content-Type: application/json');
