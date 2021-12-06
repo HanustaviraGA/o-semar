@@ -1,10 +1,3 @@
-Daftar Folder dan File yang digunakan
+Semua file dan folder digunakan, clean project file per 7 desember 2021
 
-1. api
-2. coba_admin
-3. koneksi.php
-
-Selain itu adalah file arsip
-
-
-Hanustavira Guru Acarya & Andru Baskara Putra
+- Hanustavira
