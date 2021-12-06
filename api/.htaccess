@@ -1,0 +1,7 @@
+# Deny access to any file except for API
+
+Deny From All
+
+<Files "rest.php">
+    Allow From All
+</Files>

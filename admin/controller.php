@@ -1,6 +1,7 @@
 <?php
     include "../koneksi.php";
     session_start();
+    session_regenerate_id(true);
     
     $data = $_REQUEST;
 
@@ -11,8 +12,10 @@
             $username = $data['username'];
             $password = $data['password'];
             $esc_pw = mysqli_real_escape_string($koneksi, $password);
-            $hash_pw = hash('sha256', $esc_pw);
-            $result = mysqli_query($koneksi,"SELECT * FROM penduduk where username='$username' and password='$hash_pw'");
+            // Di-komen karena password di Database belum di hash
+            // $hash_pw = hash('sha256', $esc_pw);
+            // $result = mysqli_query($koneksi,"SELECT * FROM penduduk where username='$username' and password='$hash_pw'");
+            $result = mysqli_query($koneksi,"SELECT * FROM penduduk where username='$username' and password='$esc_pw'");
             $cek = mysqli_num_rows($result);
             if($cek > 0) {
                 $identitas = mysqli_fetch_assoc($result);
@@ -100,6 +103,8 @@
         case 'logout' :
             // $_SESSION['keadaan'] = "belum_login_user";
             unset($_SESSION['keadaan']);
+            session_unset();
+            session_destroy();
             // mengalihkan halaman login
             header("location:login.php?pesan=Anda telah berhasil logout");        
         default:
