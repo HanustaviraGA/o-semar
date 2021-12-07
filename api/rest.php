@@ -101,6 +101,9 @@ function register(){
     $cek_password = mysqli_real_escape_string($koneksi, $password);
     // Enkripsi
     // $hash_pw = hash('sha256', $cek_password);
+    $salt = 'sunibngalamgnalamsunibbinusmalangsunibmalangbinusngalam';
+    $rand_salt = rand(0, 255);
+    $hash_pw = hash('sha256', $rand_salt.$cek_password.$salt);
     
     // Unsecure Code - Periksa Duplikat
     // $cek_id = "SELECT * FROM penduduk WHERE no_kk = '$cek_no_kk' AND nik = '$cek_nik' AND nama = '$cek_nama' AND username = '$cek_username'";
@@ -125,7 +128,7 @@ function register(){
         $query = query($koneksi, 
             "INSERT INTO penduduk SET no_kk = ?, nik = ?, nama = ?, email = ?, username = ?, password = ?",
             'ssssss',
-            [$cek_no_kk, $cek_nik, $cek_nama, $cek_email, $cek_username, $cek_password]
+            [$cek_no_kk, $cek_nik, $cek_nama, $cek_email, $cek_username, $hash_pw]
         );
         if ($query) {
             $response = [
@@ -175,7 +178,9 @@ function login() {
         $password = $_POST['password'];
         $esc_username = mysqli_real_escape_string($koneksi, $username);
         $esc_password = mysqli_real_escape_string($koneksi, $password);
-        $hash_pw = hash('sha256', $esc_password);
+        $salt = 'sunibngalamgnalamsunibbinusmalangsunibmalangbinusngalam';
+        $rand_salt = rand(0, 255);
+        $hash_pw = hash('sha256', $esc_password.$salt);
         // Unsecure code - Cek database
         // $query = "SELECT no_kk, nik, nama, tempat_lahir, tanggal_lahir, 
         // alamat, id_rt, id_rw, jenis_kelamin, agama, status_perkawinan, 
@@ -195,7 +200,7 @@ function login() {
         no_kitas, kepala_keluarga, nama_ayah, nama_ibu, virtual_account_id, foto_kk, 
         pendidikan, tanggal_pengeluaran_kk, tanggal_reg 
         FROM penduduk WHERE username = ? AND password = ?";
-        $data = query($koneksi, $query, 'ss', [$esc_username, $esc_password]);
+        $data = query($koneksi, $query, 'ss', [$esc_username, $hash_pw]);
         if($data){
             session_start();
             session_regenerate_id(true);
@@ -584,8 +589,8 @@ function update_iuran(){
         if($data){
             $password = $_POST['password'];
             $esc_password = mysqli_real_escape_string($koneksi, $password);
-            $sql_upd = "UPDATE penduduk SET password = ?";
-            $data_upd = query($koneksi, $sql_upd, 's', [$esc_password]);
+            $sql_upd = "UPDATE penduduk SET password = ? WHERE nik = ?";
+            $data_upd = query($koneksi, $sql_upd, 'ss', [$esc_password, $esc_nik]);
             $response = generate_response(1, 'Sukses');
         }else{
             $response = generate_response(0, 'Tidak ada Data');
