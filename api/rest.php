@@ -342,11 +342,17 @@ function lihat_daftar_surat(){
     // while($row = mysqli_fetch_object($query)){
     //     $data[] = $row;
     // }
-
+    // Munculkan daftar suratnya
     $sql = "SELECT * FROM suratketerangan WHERE nik = ?";
     $data = query($koneksi, $sql, 's', [$esc_nik]);
     if($data){
-        $response = generate_response(1, 'Sukses', $data);
+        $sql_surat = "SELECT suratketerangan.nik, suratketerangan.no_surat, 
+        id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, keterangan, status, 
+        alasan, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
+        FROM lampiran INNER JOIN suratketerangan ON lampiran.nik = suratketerangan.nik  
+        WHERE lampiran.nik = ? AND jenis_lampiran = ?";
+        $data_surat = query($koneksi, $sql_surat, 'ss', [$esc_nik, 'Pengajuan Surat']);
+        $response = generate_response(1, 'Sukses', $data_surat);
     }else{
         $response = generate_response(0, 'Gagal');
     }
@@ -400,8 +406,8 @@ function buat_laporan(){
                 // VALUES ('$uniqid', '$nik', '$rt', '$rw', '$kategori', '$keterangan', '$tanggal', 'Pending')";
                 // $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
 
-                $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')";
+                $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status, alasan)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending', '-')";
                 $query_pelaporan = query($koneksi, $sql_pelaporan, 'sssssss', [$uniqid, $nik, $rt, $rw, $kategori, $keterangan, $tanggal]);
 
                 $response = generate_response(1, 'Sukses');
@@ -417,8 +423,8 @@ function buat_laporan(){
         // $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
 
         // Masuk Surat Keterangan
-        $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')";
+        $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status, alasan)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending', '-')";
         $query_pelaporan = query($koneksi, $sql_pelaporan, 'sssssss', [$uniqid, $nik, $rt, $rw, $kategori, $keterangan, $tanggal]);
         if($query_pelaporan){
             $response = generate_response(1, 'Sukses');
@@ -441,7 +447,13 @@ function lihat_daftar_laporan(){
     $sql = "SELECT * FROM pelaporan WHERE nik = ?";
     $data = query($koneksi, $sql, 's', [$esc_nik]);
     if($data){
-        $response = generate_response(1, 'Sukses', $data);
+        $sql_pelaporan = "SELECT pelaporan.nik, pelaporan.id_pelaporan, 
+        id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status, 
+        alasan, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
+        FROM lampiran INNER JOIN pelaporan ON lampiran.nik = pelaporan.nik  
+        WHERE lampiran.nik = ? AND jenis_lampiran = ?";
+        $data_pelaporan = query($koneksi, $sql_pelaporan, 'ss', [$esc_nik, 'Laporan Masyarakat']);
+        $response = generate_response(1, 'Sukses', $data_pelaporan);
     }else{
         $response = generate_response(0, 'Tidak ada Data');
     }
