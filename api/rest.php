@@ -100,7 +100,7 @@ function register(){
     $cek_username = mysqli_real_escape_string($koneksi, $username);
     $cek_password = mysqli_real_escape_string($koneksi, $password);
     // Enkripsi
-    $hash_pw = hash('sha256', $cek_password);
+    // $hash_pw = hash('sha256', $cek_password);
     
     // Unsecure Code - Periksa Duplikat
     // $cek_id = "SELECT * FROM penduduk WHERE no_kk = '$cek_no_kk' AND nik = '$cek_nik' AND nama = '$cek_nama' AND username = '$cek_username'";
@@ -125,7 +125,7 @@ function register(){
         $query = query($koneksi, 
             "INSERT INTO penduduk SET no_kk = ?, nik = ?, nama = ?, email = ?, username = ?, password = ?",
             'ssssss',
-            [$cek_no_kk, $cek_nik, $cek_nama, $cek_email, $cek_username, $hash_pw]
+            [$cek_no_kk, $cek_nik, $cek_nama, $cek_email, $cek_username, $cek_password]
         );
         if ($query) {
             $response = [
@@ -195,7 +195,7 @@ function login() {
         no_kitas, kepala_keluarga, nama_ayah, nama_ibu, virtual_account_id, foto_kk, 
         pendidikan, tanggal_pengeluaran_kk, tanggal_reg 
         FROM penduduk WHERE username = ? AND password = ?";
-        $data = query($koneksi, $query, 'ss', [$esc_username, $hash_pw]);
+        $data = query($koneksi, $query, 'ss', [$esc_username, $esc_password]);
         if($data){
             session_start();
             session_regenerate_id(true);
@@ -302,13 +302,9 @@ function buat_surat(){
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', '-')";
                 $query_pelaporan = query($koneksi, $sql_pelaporan, 'ssssssss', [$uniqid, $nik, $rt, $rw, $jenis, $keperluan, $tanggal, $keterangan]);
                 $response  = generate_response(1, 'Sukses');
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
             else{
                 $response = generate_response(2, 'Ekstensi file tidak dapat diterima');
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
         }
     } else {
@@ -323,14 +319,12 @@ function buat_surat(){
         $query_pelaporan = query($koneksi, $sql_pelaporan, 'ssssssss', [$uniqid, $nik, $rt, $rw, $jenis, $keperluan, $tanggal, $keterangan]);
         if($query_pelaporan){
             $response = generate_response(1, 'Sukses');
-            header('Content-Type: application/json');
-            echo json_encode($response);
         }else{
             $response = generate_response(0, 'Gagal');
-            header('Content-Type: application/json');
-            echo json_encode($response);
         }
     }
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
 
 /**
@@ -411,13 +405,9 @@ function buat_laporan(){
                 $query_pelaporan = query($koneksi, $sql_pelaporan, 'sssssss', [$uniqid, $nik, $rt, $rw, $kategori, $keterangan, $tanggal]);
 
                 $response = generate_response(1, 'Sukses');
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
             else{
                 $response = generate_response(2, 'Ekstensi file tidak dapat diterima');
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
         }
     } else {
@@ -432,18 +422,183 @@ function buat_laporan(){
         $query_pelaporan = query($koneksi, $sql_pelaporan, 'sssssss', [$uniqid, $nik, $rt, $rw, $kategori, $keterangan, $tanggal]);
         if($query_pelaporan){
             $response = generate_response(1, 'Sukses');
-            header('Content-Type: application/json');
-            echo json_encode($response);
         }else{
             $response = generate_response(0, 'Gagal');
-            header('Content-Type: application/json');
-            echo json_encode($response);
         }
     }
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
-
+/**
+ * Untuk melihat daftar laporan
+ * 
+ * @return json
+ */
+function lihat_daftar_laporan(){
+    global $koneksi;
+    $nik = $_POST['nik'];
+    $esc_nik = mysqli_real_escape_string($koneksi, $nik); 
+    $sql = "SELECT * FROM pelaporan WHERE nik = ?";
+    $data = query($koneksi, $sql, 's', [$esc_nik]);
+    if($data){
+        $response = generate_response(1, 'Sukses', $data);
+    }else{
+        $response = generate_response(0, 'Tidak ada Data');
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+/**
+ * Untuk melihat daftar iuran
+ * 
+ * @return json
+ */
 function lihat_iuran(){
     global $koneksi;
+    $nik = $_POST['nik'];
+    $filter = $_POST['filter'];
+    $esc_nik = mysqli_real_escape_string($koneksi, $nik);
+    $esc_filter = mysqli_real_escape_string($koneksi, $filter);
+    /*
+    Jenis status : 0 - Unpaid, 1 - Paid, 2 - Late
+    */    
+    // Unpaid
+    if($esc_filter == 0){
+        $sql = "SELECT * FROM tagihan WHERE nik = ? AND status_pembayaran = ?";
+        $data = query($koneksi, $sql, 'ss', [$esc_nik, 'Pending']);
+        if($data){
+            $response = generate_response(1, 'Sukses', $data);
+        }else{
+            $response = generate_response(0, 'Tidak ada Data');
+        }
+    }
+    // Paid
+    else if($esc_filter == 1){
+        $sql = "SELECT * FROM tagihan WHERE nik = ? AND status_pembayaran = ?";
+        $data = query($koneksi, $sql, 'ss', [$esc_nik, 'Lunas']);
+        if($data){
+            $response = generate_response(1, 'Sukses', $data);
+        }else{
+            $response = generate_response(0, 'Tidak ada Data');
+        }
+    }
+    // Late
+    else if($esc_filter == 2){
+        $sql = "SELECT * FROM tagihan WHERE nik = ? AND status_pembayaran = ?";
+        $data = query($koneksi, $sql, 'ss', [$esc_nik, 'Telat']);
+        if($data){
+            $response = generate_response(1, 'Sukses', $data);
+        }else{
+            $response = generate_response(0, 'Tidak ada Data');
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response); 
+}
+
+/**
+ * Untuk update status iuran
+ * 
+ * @return json
+ */
+function update_iuran(){
+    global $koneksi;
+    $nik = $_POST['nik'];
+    $id_tagihan = $_POST['id_tagihan'];
+    $esc_nik = mysqli_real_escape_string($koneksi, $nik);
+    $esc_id = mysqli_real_escape_string($koneksi, $id_tagihan);
+    // Cek keberadaan data
+    $sql = "SELECT * FROM tagihan WHERE nik = ? AND id_tagihan = ?";
+    $data = query($koneksi, $sql, 'ss', [$esc_nik, $esc_id]);
+    if($data){
+        $sql_upd = "UPDATE tagihan SET status_pembayaran = ? WHERE id_tagihan = ?";
+        $data = query($koneksi, $sql_upd, 'ss', ['Lunas', $esc_id]);
+        $response = generate_response(1, 'Sukses');
+    }else{
+        $response = generate_response(0, 'Tidak ada Data');
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response); 
+}
+
+/**
+ * Untuk melihat pengumuman
+ * 
+ * @return json
+ */
+
+ function update_profile(){
+    global $koneksi;
+    //  Tangkap inputan filter
+    $filter = $_POST['filter'];
+    $esc_filter = mysqli_real_escape_string($koneksi, $filter);
+    /*
+    Jenis filter : 1 - Ganti profile, 2 - Ganti password
+    */    
+    // Ganti profile  
+    if($esc_filter == 1){
+        //  Tangkap inputan pencarian data
+        $nik = $_POST['nik'];
+        // Escape inputan
+        $esc_nik = mysqli_real_escape_string($koneksi, $nik);
+        // Cek jika data ada
+        $sql = "SELECT * FROM penduduk WHERE nik = ?";
+        $data = query($koneksi, $sql, 's', [$esc_nik]);
+        if($data){
+            // Ambil data baru
+            $nik_baru = $_POST['nik_baru'];
+            $kk = $_POST['no_kk'];
+            $email = $_POST['email'];
+            $username = $_POST['username'];
+            // Escape inputan data data baru
+            $esc_nik_baru = mysqli_real_escape_string($koneksi, $nik_baru);
+            $esc_kk = mysqli_real_escape_string($koneksi, $kk);
+            $esc_email = mysqli_real_escape_string($koneksi, $email);
+            $esc_username = mysqli_real_escape_string($koneksi, $username);
+            // Eksekusi
+            $sql_upd = "UPDATE penduduk SET no_kk = ?, nik = ?, email = ?, username = ? WHERE nik = ?";
+            $data = query($koneksi, $sql_upd, 'sssss', [$esc_kk, $esc_nik_baru, $esc_email, $esc_username, $esc_nik]);
+            $response = generate_response(1, 'Sukses');
+        }else{
+            $response = generate_response(0, 'Tidak ada Data');
+        }
+     //  Ubah password
+    }else if($esc_filter == 2){
+        $nik = $_POST['nik'];
+        // Cek jika data ada
+        $sql = "SELECT * FROM penduduk WHERE nik = ?";
+        $esc_nik = mysqli_real_escape_string($koneksi, $nik);
+        $data = query($koneksi, $sql, 's', [$esc_nik]);
+        if($data){
+            $password = $_POST['password'];
+            $esc_password = mysqli_real_escape_string($koneksi, $password);
+            $sql_upd = "UPDATE penduduk SET password = ?";
+            $data_upd = query($koneksi, $sql_upd, 's', [$esc_password]);
+            $response = generate_response(1, 'Sukses');
+        }else{
+            $response = generate_response(0, 'Tidak ada Data');
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+ }
+
+/**
+ * Untuk melihat pengumuman
+ * 
+ * @return json
+ */
+function lihat_jenis_surat(){
+    global $koneksi;
+    $sql = "SELECT jenis, keterangan_jenis FROM jenis_surat WHERE identifier = ?";
+    $data = query($koneksi, $sql, 's', ['1']);
+    if($data){
+        $response = generate_response(1, 'Sukses', $data);
+    }else{
+        $response = generate_response(0, 'Tidak ada Data');
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
 
 /**
