@@ -15,7 +15,3 @@ Options -Indexes
     Order allow,deny
     Deny from all
 </FilesMatch>
-
-Options +FollowSymLinks
-RewriteEngine On
-RewriteRule ^(.+\.jpg)$ detail.php?file=$1 [L]

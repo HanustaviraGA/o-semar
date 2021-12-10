@@ -9,13 +9,6 @@
 
 Options -Indexes
 
-# Deny access to files with extensions
-
-<FilesMatch "\.(jpg|jpeg|png|pdf)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-
 # Deny access to filenames starting with dot(.)
 
 <FilesMatch "^\.">
