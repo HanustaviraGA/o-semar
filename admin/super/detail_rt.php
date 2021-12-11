@@ -153,8 +153,11 @@
                   <p>Are you sure you want to logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
+                  <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                    <input type="hidden" name="filter" id="filter" value="1">
+                    <button type="submit" class="btn btn-primary">Logout</button>
+                  </form>
                 </div>
               </div>
             </div>

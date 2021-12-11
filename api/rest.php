@@ -86,12 +86,14 @@ function get_penduduk_data(){
 function register(){
     global $koneksi;
     // Ambil Data
+    $filter = $_POST['filter'];
     $no_kk = $_POST['no_kk'];
     $nik = $_POST['nik'];
     $nama = $_POST['nama'];
     $email = $_POST['email'];
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $re_password = $_POST['re_password'];
     // Escape simbol dari query
     $cek_no_kk = mysqli_real_escape_string($koneksi, $no_kk);
     $cek_nik = mysqli_real_escape_string($koneksi, $nik);
@@ -99,16 +101,9 @@ function register(){
     $cek_email = mysqli_real_escape_string($koneksi, $email);
     $cek_username = mysqli_real_escape_string($koneksi, $username);
     $cek_password = mysqli_real_escape_string($koneksi, $password);
+    $cek_repassword = mysqli_real_escape_string($koneksi, $re_password);
     // Enkripsi
-    // $hash_pw = hash('sha256', $cek_password);
-    
-    // Unsecure Code - Periksa Duplikat
-    // $cek_id = "SELECT * FROM penduduk WHERE no_kk = '$cek_no_kk' AND nik = '$cek_nik' AND nama = '$cek_nama' AND username = '$cek_username'";
-    // $exec_cek = $koneksi->query($cek_id);
-    // $count = mysqli_num_rows($exec_cek);
-    
-    // Unsecure Code - Eksekusi Registrasi
-    // $result = "INSERT INTO penduduk SET no_kk = '$cek_no_kk', nik = '$cek_nik', nama = '$cek_nama', email = '$cek_email', username = '$cek_username', password = '$hash_pw'";
+    $hash_pw = password_hash($cek_password, PASSWORD_DEFAULT);
     // Periksa Duplikat
     $count = query(
             $koneksi, 
@@ -117,100 +112,305 @@ function register(){
             [$cek_no_kk, $cek_nik, $cek_nama, $cek_username]
         );
     if (count($count) > 0) {
-        $response = [
-            'status' => 2,
-            'message' => 'Terdapat Pengguna dengan Data yang Sama'
-        ];
+        if($filter == 1){
+            header("location:../admin/register.php?pesan=Terdapat Pengguna dengan Data yang Sama !");
+        }else if($filter == 0){
+            $response = [
+                'status' => 2,
+                'message' => 'Terdapat Pengguna dengan Data yang Sama'
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        }
     } else {
-        $query = query($koneksi, 
-            "INSERT INTO penduduk SET no_kk = ?, nik = ?, nama = ?, email = ?, username = ?, password = ?",
+        $query = query($koneksi, "INSERT INTO penduduk SET no_kk = ?, nik = ?, nama = ?, email = ?, username = ?, password = ?",
             'ssssss',
-            [$cek_no_kk, $cek_nik, $cek_nama, $cek_email, $cek_username, $cek_password]
+            [$cek_no_kk, $cek_nik, $cek_nama, $cek_email, $cek_username, $hash_pw]
         );
         if ($query) {
-            $response = [
-                'status' => 1,
-                'message' => 'Registrasi Berhasil'
-            ];
-        } else {
-            $response = [
-                'status' => 0,
-                'message' => 'Registrasi Gagal'
-            ];
+            if($filter == 1){
+                header("location:../admin/login.php?pesan=Registrasi Berhasil !");
+            }else if($filter == 0){
+                $response = [
+                    'status' => 1,
+                    'message' => 'Registrasi Berhasil'
+                ];
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
+        }else{
+            if($filter == 1){
+                header("location:../admin/register.php?pesan=Registrasi Gagal !");
+            }else if($filter == 0){
+                $response = [
+                    'status' => 0,
+                    'message' => 'Registrasi Gagal'
+                ];
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
         }
     }
-    // if($count > 0){
-    //     $response=array(
-    //         'status' => 2,
-    //         'message' => 'Terdapat Pengguna dengan Data yang Sama'
-    //     );
-    // }else{
-    //     $query = $koneksi->query($result);
-    //     if ($query) {
-    //         $response=array(
-    //             'status' => 1,
-    //             'message' => 'Registrasi Berhasil'
-    //         );
-    //     }else{
-    //         $response=array(
-    //             'status' => 0,
-    //             'message' => 'Registrasi Gagal'
-    //         );
-    //     }
-    // }
-    header('Content-Type: application/json');
-    echo json_encode($response);
+    
 }
 
 /**
- * Login ke akun penduduk
+ * Login ke akun
  * 
  * @return json
  */
 function login() {
     global $koneksi;
+    $filter = $_POST['filter'];
     if(isset($_POST['username']) && $_POST['password']){
         // Tangkap kiriman data dan antisipasi SQL injection
         $username = $_POST['username'];
         $password = $_POST['password'];
         $esc_username = mysqli_real_escape_string($koneksi, $username);
         $esc_password = mysqli_real_escape_string($koneksi, $password);
-        // Unsecure code - Cek database
-        // $query = "SELECT no_kk, nik, nama, tempat_lahir, tanggal_lahir, 
-        // alamat, id_rt, id_rw, jenis_kelamin, agama, status_perkawinan, 
-        // pekerjaan, gol_darah, kewarganegaraan, status_ktp, foto_ktp, 
-        // email, username, no_hp, status_hubungan_keluarga, no_paspor, no_kitas,
-        // no_kitas, kepala_keluarga, nama_ayah, nama_ibu, virtual_account_id, foto_kk, 
-        // pendidikan, tanggal_pengeluaran_kk, tanggal_reg 
-        // FROM penduduk WHERE username='$esc_username' AND password='$hash_pw'";
-        // $result = mysqli_query($koneksi,$query);
-        // $data = mysqli_fetch_assoc($result);
-        
         // Cek database
-        $query = "SELECT no_kk, nik, nama, tempat_lahir, tanggal_lahir, 
-        alamat, id_rt, id_rw, jenis_kelamin, agama, status_perkawinan, 
-        pekerjaan, gol_darah, kewarganegaraan, status_ktp, foto_ktp, 
-        email, username, no_hp, status_hubungan_keluarga, no_paspor, no_kitas,
-        no_kitas, kepala_keluarga, nama_ayah, nama_ibu, virtual_account_id, foto_kk, 
-        pendidikan, tanggal_pengeluaran_kk, tanggal_reg 
-        FROM penduduk WHERE username = ? AND password = ?";
-        $data = query($koneksi, $query, 'ss', [$esc_username, $esc_password]);
-        if($data){
-            session_start();
-            session_regenerate_id(true);
-            $_SESSION['keadaan'] = "sudah_login_penduduk";
-            $response = generate_response(1, 'Sukses', $data);
-            header('Content-Type: application/json');
-            echo json_encode($response);
+        $data = $koneksi->prepare("SELECT * FROM penduduk WHERE username = ?");
+        $data->bind_param('s', $esc_username);
+        $data->execute();
+        $data_res = $data->get_result();
+        if($data_res->num_rows > 0){
+            $identitas = $data_res->fetch_assoc();
+            $nik = $identitas['nik'];
+            $password = $identitas['password'];
+            $verify = password_verify($esc_password, $password);
+            if($verify){
+                // Cek apakah penduduk ini Penduduk Biasa, RT, RW, atau Super Admin
+                // Apakah RT ?
+                $data_rt = $koneksi->prepare("SELECT * FROM msrt where nik_ketuart=?");
+                $data_rt->bind_param('s', $nik);
+                $data_rt->execute();
+                $data_res_rt = $data_rt->get_result();
+                $data_rt_num = $data_res_rt->num_rows;
+                // Apakah RW ?
+                $data_rw = $koneksi->prepare("SELECT * FROM msrw where nik_ketuarw=?");
+                $data_rw->bind_param('s', $nik);
+                $data_rw->execute();
+                $data_res_rw = $data_rw->get_result();
+                $data_rw_num = $data_res_rw->num_rows;
+                // Apakah Super Admin ?
+                $data_admin = $koneksi->prepare("SELECT * FROM msadmin where nik=?");
+                $data_admin->bind_param('s', $nik);
+                $data_admin->execute();
+                $data_res_admin = $data_admin->get_result();
+                $data_admin_num = $data_res_admin->num_rows;
+                // RT
+                if($data_rt_num > 0 && $data_rw_num == 0 && $data_admin_num != 1){
+                    session_start();
+                    session_regenerate_id(true);
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
+                    $_SESSION['keadaan'] = "sudah_login_rt";
+                    $response = generate_response(1, 'Sukses', array(
+                        'no_kk' => $identitas['no_kk'],
+                        'nik' => $identitas['nik'],
+                        'nama' => $identitas['nama'],
+                        'tempat_lahir' => $identitas['tempat_lahir'],
+                        'tanggal_lahir' => $identitas['tanggal_lahir'],
+                        'alamat' => $identitas['alamat'],
+                        'id_rt' => $identitas['id_rt'],
+                        'id_rw' => $identitas['id_rw'],
+                        'jenis_kelamin' => $identitas['jenis_kelamin'],
+                        'agama' => $identitas['agama'],
+                        'status_perkawinan' => $identitas['status_perkawinan'],
+                        'pekerjaan' => $identitas['pekerjaan'],
+                        'gol_darah' => $identitas['gol_darah'],
+                        'kewarganegaraan' => $identitas['kewarganegaraan'],
+                        'status_ktp' => $identitas['status_ktp'],
+                        'foto_ktp' => $identitas['foto_ktp'],
+                        'email' => $identitas['email'],
+                        'username' => $identitas['username'],
+                        'no_hp' => $identitas['no_hp'],
+                        'status_hubungan_keluarga' => $identitas['status_hubungan_keluarga'],
+                        'no_paspor' => $identitas['no_paspor'],
+                        'no_kitas' => $identitas['no_kitas'],
+                        'kepala_keluarga' => $identitas['kepala_keluarga'],
+                        'nama_ayah' => $identitas['nama_ayah'],
+                        'nama_ibu' => $identitas['nama_ibu'],
+                        'virtual_account_id' => $identitas['virtual_account_id'],
+                        'foto_kk' => $identitas['foto_kk'],
+                        'pendidikan' => $identitas['pendidikan'],
+                        'tanggal_pengeluaran_kk' => $identitas['tanggal_pengeluaran_kk'],
+                        'tanggal_reg' => $identitas['tanggal_reg'],
+                        'jenis_session' => $_SESSION['keadaan']
+                    ));
+                }
+                // RW
+                else if($data_rt_num == 0 && $data_rw_num > 0 && $data_admin_num != 1){
+                    session_start();
+                    session_regenerate_id(true);
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
+                    $_SESSION['keadaan'] = "sudah_login_rw";
+                    $response = generate_response(1, 'Sukses', array(
+                        'no_kk' => $identitas['no_kk'],
+                        'nik' => $identitas['nik'],
+                        'nama' => $identitas['nama'],
+                        'tempat_lahir' => $identitas['tempat_lahir'],
+                        'tanggal_lahir' => $identitas['tanggal_lahir'],
+                        'alamat' => $identitas['alamat'],
+                        'id_rt' => $identitas['id_rt'],
+                        'id_rw' => $identitas['id_rw'],
+                        'jenis_kelamin' => $identitas['jenis_kelamin'],
+                        'agama' => $identitas['agama'],
+                        'status_perkawinan' => $identitas['status_perkawinan'],
+                        'pekerjaan' => $identitas['pekerjaan'],
+                        'gol_darah' => $identitas['gol_darah'],
+                        'kewarganegaraan' => $identitas['kewarganegaraan'],
+                        'status_ktp' => $identitas['status_ktp'],
+                        'foto_ktp' => $identitas['foto_ktp'],
+                        'email' => $identitas['email'],
+                        'username' => $identitas['username'],
+                        'no_hp' => $identitas['no_hp'],
+                        'status_hubungan_keluarga' => $identitas['status_hubungan_keluarga'],
+                        'no_paspor' => $identitas['no_paspor'],
+                        'no_kitas' => $identitas['no_kitas'],
+                        'kepala_keluarga' => $identitas['kepala_keluarga'],
+                        'nama_ayah' => $identitas['nama_ayah'],
+                        'nama_ibu' => $identitas['nama_ibu'],
+                        'virtual_account_id' => $identitas['virtual_account_id'],
+                        'foto_kk' => $identitas['foto_kk'],
+                        'pendidikan' => $identitas['pendidikan'],
+                        'tanggal_pengeluaran_kk' => $identitas['tanggal_pengeluaran_kk'],
+                        'tanggal_reg' => $identitas['tanggal_reg'],
+                        'jenis_session' => $_SESSION['keadaan']
+                    ));
+                }
+                // Penduduk
+                else if($data_rt_num == 0 && $data_rw_num == 0 && $data_admin_num != 1){
+                    session_start();
+                    session_regenerate_id(true);
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
+                    $_SESSION['keadaan'] = "sudah_login_penduduk";
+                    $response = generate_response(1, 'Sukses', array(
+                        'no_kk' => $identitas['no_kk'],
+                        'nik' => $identitas['nik'],
+                        'nama' => $identitas['nama'],
+                        'tempat_lahir' => $identitas['tempat_lahir'],
+                        'tanggal_lahir' => $identitas['tanggal_lahir'],
+                        'alamat' => $identitas['alamat'],
+                        'id_rt' => $identitas['id_rt'],
+                        'id_rw' => $identitas['id_rw'],
+                        'jenis_kelamin' => $identitas['jenis_kelamin'],
+                        'agama' => $identitas['agama'],
+                        'status_perkawinan' => $identitas['status_perkawinan'],
+                        'pekerjaan' => $identitas['pekerjaan'],
+                        'gol_darah' => $identitas['gol_darah'],
+                        'kewarganegaraan' => $identitas['kewarganegaraan'],
+                        'status_ktp' => $identitas['status_ktp'],
+                        'foto_ktp' => $identitas['foto_ktp'],
+                        'email' => $identitas['email'],
+                        'username' => $identitas['username'],
+                        'no_hp' => $identitas['no_hp'],
+                        'status_hubungan_keluarga' => $identitas['status_hubungan_keluarga'],
+                        'no_paspor' => $identitas['no_paspor'],
+                        'no_kitas' => $identitas['no_kitas'],
+                        'kepala_keluarga' => $identitas['kepala_keluarga'],
+                        'nama_ayah' => $identitas['nama_ayah'],
+                        'nama_ibu' => $identitas['nama_ibu'],
+                        'virtual_account_id' => $identitas['virtual_account_id'],
+                        'foto_kk' => $identitas['foto_kk'],
+                        'pendidikan' => $identitas['pendidikan'],
+                        'tanggal_pengeluaran_kk' => $identitas['tanggal_pengeluaran_kk'],
+                        'tanggal_reg' => $identitas['tanggal_reg'],
+                        'jenis_session' => $_SESSION['keadaan']
+                    ));
+                }
+                // Super Admin
+                else if($data_rt_num == 0 && $data_rw_num == 0 && $data_admin_num == 1){
+                    session_start();
+                    session_regenerate_id(true);
+                    $_SESSION['nama_admin'] = $identitas['nama'];
+                    $_SESSION['user_admin'] = $identitas['username'];
+                    $_SESSION['nik'] = $identitas['nik'];
+                    $_SESSION['no_kk'] = $identitas['no_kk'];
+                    $_SESSION['rt'] = $identitas['id_rt'];
+                    $_SESSION['rw'] = $identitas['id_rw'];
+                    $_SESSION['keadaan'] = "sudah_login_admin";
+                    $response = generate_response(1, 'Sukses', array(
+                        'no_kk' => $identitas['no_kk'],
+                        'nik' => $identitas['nik'],
+                        'nama' => $identitas['nama'],
+                        'tempat_lahir' => $identitas['tempat_lahir'],
+                        'tanggal_lahir' => $identitas['tanggal_lahir'],
+                        'alamat' => $identitas['alamat'],
+                        'id_rt' => $identitas['id_rt'],
+                        'id_rw' => $identitas['id_rw'],
+                        'jenis_kelamin' => $identitas['jenis_kelamin'],
+                        'agama' => $identitas['agama'],
+                        'status_perkawinan' => $identitas['status_perkawinan'],
+                        'pekerjaan' => $identitas['pekerjaan'],
+                        'gol_darah' => $identitas['gol_darah'],
+                        'kewarganegaraan' => $identitas['kewarganegaraan'],
+                        'status_ktp' => $identitas['status_ktp'],
+                        'foto_ktp' => $identitas['foto_ktp'],
+                        'email' => $identitas['email'],
+                        'username' => $identitas['username'],
+                        'no_hp' => $identitas['no_hp'],
+                        'status_hubungan_keluarga' => $identitas['status_hubungan_keluarga'],
+                        'no_paspor' => $identitas['no_paspor'],
+                        'no_kitas' => $identitas['no_kitas'],
+                        'kepala_keluarga' => $identitas['kepala_keluarga'],
+                        'nama_ayah' => $identitas['nama_ayah'],
+                        'nama_ibu' => $identitas['nama_ibu'],
+                        'virtual_account_id' => $identitas['virtual_account_id'],
+                        'foto_kk' => $identitas['foto_kk'],
+                        'pendidikan' => $identitas['pendidikan'],
+                        'tanggal_pengeluaran_kk' => $identitas['tanggal_pengeluaran_kk'],
+                        'tanggal_reg' => $identitas['tanggal_reg'],
+                        'jenis_session' => $_SESSION['keadaan']
+                    ));
+                }
+                // Cek apa ini web atau mobile yang kirim
+                if($filter == 1){
+                    header("location:../admin/index.php?pesan=Sukses");
+                }else if($filter == 0){
+                    header('Content-Type: application/json');
+                    echo json_encode($response);
+                }
+            }else{
+                if($filter == 1){
+                    header("location:../admin/login.php?pesan=Data tidak ditemukan !");
+                }else if($filter == 0){
+                    $response = generate_response(2, 'Data tidak ditemukan');
+                    header('Content-Type: application/json');
+                    echo json_encode($response);
+                }
+            }
         }else{
-            $response = generate_response(0, 'Gagal');
+            if($filter == 1){
+                header("location:../admin/login.php?pesan=Data tidak ditemukan !");
+            }else if($filter == 0){
+                $response = generate_response(2, 'Data tidak ditemukan');
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
+        }
+    }else{
+        if($filter == 1){
+            header("location:../admin/login.php?pesan=Data tidak boleh kosong !");
+        }else if($filter == 0){
+            $response = generate_response(2, 'Data tidak boleh kosong');
             header('Content-Type: application/json');
             echo json_encode($response);
         }
-    }else{
-        $response = generate_response(3, 'Kosong');
-        header('Content-Type: application/json');
-        echo json_encode($response);
     }
 }
 
@@ -220,11 +420,17 @@ function login() {
  * @return json
  */
 function logout() {
+    $filter = $_POST['filter'];
+    unset($_SESSION['keadaan']);
     session_unset();
     session_destroy();
-    $response = generate_response(1, 'Sukses');
-    header('Content-Type: application/json');
-    echo json_encode($response);
+    if($filter == 1){
+        header("location:../admin/login.php?pesan=Anda telah berhasil logout");
+    }else if($filter == 0){
+        $response = generate_response(1, 'Sukses');
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
 }
 
 /**
