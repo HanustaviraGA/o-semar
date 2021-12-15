@@ -5,8 +5,10 @@
     header("Location: ../login.php");
     exit;
   }
-  $sql = "SELECT * FROM msrw";
+  $id = $_GET['id'];
+  $sql = "SELECT * FROM msrt WHERE id_rt = '$id'";
   $query = mysqli_query($koneksi,$sql);
+  $data = mysqli_fetch_array($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +47,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Pengaturan RW</h1>
+            <h1 class="h3 mb-0 text-gray-800">Ubah RT <?= $id ?></h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Refresh</a></li>
             </ol>
@@ -58,30 +60,21 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="controller.php?aksi=tambah_rw" method="POST" enctype="multipart/form-data">
+                  <form action="controller.php?aksi=update_rt" method="POST" enctype="multipart/form-data">
+                  <div class="form-group">
+                      <label for="exampleInputEmail1">Nomor RT</label>
+                      <input type="text" class="form-control" value="<?= $data['id_rt']?>" name="rt" id="rt" readonly>
+                  </div>
                   <div class="form-group">
                       <label for="exampleInputEmail1">Nomor RW</label>
-                      <input type="text" class="form-control" name="rw" id="rw">
+                      <input type="text" class="form-control" value="<?= $data['id_rw']?>" name="rw" id="rw" readonly>
                   </div>
-                    <?php 
-                      $query_rw = "SELECT * FROM mskelurahan";
-                      $data_rw = mysqli_query($koneksi, $query_rw);
-                    ?>  
-                    <div class="form-group">
-                        <label for="select2SinglePlaceholder">Nomor Kelurahan</label>
-                        <select class="kelurahan form-control" name="kelurahan" id="kelurahan">
-                          <option>Pilih</option>
-                        <?php while($result = mysqli_fetch_array($data_rw)):?>  
-                          <option value="<?= $result['id_kelurahan'] ?>"><?= $result['id_kelurahan'] ?> - <?= $result['nama_kelurahan'] ?></option>
-                        <?php endwhile; ?>  
-                        </select>  
-                    </div>
                     <?php 
                       $query_penduduk = "SELECT * FROM penduduk";
                       $data_penduduk = mysqli_query($koneksi, $query_penduduk);
                     ?> 
                     <div class="form-group">
-                        <label for="select2SinglePlaceholder">NIK - Nama Ketua RW</label>
+                        <label for="select2SinglePlaceholder">NIK - Nama Ketua RT</label>
                         <select class="nik form-control" name="nik" id="nik">
                           <option>Pilih</option>
                         <?php while($result_pnd = mysqli_fetch_array($data_penduduk)):?>  
@@ -89,6 +82,7 @@
                         <?php endwhile; ?>  
                         </select>  
                     </div>
+                    <input type="hidden" name="id_rt" id="id_rt" value="<?= $id?>" required>
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                   </div>
                   </form>
@@ -97,50 +91,6 @@
             </div>
             <?php } ?>
             <!-- DataTable with Hover -->
-            <div class="col-lg-12">
-              <div class="card mb-4">
-                <div class="table-responsive p-3">
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>ID RW</th>
-                        <th>Desa/Kelurahan</th>
-                        <th>Ketua</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>ID RW</th>
-                        <th>Desa/Kelurahan</th>
-                        <th>Ketua</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </tfoot>
-                    
-                    <tbody>
-                    <?php while($data = mysqli_fetch_array($query)):?>
-                        <tr>
-                          <?php
-                            $kode = $data['id_kelurahan']; 
-                            $nama_desa = "SELECT * FROM mskelurahan WHERE id_kelurahan='$kode'";
-                            $desa_exec = mysqli_query($koneksi, $nama_desa);
-                            $result_desa = mysqli_fetch_array($desa_exec);
-                          ?>
-                          <td><?= $data ['id_rw'] ?></td>
-                          <td><?= $data ['id_kelurahan'] ?> - <?= $result_desa['nama_kelurahan'] ?></td>
-                          <td><?= $data ['nama_rw'] ?></td>
-                          <td><a href="ubah_rw.php?id=<?= $data['id_rw'] ?>">
-                                <button class="btn btn-primary">Ubah</button>    
-                              </a>
-                          </td>
-                        </tr>
-                    <?php endwhile; ?>  
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           </div>
           <!--Row-->
 
@@ -204,13 +154,13 @@
       $('.select2-single').select2();
 
       // Select2 Single  with Placeholder
-      $('.kelurahan').select2({
-        placeholder: "Pilih Kelurahan",
+      $('.rw').select2({
+        placeholder: "Pilih RW",
         allowClear: true
       });
       // Select2 Single  with Placeholder
       $('.nik').select2({
-        placeholder: "Pilih NIK - Nama Ketua RW",
+        placeholder: "Pilih NIK Ketua RT",
         allowClear: true
       });
 

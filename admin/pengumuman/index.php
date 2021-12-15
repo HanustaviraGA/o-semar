@@ -67,6 +67,50 @@
 
           <!-- Row -->
           <div class="row">
+            <?php if($_SESSION["keadaan"] == "sudah_login_admin" || $_SESSION["keadaan"] == "sudah_login_rt" || $_SESSION["keadaan"] == "sudah_login_rw"){ ?>
+              <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card mb-4">
+                  <div class="card-body">
+                  <form action="tambah.php" method="POST" enctype="multipart/form-data">  
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Perihal</label>
+                      <input type="text" class="form-control" name="perihal" id="perihal">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Nama</label>
+                      <input type="text" class="form-control" name="nama" id="nama" value="<?php echo $_SESSION['nama_admin']; ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">NIK</label>
+                      <input type="text" class="form-control" name="nik" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Keterangan</label>
+                      <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Berkas</label>
+                      <button type="button" class="btn btn-primary ml-2 mb-2" id="plusInput" style="font-size: 10px"><i class="fas fa-plus"></i></button>
+                      
+                      <div class="file-field1" name="berkas" id="berkas">
+                        <div class="btn btn-primary btn-sm float-left">
+                          <input type="file" id="files[]" name="files[]">
+                        </div>
+                      </div>
+                      <div id="target">
+
+                      </div>
+                      <br>
+                    <br>
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <?php } ?>
             <!-- DataTable with Hover -->
             <div class="col-lg-12">
               <div class="card mb-4">
@@ -169,6 +213,17 @@
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });
+  </script>
+  <script>
+    $('#plusInput').on('click', function () {
+        var shot =
+            '<div class="file-field1" name="berkas1" id="berkas1"><div class="btn btn-primary btn-sm float-left"><input type="file" id="files[]" name="files[]"></div></div>';
+        $('#target').append(shot);
+    });
+
+    function del(a) {
+        a.closest('.parent').remove();
+    }
   </script>
 
 </body>

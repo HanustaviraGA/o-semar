@@ -35,11 +35,17 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>O-SEMAR Admin - List Pembayaran</title>
+  <title>O-SEMAR Admin - List Pengajuan</title>
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <!-- Select2 -->
+  <link href="../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+  <!-- O-Semar CSS -->
+  <link href="../css/ruang-admin.min.css" rel="stylesheet">
+  <!-- Bootstrap DatePicker -->  
+  <link href="../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
 </head>
 
 <body id="page-top">
@@ -66,6 +72,64 @@
 
           <!-- Row -->
           <div class="row">
+          <?php if($_SESSION["keadaan"] == "sudah_login_admin" || $_SESSION["keadaan"] == "sudah_login_rt" || $_SESSION["keadaan"] == "sudah_login_rw"){ ?>
+              <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card mb-4">
+                  <div class="card-body">
+                  <form action="controller.php?aksi=tambah" method="POST" enctype="multipart/form-data">  
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Perihal Pembayaran</label>
+                      <input type="text" class="form-control" name="perihal" id="perihal">
+                    </div>
+                    <?php 
+                      if(isset($status) && $status == "sudah_login_rt"){
+                        $rt = $_SESSION['rt'];
+                        $rw = $_SESSION['rw'];
+                        $query_penduduk = "SELECT * FROM penduduk WHERE id_rt=$rt AND id_rw = $rw";
+                        $data_penduduk = mysqli_query($koneksi, $query_penduduk);
+                      }else if(isset($status) && $status == "sudah_login_rw"){
+                        $rw = $_SESSION['rw'];
+                        $query_penduduk = "SELECT * FROM penduduk WHERE id_rw=$rw";
+                        $data_penduduk = mysqli_query($koneksi, $query_penduduk);
+                      }else if(isset($status) && $status == "sudah_login_admin"){
+                        $query_penduduk = "SELECT * FROM penduduk";
+                        $data_penduduk = mysqli_query($koneksi, $query_penduduk);
+                      }
+                    ?> 
+                    <div class="form-group">
+                        <label for="select2SinglePlaceholder">NIK - Nama</label>
+                        <select class="nik form-control" name="nik" id="nik">
+                          <option>Pilih</option>
+                        <?php while($result_pnd = mysqli_fetch_array($data_penduduk)):?>  
+                          <option value="<?= $result_pnd['nik'] ?>"><?= $result_pnd['nik'] ?> - <?= $result_pnd['nama'] ?></option>
+                        <?php endwhile; ?>  
+                        </select>  
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Sejumlah (Rp.)</label>
+                      <input type="text" class="form-control" name="nominal" id="nominal">
+                    </div>
+                    <div class="form-group" id="simple-date1">
+                    <label for="simpleDataInput">Tanggal Jatuh Tempo</label>
+                      <div class="input-group date">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                        </div>
+                        <input type="text" class="form-control" name="tanggal" id="tanggal" placeholder="Silahkan pilih tanggal">
+                    </div>
+                      <div class="form-group">
+                      <label for="exampleInputEmail1">Rekening Pembayaran</label>
+                      <input type="text" class="form-control" name="rekening" id="rekening">
+                    </div>
+                  </div>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <?php } ?>
             <!-- DataTable with Hover -->
             <div class="col-lg-12">
               <div class="card mb-4">
@@ -74,18 +138,18 @@
                     <thead class="thead-light">
                       <tr>
                         <th>Nama</th>
+                        <th>Perihal</th>
                         <th>Jatuh Tempo</th>
-                        <th>Tanggal Pembayaran</th>
-                        <th>Total Pembayaran</th>
+                        <th>Status Pembayaran</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
                         <th>Nama</th>
+                        <th>Perihal</th>
                         <th>Jatuh Tempo</th>
-                        <th>Tanggal Pembayaran</th>
-                        <th>Total Pembayaran</th>
+                        <th>Status Pembayaran</th>
                         <th>Aksi</th>
                       </tr>
                     </tfoot>
@@ -99,9 +163,13 @@
                             $dataID = mysqli_fetch_array($queryID);
                           ?>
                           <td><?= $dataID['nama'] ?></td>
+                          <td><?= $data['jenis_tagihan'] ?></td>
                           <td><?= $data['jatuh_tempo'] ?></td>
-                          <td><?= $data['tanggal_pembayaran'] ?></td>
-                          <td><?= $data['total_tagihan'] ?></td>
+                          <td><?php if($data['status_pembayaran'] == 'Paid'){ ?>
+                            <span class="badge badge-success">Lunas</span>
+                          <?php }else if($data['status_pembayaran'] == 'Unpaid'){?>
+                            <span class="badge badge-danger">Belum Terbayar</span>
+                          <?php } ?></td>
                           <td>
                             <a href="detail.php?id=<?= $data['id_tagihan'] ?>">
                               <button class="btn btn-primary">Detail</button>
@@ -161,7 +229,11 @@
   <!-- Page level plugins -->
   <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+  <script src="../vendor/select2/dist/js/select2.min.js"></script>
+  <!-- O-Semar Javascript -->
+  <script src="../js/ruang-admin.min.js"></script>
+  <!-- Bootstrap Datepicker -->
+  <script src="../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
@@ -169,7 +241,28 @@
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });
   </script>
+  <script>
+    $(document).ready(function () {
 
+
+      $('.select2-single').select2();
+
+      // Select2 Single  with Placeholder
+      $('.nik').select2({
+        placeholder: "Pilih NIK - Nama Ketua RT",
+        allowClear: true
+      });
+
+      // Bootstrap Date Picker
+      $('#simple-date1 .input-group.date').datepicker({
+        format: 'yyyy/mm/dd',
+        todayBtn: 'linked',
+        todayHighlight: true,
+        autoclose: true,        
+      });
+
+    });
+  </script>
 </body>
 
 </html>

@@ -93,7 +93,6 @@ function register(){
     $email = $_POST['email'];
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $re_password = $_POST['re_password'];
     // Escape simbol dari query
     $cek_no_kk = mysqli_real_escape_string($koneksi, $no_kk);
     $cek_nik = mysqli_real_escape_string($koneksi, $nik);
@@ -101,7 +100,6 @@ function register(){
     $cek_email = mysqli_real_escape_string($koneksi, $email);
     $cek_username = mysqli_real_escape_string($koneksi, $username);
     $cek_password = mysqli_real_escape_string($koneksi, $password);
-    $cek_repassword = mysqli_real_escape_string($koneksi, $re_password);
     // Enkripsi
     $hash_pw = password_hash($cek_password, PASSWORD_DEFAULT);
     // Periksa Duplikat
@@ -652,18 +650,42 @@ function lihat_daftar_laporan(){
     $sql = "SELECT * FROM pelaporan WHERE nik = ?";
     $data = query($koneksi, $sql, 's', [$esc_nik]);
     if($data){
-        $sql_pelaporan = "SELECT pelaporan.nik, pelaporan.id_pelaporan, 
+        $data = $koneksi->prepare("SELECT pelaporan.nik, pelaporan.id_pelaporan, 
         id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status, 
-        alasan, GROUP_CONCAT( DISTINCT lampiran ) AS lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
+        alasan, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
         FROM pelaporan INNER JOIN lampiran ON lampiran.kode = pelaporan.id_pelaporan  
-        WHERE pelaporan.nik = ? AND jenis_lampiran = ? GROUP BY pelaporan.id_pelaporan";
-        $data_pelaporan = query($koneksi, $sql_pelaporan, 'ss', [$esc_nik, 'Laporan Masyarakat']);
-        $response = generate_response(1, 'Sukses', $data_pelaporan);
-    }else{
-        $response = generate_response(0, 'Tidak ada Data');
+        WHERE pelaporan.nik = ? AND jenis_lampiran = ?");
+        $laporan_mas = 'Laporan Masyarakat';
+        $data->bind_param('ss', $esc_nik, $laporan_mas);
+        $data->execute();
+        $data_res = $data->get_result();
+        if($data_res->num_rows > 0){
+            while($identitas = $data_res->fetch_array()){
+                $response = array(
+                    'nik' => $identitas['nik'],
+                    'id_pelaporan' => $identitas['id_pelaporan'],
+                    'id_rt' => $identitas['id_rt'],
+                    'id_rw' => $identitas['id_rw'],
+                    'kategori' => $identitas['kategori'],
+                    'keterangan' => $identitas['keterangan'],
+                    'tanggal_pelaporan' => $identitas['tanggal_pelaporan'],
+                    'status' => $identitas['status'],
+                    'lampiran' => 'localhost/o-semar/admin/laporan/berkas/'.$identitas['lampiran'],
+                    'jenis_lampiran' => $identitas['jenis_lampiran'],
+                    'tanggal_lampiran' => $identitas['tanggal_lampiran'],
+                    'status_lampiran' => $identitas['status_lampiran'],
+                    'ket_lampiran' => $identitas['ket_lampiran']
+                );
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
+        }else{
+            $response = generate_response(0, 'Tidak ada Data');
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        }
+        
     }
-    header('Content-Type: application/json');
-    echo json_encode($response);
 }
 /**
  * Untuk melihat daftar iuran
@@ -742,7 +764,7 @@ function update_iuran(){
 
                     // Masuk Lampiran
                     $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                    VALUES(?, ?, ?, 'Pembayaran Tagihan', ?, 'Paid', '-')";
+                    VALUES(?, ?, ?, 'Pembayaran Tagihan', ?, 'Unpaid', '-')";
                     $query = query($koneksi, $sql, 'ssss', [$nik, $id_tagihan, $new_filename, $tanggal]);
                     // Unsecure Code - Masuk Pelaporan
                     // $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
@@ -830,8 +852,10 @@ function update_iuran(){
         if($data){
             $password = $_POST['password'];
             $esc_password = mysqli_real_escape_string($koneksi, $password);
+            // Enkripsi
+            $hash_pw = password_hash($esc_password, PASSWORD_DEFAULT);
             $sql_upd = "UPDATE penduduk SET password = ? WHERE nik = ?";
-            $data_upd = query($koneksi, $sql_upd, 'ss', [$esc_password, $esc_nik]);
+            $data_upd = query($koneksi, $sql_upd, 'ss', [$hash_pw, $esc_nik]);
             $response = generate_response(1, 'Sukses');
         }else{
             $response = generate_response(0, 'Tidak ada Data');
