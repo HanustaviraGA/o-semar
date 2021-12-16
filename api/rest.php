@@ -539,28 +539,48 @@ function lihat_daftar_surat(){
     global $koneksi;
     $nik = $_POST['nik'];
     $esc_nik = mysqli_real_escape_string($koneksi, $nik); 
-    // Unsecure Code
-    // $sql = "SELECT * FROM suratketerangan WHERE nik=$esc_nik";
-    // $query = $koneksi->query($sql);
-    // while($row = mysqli_fetch_object($query)){
-    //     $data[] = $row;
-    // }
+    
     // Munculkan daftar suratnya
     $sql = "SELECT * FROM suratketerangan WHERE nik = ?";
     $data = query($koneksi, $sql, 's', [$esc_nik]);
     if($data){
-        $sql_surat = "SELECT suratketerangan.nik, suratketerangan.no_surat, 
+        $data = $koneksi->prepare("SELECT suratketerangan.nik, suratketerangan.no_surat, 
         id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, keterangan, status, 
-        alasan, GROUP_CONCAT( DISTINCT lampiran ) AS lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
+        alasan, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
         FROM suratketerangan INNER JOIN lampiran ON lampiran.kode = suratketerangan.no_surat  
-        WHERE suratketerangan.nik = ? AND jenis_lampiran = ? GROUP BY suratketerangan.no_surat";
-        $data_surat = query($koneksi, $sql_surat, 'ss', [$esc_nik, 'Pengajuan Surat']);
-        $response = generate_response(1, 'Sukses', $data_surat);
-    }else{
-        $response = generate_response(0, 'Gagal');
+        WHERE suratketerangan.nik = ? AND jenis_lampiran = ?");
+        $pengajuan = 'Pengajuan Surat';
+        $data->bind_param('ss', $esc_nik, $pengajuan);
+        $data->execute();
+        $data_res = $data->get_result();
+        if($data_res->num_rows > 0){
+            while($identitas = $data_res->fetch_array()){
+                $response = array(
+                    'nik' => $identitas['nik'],
+                    'no_surat' => $identitas['no_surat'],
+                    'id_rt' => $identitas['id_rt'],
+                    'id_rw' => $identitas['id_rw'],
+                    'jenis' => $identitas['jenis'],
+                    'keperluan' => $identitas['keperluan'],
+                    'tanggal_pengajuan' => $identitas['tanggal_pengajuan'],
+                    'keterangan' => $identitas['keterangan'],
+                    'status' => $identitas['status'],
+                    'alasan' => $identitas['alasan'],
+                    'lampiran' => 'localhost/o-semar/admin/surat/berkas/'.$identitas['lampiran'],
+                    'jenis_lampiran' => $identitas['jenis_lampiran'],
+                    'tanggal_lampiran' => $identitas['tanggal_lampiran'],
+                    'status_lampiran' => $identitas['status_lampiran'],
+                    'ket_lampiran' => $identitas['ket_lampiran']
+                );
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
+        }else{
+            $response = generate_response(0, 'Tidak ada Data');
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        }
     }
-    header('Content-Type: application/json');
-    echo json_encode($response);
 }
 
 /**
@@ -670,6 +690,7 @@ function lihat_daftar_laporan(){
                     'keterangan' => $identitas['keterangan'],
                     'tanggal_pelaporan' => $identitas['tanggal_pelaporan'],
                     'status' => $identitas['status'],
+                    'alasan' => $identitas['alasan'],
                     'lampiran' => 'localhost/o-semar/admin/laporan/berkas/'.$identitas['lampiran'],
                     'jenis_lampiran' => $identitas['jenis_lampiran'],
                     'tanggal_lampiran' => $identitas['tanggal_lampiran'],
@@ -684,7 +705,6 @@ function lihat_daftar_laporan(){
             header('Content-Type: application/json');
             echo json_encode($response);
         }
-        
     }
 }
 /**
@@ -703,26 +723,88 @@ function lihat_iuran(){
     */    
     // Unpaid
     if($esc_filter == 0){
-        $sql = "SELECT * FROM tagihan WHERE nik = ? AND status_pembayaran = ?";
-        $data = query($koneksi, $sql, 'ss', [$esc_nik, 'Unpaid']);
-        if($data){
-            $response = generate_response(1, 'Sukses', $data);
+        $data = $koneksi->prepare("SELECT tagihan.nik, tagihan.id_tagihan, 
+        id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, 
+        rekening, bukti_pembayaran, tanggal_pembayaran, lampiran, jenis_lampiran, tanggal_lampiran, 
+        status_lampiran, ket_lampiran FROM tagihan INNER JOIN 
+        lampiran ON lampiran.kode = tagihan.id_tagihan  
+        WHERE tagihan.nik = ? AND jenis_lampiran = ? AND status_lampiran = ?");
+        $laporan_mas = 'Pembayaran Tagihan';
+        $unpaid = 'Unpaid';
+        $data->bind_param('sss', $esc_nik, $laporan_mas, $unpaid);
+        $data->execute();
+        $data_res = $data->get_result();
+        if($data_res->num_rows > 0){
+            while($identitas = $data_res->fetch_array()){
+                $response = array(
+                    'nik' => $identitas['nik'],
+                    'id_tagihan' => $identitas['id_tagihan'],
+                    'id_rt' => $identitas['id_rt'],
+                    'id_rw' => $identitas['id_rw'],
+                    'jenis_tagihan' => $identitas['jenis_tagihan'],
+                    'total_tagihan' => $identitas['total_tagihan'],
+                    'jatuh_tempo' => $identitas['jatuh_tempo'],
+                    'status_pembayaran' => $identitas['status_pembayaran'],
+                    'rekening' => $identitas['rekening'],
+                    'bukti_pembayaran' => $identitas['bukti_pembayaran'],
+                    'tanggal_pembayaran' => $identitas['tanggal_pembayaran'],
+                    'lampiran' => 'localhost/o-semar/admin/laporan/berkas/'.$identitas['lampiran'],
+                    'jenis_lampiran' => $identitas['jenis_lampiran'],
+                    'tanggal_lampiran' => $identitas['tanggal_lampiran'],
+                    'status_lampiran' => $identitas['status_lampiran'],
+                    'ket_lampiran' => $identitas['ket_lampiran']
+                );
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
         }else{
             $response = generate_response(0, 'Tidak ada Data');
+            header('Content-Type: application/json');
+            echo json_encode($response);
         }
     }
     // Paid
     else if($esc_filter == 1){
-        $sql = "SELECT * FROM tagihan WHERE nik = ? AND status_pembayaran = ?";
-        $data = query($koneksi, $sql, 'ss', [$esc_nik, 'Paid']);
-        if($data){
-            $response = generate_response(1, 'Sukses', $data);
+        $data = $koneksi->prepare("SELECT tagihan.nik, tagihan.id_tagihan, 
+        id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, 
+        rekening, bukti_pembayaran, tanggal_pembayaran, lampiran, jenis_lampiran, tanggal_lampiran, 
+        status_lampiran, ket_lampiran FROM tagihan INNER JOIN 
+        lampiran ON lampiran.kode = tagihan.id_tagihan  
+        WHERE tagihan.nik = ? AND jenis_lampiran = ? AND status_lampiran = ?");
+        $laporan_mas = 'Pembayaran Tagihan';
+        $unpaid = 'Paid';
+        $data->bind_param('sss', $esc_nik, $laporan_mas, $unpaid);
+        $data->execute();
+        $data_res = $data->get_result();
+        if($data_res->num_rows > 0){
+            while($identitas = $data_res->fetch_array()){
+                $response = array(
+                    'nik' => $identitas['nik'],
+                    'id_tagihan' => $identitas['id_tagihan'],
+                    'id_rt' => $identitas['id_rt'],
+                    'id_rw' => $identitas['id_rw'],
+                    'jenis_tagihan' => $identitas['jenis_tagihan'],
+                    'total_tagihan' => $identitas['total_tagihan'],
+                    'jatuh_tempo' => $identitas['jatuh_tempo'],
+                    'status_pembayaran' => $identitas['status_pembayaran'],
+                    'rekening' => $identitas['rekening'],
+                    'bukti_pembayaran' => $identitas['bukti_pembayaran'],
+                    'tanggal_pembayaran' => $identitas['tanggal_pembayaran'],
+                    'lampiran' => 'localhost/o-semar/admin/laporan/berkas/'.$identitas['lampiran'],
+                    'jenis_lampiran' => $identitas['jenis_lampiran'],
+                    'tanggal_lampiran' => $identitas['tanggal_lampiran'],
+                    'status_lampiran' => $identitas['status_lampiran'],
+                    'ket_lampiran' => $identitas['ket_lampiran']
+                );
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
         }else{
             $response = generate_response(0, 'Tidak ada Data');
+            header('Content-Type: application/json');
+            echo json_encode($response);
         }
-    }
-    header('Content-Type: application/json');
-    echo json_encode($response); 
+    }  
 }
 
 /**
@@ -772,7 +854,7 @@ function update_iuran(){
                     // $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
 
                     $sql_upd = "UPDATE tagihan SET status_pembayaran = ?, bukti_pembayaran = ? WHERE id_tagihan = ?";
-                    $data = query($koneksi, $sql_upd, 'sss', ['Lunas', $new_filename, $esc_id]);
+                    $data = query($koneksi, $sql_upd, 'sss', ['Unpaid', $new_filename, $esc_id]);
                     $response = generate_response(1, 'Sukses');
                 }
                 else{
