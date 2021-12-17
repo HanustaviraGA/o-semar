@@ -555,7 +555,7 @@ function lihat_daftar_surat(){
         $data_res = $data->get_result();
         if($data_res->num_rows > 0){
             while($identitas = $data_res->fetch_array()){
-                $response = array(
+                $respond[] = array(
                     'nik' => $identitas['nik'],
                     'no_surat' => $identitas['no_surat'],
                     'id_rt' => $identitas['id_rt'],
@@ -566,15 +566,16 @@ function lihat_daftar_surat(){
                     'keterangan' => $identitas['keterangan'],
                     'status' => $identitas['status'],
                     'alasan' => $identitas['alasan'],
-                    'lampiran' => 'localhost/o-semar/admin/surat/berkas/'.$identitas['lampiran'],
+                    'lampiran' => 'https://o-semar.com/admin/surat/berkas/'.$identitas['lampiran'],
                     'jenis_lampiran' => $identitas['jenis_lampiran'],
                     'tanggal_lampiran' => $identitas['tanggal_lampiran'],
                     'status_lampiran' => $identitas['status_lampiran'],
                     'ket_lampiran' => $identitas['ket_lampiran']
                 );
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
+            $response = generate_response(1, 'Sukses', $respond);
+            header('Content-Type: application/json');
+            echo json_encode($response);
         }else{
             $response = generate_response(0, 'Tidak ada Data');
             header('Content-Type: application/json');
@@ -681,7 +682,7 @@ function lihat_daftar_laporan(){
         $data_res = $data->get_result();
         if($data_res->num_rows > 0){
             while($identitas = $data_res->fetch_array()){
-                $response = array(
+                $respond[] = array(
                     'nik' => $identitas['nik'],
                     'id_pelaporan' => $identitas['id_pelaporan'],
                     'id_rt' => $identitas['id_rt'],
@@ -691,15 +692,16 @@ function lihat_daftar_laporan(){
                     'tanggal_pelaporan' => $identitas['tanggal_pelaporan'],
                     'status' => $identitas['status'],
                     'alasan' => $identitas['alasan'],
-                    'lampiran' => 'localhost/o-semar/admin/laporan/berkas/'.$identitas['lampiran'],
+                    'lampiran' => 'https://o-semar.com/admin/laporan/berkas/'.$identitas['lampiran'],
                     'jenis_lampiran' => $identitas['jenis_lampiran'],
                     'tanggal_lampiran' => $identitas['tanggal_lampiran'],
                     'status_lampiran' => $identitas['status_lampiran'],
                     'ket_lampiran' => $identitas['ket_lampiran']
                 );
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
+            $response = generate_response(1, 'Sukses', $respond);
+            header('Content-Type: application/json');
+            echo json_encode($response);
         }else{
             $response = generate_response(0, 'Tidak ada Data');
             header('Content-Type: application/json');
@@ -736,7 +738,7 @@ function lihat_iuran(){
         $data_res = $data->get_result();
         if($data_res->num_rows > 0){
             while($identitas = $data_res->fetch_array()){
-                $response = array(
+                $respond[] = array(
                     'nik' => $identitas['nik'],
                     'id_tagihan' => $identitas['id_tagihan'],
                     'id_rt' => $identitas['id_rt'],
@@ -748,15 +750,16 @@ function lihat_iuran(){
                     'rekening' => $identitas['rekening'],
                     'bukti_pembayaran' => $identitas['bukti_pembayaran'],
                     'tanggal_pembayaran' => $identitas['tanggal_pembayaran'],
-                    'lampiran' => 'localhost/o-semar/admin/laporan/berkas/'.$identitas['lampiran'],
+                    'lampiran' => 'https://o-semar.com/admin/iuran/berkas/'.$identitas['lampiran'],
                     'jenis_lampiran' => $identitas['jenis_lampiran'],
                     'tanggal_lampiran' => $identitas['tanggal_lampiran'],
                     'status_lampiran' => $identitas['status_lampiran'],
                     'ket_lampiran' => $identitas['ket_lampiran']
                 );
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
+            $response = generate_response(1, 'Sukses', $respond);
+            header('Content-Type: application/json');
+            echo json_encode($response);
         }else{
             $response = generate_response(0, 'Tidak ada Data');
             header('Content-Type: application/json');
@@ -778,7 +781,7 @@ function lihat_iuran(){
         $data_res = $data->get_result();
         if($data_res->num_rows > 0){
             while($identitas = $data_res->fetch_array()){
-                $response = array(
+                $respond[] = array(
                     'nik' => $identitas['nik'],
                     'id_tagihan' => $identitas['id_tagihan'],
                     'id_rt' => $identitas['id_rt'],
@@ -788,17 +791,18 @@ function lihat_iuran(){
                     'jatuh_tempo' => $identitas['jatuh_tempo'],
                     'status_pembayaran' => $identitas['status_pembayaran'],
                     'rekening' => $identitas['rekening'],
-                    'bukti_pembayaran' => $identitas['bukti_pembayaran'],
+                    'bukti_pembayaran' => 'https://o-semar.com/admin/iuran/berkas/'.$identitas['bukti_pembayaran'],
                     'tanggal_pembayaran' => $identitas['tanggal_pembayaran'],
-                    'lampiran' => 'localhost/o-semar/admin/laporan/berkas/'.$identitas['lampiran'],
+                    'lampiran' => 'https://o-semar.com/admin/iuran/berkas/'.$identitas['lampiran'],
                     'jenis_lampiran' => $identitas['jenis_lampiran'],
                     'tanggal_lampiran' => $identitas['tanggal_lampiran'],
                     'status_lampiran' => $identitas['status_lampiran'],
                     'ket_lampiran' => $identitas['ket_lampiran']
                 );
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
+            $response = generate_response(1, 'Sukses', $respond);
+            header('Content-Type: application/json');
+            echo json_encode($response);
         }else{
             $response = generate_response(0, 'Tidak ada Data');
             header('Content-Type: application/json');
