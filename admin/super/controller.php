@@ -48,17 +48,72 @@
                 exit;
             }
             break;
-        case 'update_rw':
+        case 'tambah_rt':
+            $rt = $data['rt'];
+            $rw = $data['rw'];
             $nik = $data['nik'];
-            $nama = $data['nama'];
-
-            $sql = "UPDATE msrw SET nik_ketuarw='$nik', nama_rw='$nama'";
+            // Cek Nama Pejabat
+            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
+            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
+            $data_nama = mysqli_fetch_array($query_nama);
+            $nama_pejabat = $data_nama['nama'];
+            // Eksekusi
+            $sql = "INSERT INTO msrt (id_rt, id_rw, nik_ketuart, nama_rt) VALUES ('$rt', '$rw', '$nik', '$nama_pejabat')";
+            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
+            if($query){
+                header("Location: list_rt.php?pesan=Sukses !");
+                exit;
+            }
+            break;
+        case 'update_rt':
+            $rt = $data['id_rt'];
+            $nik = $data['nik'];
+            // Cek Nama Pejabat
+            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
+            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
+            $data_nama = mysqli_fetch_array($query_nama);
+            $nama_pejabat = $data_nama['nama'];
+            // Eksekusi
+            $sql = "UPDATE msrt SET nik_ketuart='$nik', nama_rt='$nama_pejabat' WHERE id_rt='$rt'";
+            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
+            if($query){
+                header("Location: list_rt.php?pesan=Sukses !");
+                exit;
+            }
+            break;
+        case 'tambah_rw':
+            $rw = $data['rw'];
+            $kelurahan = $data['kelurahan'];
+            $nik = $data['nik'];
+            // Cek Nama Pejabat
+            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
+            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
+            $data_nama = mysqli_fetch_array($query_nama);
+            $nama_pejabat = $data_nama['nama'];
+            // Eksekusi
+            $sql = "INSERT INTO msrw(id_rw, id_kelurahan, nik_ketuarw, nama_rw) VALUES ('$rw', '$kelurahan', '$nik', '$nama_pejabat')";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
                 header("Location: list_rw.php?pesan=Sukses !");
                 exit;
             }
-            break;    
+            break;
+        case 'update_rw':
+            $rw = $data['id_rw'];
+            $nik = $data['nik'];
+            // Cek Nama Pejabat
+            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
+            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
+            $data_nama = mysqli_fetch_array($query_nama);
+            $nama_pejabat = $data_nama['nama'];
+            // Eksekusi
+            $sql = "UPDATE msrw SET nik_ketuarw='$nik', nama_rw='$nama_pejabat' WHERE id_rw='$rw'";
+            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
+            if($query){
+                header("Location: list_rw.php?pesan=Sukses !");
+                exit;
+            }
+            break;       
         default:
         echo 'gk masuk';
             break;

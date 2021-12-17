@@ -29,56 +29,45 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Pendaftaran</h1>
                   </div>
-                  <form action="controller.php?aksi=register" method="POST">
+                  <form action="../api/rest.php?function=register&key=buwinakeren" method="POST">
+                    <div class="form-group">
+                      <label>Nomor KK</label>
+                      <input type="text" class="form-control" name="no_kk" id="no_kk" placeholder="Masukan Nomor KK Anda" required>
+                    </div>
                     <div class="form-group">
                       <label>NIK</label>
-                      <input type="text" class="form-control" name="nik" id="nik" placeholder="Masukan NIK Anda">
+                      <input type="text" class="form-control" name="nik" id="nik" placeholder="Masukan NIK Anda" required>
                     </div>
                     <div class="form-group">
                       <label>Nama Lengkap</label>
-                      <input type="text" class="form-control" name="nama" id="nama" placeholder="Masukan Nama Lengkap Anda">
+                      <input type="text" class="form-control" name="nama" id="nama" placeholder="Masukan Nama Lengkap Anda" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" class="form-control" name="email" id="email" placeholder="Masukan Alamat Email Anda" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Nama Pengguna</label>
+                      <input type="text" class="form-control" name="username" id="username" placeholder="Masukkan Nama Pengguna Anda" required>
                     </div>
                     <div class="form-group">
                       <label>Kata Sandi</label>
-                      <input type="password" class="form-control" name="password" id="password" placeholder="Masukan Kata Sandi">
+                      <input type="password" class="form-control" name="password" id="password" placeholder="Masukan Kata Sandi" required>
                     </div>
                     <div class="form-group">
                       <label>Konfirmasi Kata Sandi</label>
                       <input type="password" class="form-control" name="c_password" id="c_password"
-                        placeholder="Ulangi Kata Sandi yang Telah Anda Masukan">
+                        placeholder="Ulangi Kata Sandi yang Telah Anda Masukan" required>
                     </div>
                     <div class="form-group">
-                      <label>Nomor KK</label>
-                      <input type="text" class="form-control" name="kk" id="kk" placeholder="Masukan Nomot KK">
-                    </div>
-                    <div class="form-group">
-                      <label>Nama Pengguna</label>
-                      <input type="text" class="form-control" name="username" id="username" placeholder="Bukan Nama Asli">
-                    </div>
-                    <div class="form-group">
-                      <label>Alamat</label>
-                      <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Masukan Alamat Lengkap Anda">
-                    </div>
-                    <div class="form-group">
-                      <label>TTL</label>
-                      <input type="text" class="form-control" name="ttl" id="ttl" placeholder="Tempat dan Tanggal Lahir">
-                    </div>
-                    <div class="form-group">
-                      <label>Jenis Kelamin</label>
-                      <input type="text" class="form-control" name="gender" id="gender" placeholder="Laki-laki / Perempuan">
-                    </div>
-                    <div class="form-group">
-                      <label>Posisi dalam Keluarga</label>
-                      <input type="text" class="form-control" name="posisi" id="posisi" placeholder="Posisi Dalam Keluarga">
-                    </div>
-                    <div class="form-group">
+                      <input type="hidden" name="filter" id="filter" value="1" required>
                       <button type="submit" class="btn btn-primary btn-block">Daftar</button>
                     </div>
                     <hr>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="font-weight-bold small" href="login.html">Already have an account?</a>
+                    <a class="font-weight-bold small" href="login.php">Sudah memiliki akun ? Klik disini</a>
                   </div>
                   <div class="text-center">
                   </div>
@@ -95,6 +84,21 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
+  <script>
+    var password = document.getElementById("password")
+  , confirm_password = document.getElementById("c_password");
+
+    function validatePassword(){
+      if(password.value != confirm_password.value) {
+        confirm_password.setCustomValidity("Kata sandi tidak sama");
+      } else {
+        confirm_password.setCustomValidity('');
+      }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+  </script>
 </body>
 
 </html>

@@ -27,9 +27,9 @@
               <div class="col-lg-12">
                 <div class="login-form">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Masuk</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Selamat Datang ! Silahkan Login untuk Melanjutkan</h1>
                   </div>
-                  <form action="controller.php?aksi=login" method="POST" class="user">
+                  <form action="../api/rest.php?function=login&key=buwinakeren" method="POST" class="user">
                     <div class="form-group">
                       <input type="text" class="form-control" name="username" id="username" placeholder="Nama Pengguna" required>
                     </div>
@@ -38,6 +38,7 @@
                     </div>
                     <div class="form-group">
                       <br>
+                      <input type="hidden" name="filter" id="filter" value="1" required>
                       <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </div>
                   </form>
