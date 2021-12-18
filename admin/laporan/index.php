@@ -195,7 +195,9 @@
                           <td><?= $data['kategori'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
-                          DUMMY
+                            <a href="detail.php?id=<?= $data['id_pelaporan']?>">
+                              <button type="button" class="btn btn-primary">Detail</button>
+                            </a>
                           </td>
                         </tr>
                     <?php endwhile; ?>  
@@ -245,7 +247,9 @@
                           <td><?= $data['kategori'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
-                          DUMMY
+                            <a href="detail.php?id=<?= $data['id_pelaporan']?>">
+                              <button type="button" class="btn btn-primary">Detail</button>
+                            </a>
                           </td>
                         </tr>
                     <?php endwhile; ?>  
@@ -295,7 +299,9 @@
                           <td><?= $data['kategori'] ?></td>
                           <td><?= $data['tanggal_pelaporan'] ?></td>
                           <td>
-                          DUMMY
+                            <a href="detail.php?id=<?= $data['id_pelaporan']?>">
+                              <button type="button" class="btn btn-primary">Detail</button>
+                            </a>
                           </td>
                         </tr>
                     <?php endwhile; ?>  
