@@ -1,10 +1,3 @@
-# Deny access to .htaccess
-
-<Files .htaccess>
-    Order allow,deny
-    Deny from all
-</Files>
-
 # Disable directory browsing
 
 Options -Indexes
@@ -12,13 +5,13 @@ Options -Indexes
 # Deny access to files with extensions .ini, .psd, .log, .sh .sql
 
 <FilesMatch "\.(ini|psd|log|sh|sql)$">
-    Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Deny access to filenames starting with dot(.)
+# Set CORS to Every File
 
 <FilesMatch "^\.">
-    Order allow,deny
-    Deny from all
+    Header set Access-Control-Allow-Origin http://localhost
+    Header set Access-Control-Allow-Credentials: true
+    Header set Access-Control-Max-Age: 86400
 </FilesMatch>

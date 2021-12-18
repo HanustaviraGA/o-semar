@@ -16,9 +16,9 @@
  * @param string $query
  * @param string|null $type
  * @param array|null $params
- * @return array|ErrorException
+ * @return array|ErrorException|null
  */
-function query(mysqli $conn, string $query, ?string $type = null, ?array $params = null): array|Error|null
+function query(mysqli $conn, string $query, ?string $type = null, ?array $params = null): array|ErrorException|null
 {
     $bindParams = array();
     // Hold value if Query Result is noy one
