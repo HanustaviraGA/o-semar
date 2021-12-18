@@ -1,4 +1,21 @@
+<?php 
 
+include '../../koneksi.php';
+  session_start();
+  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+    header("Location: ../login.php");
+    exit;
+  }
+  $id = $_GET['id'];
+  $sqlID = "SELECT * FROM pelaporan WHERE id_pelaporan='$id'";
+  $queryID = mysqli_query($koneksi,$sqlID);
+  $dataID = mysqli_fetch_array($queryID);
+
+  $nik = $dataID['nik']; 
+  $sqlNama = "SELECT nama FROM penduduk WHERE nik='$nik'";
+  $queryNama = mysqli_query($koneksi,$sqlNama);
+  $dataNama = mysqli_fetch_array($queryNama);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,34 +64,31 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Detail Laporan - <?= $dataID['nama_pelapor'] ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Laporan - <?= $dataNama['nama'] ?></h6>
                 </div>
                 <div class="card mb-4">
                 <div class="card-body">
                   <form>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nama Pelapor</label>
-                      <input type="text" class="form-control" value="<?= $dataID['nama_pelapor'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Judul Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['judul_laporan'] ?>" readonly>
+                      <input type="text" class="form-control" value="<?= $dataNama['nama'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Kategori Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['kategori_laporan'] ?>" readonly>
+                      <input type="text" class="form-control" value="<?= $dataID['kategori'] ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Keterangan Laporan</label>
+                      <input type="text" class="form-control" value="<?= $dataID['keterangan'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Tanggal Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['tanggal_laporan'] ?>" readonly>
+                      <input type="text" class="form-control" value="<?= $dataID['tanggal_pelaporan'] ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Bukti Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['bukti_laporan'] ?>" readonly>
+                      <label for="exampleInputPassword1">Status</label>
+                      <input type="text" class="form-control" value="<?= $dataID['status'] ?>" readonly>
                       <br>
-                      <a href="berkas/foto<?= $dataID['bukti_laporan'] ?>" class="btn btn-primary">Download Foto</a>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
-                      id="#modalCenter">Preview</button>
                     </div>
                   </form>
                   <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
@@ -109,6 +123,51 @@
               </div>
               </div>
             </div>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Lampiran</h6>
+                </div>
+                <div class="table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Lampiran</th>
+                        <th>Status Lampiran</th>
+                        <th>Keterangan Lampiran</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Lampiran</th>
+                        <th>Status Lampiran</th>
+                        <th>Keterangan Lampiran</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                    <?php 
+                      $lampiran = $id;
+                      $queryLampiran = "SELECT lampiran, status_lampiran, ket_lampiran FROM lampiran WHERE kode = '$lampiran'";
+                      $lampiran_exec = mysqli_query($koneksi, $queryLampiran); 
+                    ?>
+                    <?php $a = 1; while($res_lampiran = mysqli_fetch_array($lampiran_exec)):?>
+                      <tr>
+                        <td><?= $a++ ?></td>
+                        <td><?= $res_lampiran['lampiran'] ?></td>
+                        <td><?= $res_lampiran['status_lampiran'] ?></td>
+                        <td><?= $res_lampiran['ket_lampiran'] ?></td>
+                        <td>DUMMY</td>
+                      </tr>
+                    <?php endwhile; ?>  
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
           </div>
           <!--Row-->
 

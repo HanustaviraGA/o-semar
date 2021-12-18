@@ -97,12 +97,6 @@
                     <div class="form-group">
                       <label for="exampleInputPassword1">status</label>
                       <input type="text" class="form-control" value="<?= $dataID['status'] ?>" readonly>
-                      <br>
-                      <a href="berkas/KTP" class="btn btn-primary">
-                        Download KTP
-                      </a>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
-                      id="#modalCenter">Preview</button>
                     </div>
                   </form>
                   <br>
@@ -114,7 +108,7 @@
                     <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=hapus">
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#808080; border-color:#808080;">Hapus</button>
                     </a>
-                      
+                  </div>
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -145,6 +139,51 @@
               </div>
               </div>
             </div>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Lampiran</h6>
+              </div>
+              <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Lampiran</th>
+                      <th>Status Lampiran</th>
+                      <th>Keterangan Lampiran</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Lampiran</th>
+                      <th>Status Lampiran</th>
+                      <th>Keterangan Lampiran</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <?php 
+                      $lampiran = $id;
+                      $queryLampiran = "SELECT lampiran, status_lampiran, ket_lampiran FROM lampiran WHERE kode = '$lampiran'";
+                      $lampiran_exec = mysqli_query($koneksi, $queryLampiran); 
+                  ?>
+                  <?php $a = 1; while($res_lampiran = mysqli_fetch_array($lampiran_exec)):?>
+                    <tr>
+                      <td><?= $a++ ?></td>
+                      <td><?= $res_lampiran['lampiran'] ?></td>
+                      <td><?= $res_lampiran['status_lampiran'] ?></td>
+                      <td><?= $res_lampiran['ket_lampiran'] ?></td>
+                      <td>DUMMY</td>
+                    </tr>
+                  <?php endwhile; ?>  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           </div>
           <!--Row-->
 

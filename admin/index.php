@@ -9,13 +9,61 @@
     } else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_admin"){
         echo "";
     }
-    $sqlLaporan = "SELECT COUNT(*) AS 'countLaporan' from pelaporan";
-    $hasilLaporan = mysqli_query($koneksi, $sqlLaporan);
-    $dataLaporan = mysqli_fetch_array($hasilLaporan);
+    // Status login
+    $status = $_SESSION['keadaan'];
+    $nik = $_SESSION['nik'];
+    $rt = $_SESSION['rt'];
+    $rw = $_SESSION['rw'];
+    if($status == "sudah_login_admin"){
+      $sqlLaporan = "SELECT COUNT(*) AS 'countLaporan' from pelaporan";
+      $hasilLaporan = mysqli_query($koneksi, $sqlLaporan);
+      $dataLaporan = mysqli_fetch_array($hasilLaporan);
 
-    $sqlSurat = "SELECT COUNT(*) AS 'countSurat' from suratketerangan";
-    $hasilSurat = mysqli_query($koneksi, $sqlSurat);
-    $dataSurat = mysqli_fetch_array($hasilSurat);
+      $sqlSurat = "SELECT COUNT(*) AS 'countSurat' from suratketerangan";
+      $hasilSurat = mysqli_query($koneksi, $sqlSurat);
+      $dataSurat = mysqli_fetch_array($hasilSurat);
+
+      $sqlIuran = "SELECT SUM(total_tagihan) AS 'jumlahIuran' FROM tagihan WHERE status_pembayaran='Paid'";
+      $hasilIuran = mysqli_query($koneksi, $sqlIuran);
+      $dataIuran = mysqli_fetch_array($hasilIuran);
+    }else if($status == "sudah_login_penduduk"){
+      $sqlLaporan = "SELECT COUNT(*) AS 'countLaporan' from pelaporan";
+      $hasilLaporan = mysqli_query($koneksi, $sqlLaporan);
+      $dataLaporan = mysqli_fetch_array($hasilLaporan);
+
+      $sqlSurat = "SELECT COUNT(*) AS 'countSurat' from suratketerangan";
+      $hasilSurat = mysqli_query($koneksi, $sqlSurat);
+      $dataSurat = mysqli_fetch_array($hasilSurat);
+
+      $sqlIuran = "SELECT SUM(total_tagihan) AS 'jumlahIuran' FROM tagihan WHERE status_pembayaran='Paid'";
+      $hasilIuran = mysqli_query($koneksi, $sqlIuran);
+      $dataIuran = mysqli_fetch_array($hasilIuran);
+    }else if($status == "sudah_login_rt"){
+      $sqlLaporan = "SELECT COUNT(*) AS 'countLaporan' from pelaporan";
+      $hasilLaporan = mysqli_query($koneksi, $sqlLaporan);
+      $dataLaporan = mysqli_fetch_array($hasilLaporan);
+
+      $sqlSurat = "SELECT COUNT(*) AS 'countSurat' from suratketerangan";
+      $hasilSurat = mysqli_query($koneksi, $sqlSurat);
+      $dataSurat = mysqli_fetch_array($hasilSurat);
+
+      $sqlIuran = "SELECT SUM(total_tagihan) AS 'jumlahIuran' FROM tagihan WHERE status_pembayaran='Paid'";
+      $hasilIuran = mysqli_query($koneksi, $sqlIuran);
+      $dataIuran = mysqli_fetch_array($hasilIuran);
+    }else if($status == "sudah_login_rw"){
+      $sqlLaporan = "SELECT COUNT(*) AS 'countLaporan' from pelaporan";
+      $hasilLaporan = mysqli_query($koneksi, $sqlLaporan);
+      $dataLaporan = mysqli_fetch_array($hasilLaporan);
+
+      $sqlSurat = "SELECT COUNT(*) AS 'countSurat' from suratketerangan";
+      $hasilSurat = mysqli_query($koneksi, $sqlSurat);
+      $dataSurat = mysqli_fetch_array($hasilSurat);
+
+      $sqlIuran = "SELECT SUM(total_tagihan) AS 'jumlahIuran' FROM tagihan WHERE status_pembayaran='Paid'";
+      $hasilIuran = mysqli_query($koneksi, $sqlIuran);
+      $dataIuran = mysqli_fetch_array($hasilIuran);
+    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,11 +112,10 @@
                 <div class="card-body">
                   <div class="row align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Iuran Terkumpul</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 2.500.000</div>
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Iuran Warga</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Rp. <?= $dataIuran['jumlahIuran'] ?></div>
                       <div class="mt-2 mb-0 text-muted text-xs">
-                        <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                        <span>Sejak 1 bulan terakhir</span>
+                        <span>Terbayar</span>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -136,55 +183,87 @@
                 </div>
               </div>
             </div>
-
+            <?php 
+                    
+                    if(isset($status) && $status == "sudah_login_admin"){
+                      $sql = "SELECT * FROM tagihan ORDER BY jatuh_tempo DESC LIMIT 4";
+                      $query = mysqli_query($koneksi,$sql);
+                    }else if(isset($status) && $status == "sudah_login_rt"){
+                      $rt = $_SESSION['rt'];
+                      $rw = $_SESSION['rw'];
+                      $sql = "SELECT * FROM tagihan WHERE id_rt=$rt AND id_rw = $rw ORDER BY jatuh_tempo DESC LIMIT 4";
+                      $query = mysqli_query($koneksi,$sql);
+                    }else if(isset($status) && $status == "sudah_login_rw"){
+                      $rw = $_SESSION['rw'];
+                      $sql = "SELECT * FROM tagihan WHERE id_rw=$rw ORDER BY jatuh_tempo DESC LIMIT 4";
+                      $query = mysqli_query($koneksi,$sql);
+                    }else if(isset($status) && $status == "sudah_login_penduduk"){
+                      $nik = $_SESSION['nik'];
+                      $sql = "SELECT * FROM tagihan WHERE nik = $nik ORDER BY jatuh_tempo DESC LIMIT 4";
+                      $query = mysqli_query($koneksi,$sql);
+                    }
+                    
+            ?>
             <!-- Invoice Example -->
             <div class="col-xl-8 col-lg-7 mb-4">
               <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
-                  <a class="m-0 float-right btn btn-danger btn-sm" href="#">View More <i
+                  <?php if($status == "sudah_login_penduduk"){?>
+                    <h6 class="m-0 font-weight-bold text-primary">Iuran Anda</h6>
+                  <?php }else if($status == "sudah_login_rt"){?>
+                    <h6 class="m-0 font-weight-bold text-primary">Iuran Warga RT <?= $_SESSION['rt'];?> RW <?= $_SESSION['rw'];?> </h6>
+                  <?php }else if($status == "sudah_login_rw"){?>
+                    <h6 class="m-0 font-weight-bold text-primary">Iuran Warga RW <?= $_SESSION['rw'];?></h6>
+                  <?php }else if($status == "sudah_login_admin"){?>
+                    <h6 class="m-0 font-weight-bold text-primary">Iuran Warga</h6>
+                  <?php }?>
+                  <a class="m-0 float-right btn btn-danger btn-sm" href="iuran/index.php">Selengkapnya<i
                       class="fas fa-chevron-right"></i></a>
                 </div>
                 <div class="table-responsive">
                   <table class="table align-items-center table-flush">
-                    <thead class="thead-light">
+                  <thead class="thead-light">
                       <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Item</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th>Nama</th>
+                        <th>Perihal</th>
+                        <th>Jatuh Tempo</th>
+                        <th>Status Pembayaran</th>
+                        <th>Aksi</th>
                       </tr>
                     </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Nama</th>
+                        <th>Perihal</th>
+                        <th>Jatuh Tempo</th>
+                        <th>Status Pembayaran</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </tfoot>
                     <tbody>
-                      <tr>
-                        <td><a href="#">RA0449</a></td>
-                        <td>Udin Wayang</td>
-                        <td>Nasi Padang</td>
-                        <td><span class="badge badge-success">Delivered</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA5324</a></td>
-                        <td>Jaenab Bajigur</td>
-                        <td>Gundam 90' Edition</td>
-                        <td><span class="badge badge-warning">Shipping</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA8568</a></td>
-                        <td>Rivat Mahesa</td>
-                        <td>Oblong T-Shirt</td>
-                        <td><span class="badge badge-danger">Pending</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1453</a></td>
-                        <td>Indri Junanda</td>
-                        <td>Hat Rounded</td>
-                        <td><span class="badge badge-info">Processing</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
+                      <?php while($data = mysqli_fetch_array($query)):?>
+                        <tr>
+                          <?php
+                            $nik = $data['nik']; 
+                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                            $queryID = mysqli_query($koneksi,$sqlID);
+                            $dataID = mysqli_fetch_array($queryID);
+                          ?>
+                          <td><?= $dataID['nama'] ?></td>
+                          <td><?= $data['jenis_tagihan'] ?></td>
+                          <td><?= $data['jatuh_tempo'] ?></td>
+                          <td><?php if($data['status_pembayaran'] == 'Paid'){ ?>
+                            <span class="badge badge-success">Lunas</span>
+                          <?php }else if($data['status_pembayaran'] == 'Unpaid'){?>
+                            <span class="badge badge-danger">Belum Terbayar</span>
+                          <?php } ?></td>
+                          <td>
+                            <a href="detail.php?id=<?= $data['id_tagihan'] ?>">
+                              <button class="btn btn-primary">Detail</button>
+                            </a>
+                          </td>
+                        </tr>
+                    <?php endwhile; ?>    
                     </tbody>
                   </table>
                 </div>
@@ -195,38 +274,38 @@
             <div class="col-xl-4 col-lg-5 ">
               <div class="card">
                 <div class="card-header py-4 bg-primary d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-light">Pesan dari Warga</h6>
+                  <h6 class="m-0 font-weight-bold text-light">Pengumuman Warga</h6>
                 </div>
                 <div>
+                  <?php 
+                    // Status login
+                    if(isset($status) && $status == "sudah_login_admin"){
+                      $sql_pengumuman = "SELECT * FROM pengumuman ORDER BY tanggal DESC LIMIT 4";
+                      $query_pengumuman = mysqli_query($koneksi,$sql_pengumuman);
+                    }else if(isset($status) && $status == "sudah_login_rt"){
+                      $rt = $_SESSION['rt'];
+                      $rw = $_SESSION['rw'];
+                      $sql_pengumuman = "SELECT * FROM pengumuman WHERE id_rt=$rt AND id_rw = $rw ORDER BY tanggal DESC LIMIT 4";
+                      $query_pengumuman = mysqli_query($koneksi,$sql_pengumuman);
+                    }else if(isset($status) && $status == "sudah_login_rw"){
+                      $rw = $_SESSION['rw'];
+                      $sql_pengumuman = "SELECT * FROM pengumuman WHERE id_rw=$rw ORDER BY tanggal DESC LIMIT 4";
+                      $query_pengumuman = mysqli_query($koneksi,$sql_pengumuman);
+                    }else if(isset($status) && $status == "sudah_login_penduduk"){
+                      $rt = $_SESSION['rt'];
+                      $rw = $_SESSION['rw'];
+                      $sql_pengumuman = "SELECT * FROM pengumuman WHERE id_rt=$rt AND id_rw = $rw ORDER BY tanggal DESC LIMIT 4";
+                      $query_pengumuman = mysqli_query($koneksi,$sql_pengumuman);
+                    }
+                  ?>
+                  <?php while($data_pengumuman = mysqli_fetch_array($query_pengumuman)):?>
                   <div class="customer-message align-items-center">
                     <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">Hi there! I am wondering if you can help me with a
-                        problem I've been having.</div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Udin Cilok · 58m</div>
+                      <div class="text-truncate message-title"><?= $data_pengumuman['isi'];?></div>
+                      <div class="small text-gray-500 message-time font-weight-bold"><?= $data_pengumuman['pengirim'];?> · <?= $data_pengumuman['tanggal'];?></div>
                     </a>
                   </div>
-                  <div class="customer-message align-items-center">
-                    <a href="#">
-                      <div class="text-truncate message-title">But I must explain to you how all this mistaken idea
-                      </div>
-                      <div class="small text-gray-500 message-time">Nana Haminah · 58m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                      </div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Jajang Cincau · 25m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">At vero eos et accusamus et iusto odio dignissimos
-                        ducimus qui blanditiis
-                      </div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Udin Wayang · 54m</div>
-                    </a>
-                  </div>
+                  <?php endwhile; ?>
                   <div class="card-footer text-center">
                     <a class="m-0 small text-primary card-link" href="#">View More <i
                         class="fas fa-chevron-right"></i></a>
