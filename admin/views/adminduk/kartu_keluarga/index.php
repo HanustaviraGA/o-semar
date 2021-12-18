@@ -1,29 +1,29 @@
 <?php
-  include '../../../koneksi.php';
-  session_start();
-  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
-    header("Location: ../login.php");
-    exit;
-  }
-  // Status login
-  $status = $_SESSION['keadaan'];
-  if(isset($status) && $status == "sudah_login_admin"){
-    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1";
-    $query = mysqli_query($koneksi, $sql);
-  }else if(isset($status) && $status == "sudah_login_rt"){
-    $rt = $_SESSION['rt'];
-    $rw = $_SESSION['rw'];
-    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rt=$rt AND id_rw=$rw";
+include_once '../../../koneksi.php';
+session_start();
+if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+  header("Location: ../login.php");
+  exit;
+}
+// Status login
+$status = $_SESSION['keadaan'];
+if (isset($status) && $status == "sudah_login_admin") {
+  $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1";
   $query = mysqli_query($koneksi, $sql);
-  }else if(isset($status) && $status == "sudah_login_rw"){
-    $rw = $_SESSION['rw'];
-    $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rw=$rw";
-    $query = mysqli_query($koneksi, $sql);
-  }else if(isset($status) && $status == "sudah_login_penduduk"){
-    $no_kk = $_SESSION['no_kk'];
-    $sql = "SELECT * FROM penduduk WHERE no_kk = $no_kk";
-    $query = mysqli_query($koneksi,$sql);
-  }
+} else if (isset($status) && $status == "sudah_login_rt") {
+  $rt = $_SESSION['rt'];
+  $rw = $_SESSION['rw'];
+  $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rt=$rt AND id_rw=$rw";
+  $query = mysqli_query($koneksi, $sql);
+} else if (isset($status) && $status == "sudah_login_rw") {
+  $rw = $_SESSION['rw'];
+  $sql = "SELECT DISTINCT no_kk, nama FROM penduduk WHERE kepala_keluarga=1 AND id_rw=$rw";
+  $query = mysqli_query($koneksi, $sql);
+} else if (isset($status) && $status == "sudah_login_penduduk") {
+  $no_kk = $_SESSION['no_kk'];
+  $sql = "SELECT * FROM penduduk WHERE no_kk = $no_kk";
+  $query = mysqli_query($koneksi, $sql);
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,37 +37,37 @@
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>O-SEMAR Admin - Daftar Keluarga</title>
-  <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- sidebar -->
-    <?php 
-      include '../../layout/sidebar-adminduk.php';
+    <?php
+    include '../../layout/sidebar-adminduk.php';
     ?>
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
-        <?php 
-          include '../../layout/navbar-adminduk.php';
+        <?php
+        include '../../layout/navbar-adminduk.php';
         ?>
         <!-- Topbar -->
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <?php if(isset($status) && $status == "sudah_login_admin"){ ?>
+            <?php if (isset($status) && $status == "sudah_login_admin") { ?>
               <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga</h1>
-            <?php } else if(isset($status) && $status == "sudah_login_rt"){ ?>
+            <?php } else if (isset($status) && $status == "sudah_login_rt") { ?>
               <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga RT <?php echo $rt; ?> / RW <?php echo $rw; ?></h1>
-            <?php } else if(isset($status) && $status == "sudah_login_rw"){ ?>
+            <?php } else if (isset($status) && $status == "sudah_login_rw") { ?>
               <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga RW <?php echo $rw; ?></h1>
-            <?php } else if(isset($status) && $status == "sudah_login_penduduk"){ ?>
+            <?php } else if (isset($status) && $status == "sudah_login_penduduk") { ?>
               <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga Anda</h1>
-            <?php } ?>  
+            <?php } ?>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Refresh</a></li>
             </ol>
@@ -95,10 +95,10 @@
                       </tr>
                     </tfoot>
                     <tbody>
-                      <?php while($data = mysqli_fetch_array($query)):?>
+                      <?php while ($data = mysqli_fetch_array($query)) : ?>
                         <tr>
-                          <td><?= $data['no_kk']?></td>
-                          <td><?= $data['nama']?></td>
+                          <td><?= $data['no_kk'] ?></td>
+                          <td><?= $data['nama'] ?></td>
                           <td>
                             <a href="detail.php?id=<?= $data['no_kk'] ?>">
                               <button class="btn btn-primary">Detail</button>
@@ -115,8 +115,7 @@
           <!--Row-->
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -150,17 +149,17 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../../vendor/jquery/jquery.min.js"></script>
-  <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../../js/ruang-admin.min.js"></script>
+  <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../../assets/js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
   <script src="../../vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });

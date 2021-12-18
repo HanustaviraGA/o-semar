@@ -1,5 +1,5 @@
 <?php
-  include '../../koneksi.php';
+  include_once '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan'])) {
     header("Location: ../login.php");
@@ -222,18 +222,18 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../assets/js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-  <script src="../vendor/select2/dist/js/select2.min.js"></script>
+  <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../assets/vendor/select2/dist/js/select2.min.js"></script>
   <!-- O-Semar Javascript -->
-  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../assets/js/ruang-admin.min.js"></script>
   <!-- Bootstrap Datepicker -->
-  <script src="../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script src="../assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {

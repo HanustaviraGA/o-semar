@@ -1,5 +1,5 @@
 <?php
-  include '../../koneksi.php';
+  include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
     header("Location: ../login.php");
@@ -32,10 +32,10 @@
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>O-SEMAR Admin - List Pengajuan</title>
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -153,7 +153,7 @@
                   <p>Are you sure you want to logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>
+                  <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
                     <input type="hidden" name="filter" id="filter" value="1">
                     <button type="submit" class="btn btn-primary">Logout</button>
@@ -176,7 +176,7 @@
                 </div>
                 <div id="pdf" class="modal-body">
                   <script src="pdfobject.js"></script>
-                  <script>PDFObject.embed("berkas/dosen.pdf", "#pdf");</script>
+                  <script>PDFObject.embed("../berkas/iuran/dosen.pdf", "#pdf");</script>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>

@@ -1,5 +1,5 @@
 <?php
-  include '../../koneksi.php';
+  include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
     header("Location: ../login.php");
@@ -15,7 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../assets/css/app.css">
     
     <!-- <script src="http://127.0.0.1:8000/js/app.js"></script> -->
     

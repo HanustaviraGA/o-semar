@@ -1,25 +1,25 @@
 <?php
-  include '../../../koneksi.php';
-  session_start();
-  if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
-    header("Location: ../login.php");
-    exit;
-  }
-    $id = $_GET['id'];
-    // Tabel Penduduk
-    $sqlNama = "SELECT * FROM penduduk WHERE no_kk='$id'";
-    $queryNama = mysqli_query($koneksi,$sqlNama);
-    // Tabel Penduduk 2
-    $sqlNama2 = "SELECT * FROM penduduk WHERE no_kk='$id'";
-    $queryNama2 = mysqli_query($koneksi,$sqlNama2);
-    // Wilayah
-    $sqlWil = "SELECT * FROM mssettings WHERE identifier='1'";
-    $queryWil = mysqli_query($koneksi,$sqlWil);
-    $dataWil = mysqli_fetch_array($queryWil);
-    // Identitas Kepala Keluarga
-    $sqlNamaKK = "SELECT * FROM penduduk WHERE no_kk='$id' AND kepala_keluarga=1";
-    $queryNamaKK = mysqli_query($koneksi,$sqlNamaKK);
-    $dataNamaKK = mysqli_fetch_array($queryNamaKK);
+include_once '../../../koneksi.php';
+session_start();
+if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
+  header("Location: ../login.php");
+  exit;
+}
+$id = $_GET['id'];
+// Tabel Penduduk
+$sqlNama = "SELECT * FROM penduduk WHERE no_kk='$id'";
+$queryNama = mysqli_query($koneksi, $sqlNama);
+// Tabel Penduduk 2
+$sqlNama2 = "SELECT * FROM penduduk WHERE no_kk='$id'";
+$queryNama2 = mysqli_query($koneksi, $sqlNama2);
+// Wilayah
+$sqlWil = "SELECT * FROM mssettings WHERE identifier='1'";
+$queryWil = mysqli_query($koneksi, $sqlWil);
+$dataWil = mysqli_fetch_array($queryWil);
+// Identitas Kepala Keluarga
+$sqlNamaKK = "SELECT * FROM penduduk WHERE no_kk='$id' AND kepala_keluarga=1";
+$queryNamaKK = mysqli_query($koneksi, $sqlNamaKK);
+$dataNamaKK = mysqli_fetch_array($queryNamaKK);
 ?>
 
 <!DOCTYPE html>
@@ -33,23 +33,23 @@
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>O-SEMAR Admin - KK No. <?php echo $id; ?></title>
-  <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- sidebar -->
-    <?php 
-      include '../../layout/sidebar-adminduk.php';
+    <?php
+    include '../../layout/sidebar-adminduk.php';
     ?>
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
-        <?php 
-          include '../../layout/navbar-adminduk.php';
+        <?php
+        include '../../layout/navbar-adminduk.php';
         ?>
         <!-- Topbar -->
         <!-- Container Fluid-->
@@ -71,7 +71,7 @@
                   <form>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nama Kepala Keluarga</label>
-                      <input type="text" class="form-control" id="text"  value="<?= $dataNamaKK['nama'] ?>" readonly>
+                      <input type="text" class="form-control" id="text" value="<?= $dataNamaKK['nama'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Alamat</label>
@@ -147,18 +147,19 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                  <?php $a = 1; while($dataNama2 = mysqli_fetch_array($queryNama2)):?>
-                    <tr>
-                      <td><?= $a++ ?></td>
-                      <td><?= $dataNama2['nama'] ?></td>
-                      <td><?= $dataNama2['nik'] ?></td>
-                      <td><?= $dataNama2['jenis_kelamin'] ?></td>
-                      <td><?= $dataNama2['tempat_lahir'] ?></td>
-                      <td><?= $dataNama2['tanggal_lahir'] ?></td>
-                      <td><?= $dataNama2['pendidikan'] ?></td>
-                      <td><?= $dataNama2['pekerjaan'] ?></td>
-                    </tr>
-                  <?php endwhile; ?>  
+                    <?php $a = 1;
+                    while ($dataNama2 = mysqli_fetch_array($queryNama2)) : ?>
+                      <tr>
+                        <td><?= $a++ ?></td>
+                        <td><?= $dataNama2['nama'] ?></td>
+                        <td><?= $dataNama2['nik'] ?></td>
+                        <td><?= $dataNama2['jenis_kelamin'] ?></td>
+                        <td><?= $dataNama2['tempat_lahir'] ?></td>
+                        <td><?= $dataNama2['tanggal_lahir'] ?></td>
+                        <td><?= $dataNama2['pendidikan'] ?></td>
+                        <td><?= $dataNama2['pekerjaan'] ?></td>
+                      </tr>
+                    <?php endwhile; ?>
                   </tbody>
                 </table>
               </div>
@@ -193,27 +194,27 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                  <?php $a = 1; while($dataNama = mysqli_fetch_array($queryNama)):?>
-                    <tr>
-                      <td><?= $a++ ?></td>
-                      <td><?= $dataNama['status_perkawinan'] ?></td>
-                      <td><?= $dataNama['status_hubungan_keluarga'] ?></td>
-                      <td><?= $dataNama['kewarganegaraan'] ?></td>
-                      <td><?= $dataNama['no_paspor'] ?></td>
-                      <td><?= $dataNama['no_kitas'] ?></td>
-                      <td><?= $dataNama['nama_ayah'] ?></td>
-                      <td><?= $dataNama['nama_ibu'] ?></td>
-                    </tr>
-                  <?php endwhile; ?>  
+                    <?php $a = 1;
+                    while ($dataNama = mysqli_fetch_array($queryNama)) : ?>
+                      <tr>
+                        <td><?= $a++ ?></td>
+                        <td><?= $dataNama['status_perkawinan'] ?></td>
+                        <td><?= $dataNama['status_hubungan_keluarga'] ?></td>
+                        <td><?= $dataNama['kewarganegaraan'] ?></td>
+                        <td><?= $dataNama['no_paspor'] ?></td>
+                        <td><?= $dataNama['no_kitas'] ?></td>
+                        <td><?= $dataNama['nama_ayah'] ?></td>
+                        <td><?= $dataNama['nama_ibu'] ?></td>
+                      </tr>
+                    <?php endwhile; ?>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-                      
+
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -244,7 +245,9 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
+            <span>copyright &copy; <script>
+                document.write(new Date().getFullYear());
+              </script> - developed by
               <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
             </span>
           </div>
@@ -259,23 +262,23 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../../vendor/jquery/jquery.min.js"></script>
-  <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../../js/ruang-admin.min.js"></script>
+  <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../../assets/js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../../assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });
   </script>
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#dataTables').DataTable(); // ID From dataTable 
       $('#dataTableHovers').DataTable(); // ID From dataTable with Hover
     });

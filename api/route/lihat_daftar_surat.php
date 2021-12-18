@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Untuk melihat daftar surat yang ada
  * 
  * @return json

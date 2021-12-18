@@ -1,5 +1,5 @@
 <?php
-  include '../../koneksi.php';
+  include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan'])) {
     header("Location: ../login.php");
@@ -17,14 +17,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="img/logo/logo.png" rel="icon">
+  <link href="../assets/img/logo/logo.png" rel="icon">
   <title>O-SEMAR Admin - List Pengajuan</title>
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Select2 -->
-  <link href="../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body id="page-top">
@@ -346,7 +346,7 @@
                   <p>Are you sure you want to logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>
+                  <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
                     <input type="hidden" name="filter" id="filter" value="1">
                     <button type="submit" class="btn btn-primary">Logout</button>
@@ -367,15 +367,15 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../assets/js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
   <!-- Select2 -->
-  <script src="../vendor/select2/dist/js/select2.min.js"></script>                          
+  <script src="../assets/vendor/select2/dist/js/select2.min.js"></script>                          
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {

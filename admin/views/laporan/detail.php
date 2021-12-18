@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,23 +9,23 @@
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>O-SEMAR Admin - List Pengajuan</title>
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- sidebar -->
-    <?php 
-      include '../layout/sidebar.php';
+    <?php
+    include '../layout/sidebar.php';
     ?>
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
-        <?php 
-          include '../layout/navbar.php';
+        <?php
+        include '../layout/navbar.php';
         ?>
         <!-- Topbar -->
         <!-- Container Fluid-->
@@ -50,63 +48,62 @@
                   <h6 class="m-0 font-weight-bold text-primary">Detail Laporan - <?= $dataID['nama_pelapor'] ?></h6>
                 </div>
                 <div class="card mb-4">
-                <div class="card-body">
-                  <form>
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Nama Pelapor</label>
-                      <input type="text" class="form-control" value="<?= $dataID['nama_pelapor'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Judul Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['judul_laporan'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Kategori Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['kategori_laporan'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Tanggal Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['tanggal_laporan'] ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Bukti Laporan</label>
-                      <input type="text" class="form-control" value="<?= $dataID['bukti_laporan'] ?>" readonly>
-                      <br>
-                      <a href="berkas/foto<?= $dataID['bukti_laporan'] ?>" class="btn btn-primary">Download Foto</a>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
-                      id="#modalCenter">Preview</button>
-                    </div>
-                  </form>
-                  <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Alasan Penolakan</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                  <div class="card-body">
+                    <form>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Nama Pelapor</label>
+                        <input type="text" class="form-control" value="<?= $dataID['nama_pelapor'] ?>" readonly>
                       </div>
-                      <div class="modal-body">
-                        <form>
-                          <div class="form-group">
-                            <label for="message-text" class="col-form-label">Ketik Alasan:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Judul Laporan</label>
+                        <input type="text" class="form-control" value="<?= $dataID['judul_laporan'] ?>" readonly>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Kategori Laporan</label>
+                        <input type="text" class="form-control" value="<?= $dataID['kategori_laporan'] ?>" readonly>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Tanggal Laporan</label>
+                        <input type="text" class="form-control" value="<?= $dataID['tanggal_laporan'] ?>" readonly>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Bukti Laporan</label>
+                        <input type="text" class="form-control" value="<?= $dataID['bukti_laporan'] ?>" readonly>
+                        <br>
+                        <a href="berkas/foto<?= $dataID['bukti_laporan'] ?>" class="btn btn-primary">Download Foto</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="#modalCenter">Preview</button>
+                      </div>
+                    </form>
+                    <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Alasan Penolakan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                           </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak Jadi</button>
-                        <button type="button" class="btn btn-primary">Kirim Alasan</button>
+                          <div class="modal-body">
+                            <form>
+                              <div class="form-group">
+                                <label for="message-text" class="col-form-label">Ketik Alasan:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak Jadi</button>
+                            <button type="button" class="btn btn-primary">Kirim Alasan</button>
+                          </div>
+                        </div>
                       </div>
                     </div>
+
+
                   </div>
                 </div>
-
-                  
-                </div>
-              </div>
               </div>
             </div>
           </div>
@@ -122,8 +119,7 @@
           </div>
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -136,7 +132,7 @@
                   <p>Are you sure you want to logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>
+                  <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
                     <input type="hidden" name="filter" id="filter" value="1">
                     <button type="submit" class="btn btn-primary">Logout</button>
@@ -146,8 +142,7 @@
             </div>
           </div>
           <!-- Modal Center -->
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -158,7 +153,9 @@
                 </div>
                 <div id="pdf" class="modal-body">
                   <script src="pdfobject.js"></script>
-                  <script>PDFObject.embed("berkas/dosen.pdf", "#pdf");</script>
+                  <script>
+                    PDFObject.embed("berkas/dosen.pdf", "#pdf");
+                  </script>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
@@ -176,7 +173,9 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
+            <span>copyright &copy; <script>
+                document.write(new Date().getFullYear());
+              </script> - developed by
               <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
             </span>
           </div>
@@ -191,17 +190,17 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../assets/js/ruang-admin.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });

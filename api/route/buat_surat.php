@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Untuk membuat surat
  * 
  * @return json

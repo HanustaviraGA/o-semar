@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Untuk update status iuran
  * 
  * @return json

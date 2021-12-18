@@ -4,7 +4,7 @@
     ?>  
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
       <div class="sidebar-brand-icon">
-        <img src="../img/o-semar2.png">
+        <img src="../assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar Admin</div>
     </a>
@@ -13,7 +13,7 @@
     ?>  
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
       <div class="sidebar-brand-icon">
-        <img src="../img/o-semar2.png">
+        <img src="../assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar</div>
     </a>
@@ -22,7 +22,7 @@
     ?>
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
       <div class="sidebar-brand-icon">
-        <img src="../img/o-semar2.png">
+        <img src="../assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar RT</div>
     </a>
@@ -31,7 +31,7 @@
     ?>
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
       <div class="sidebar-brand-icon">
-        <img src="../img/o-semar2.png">
+        <img src="../assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar RW</div>
     </a>

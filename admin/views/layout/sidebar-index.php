@@ -4,7 +4,7 @@
     ?>  
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
-        <img src="img/o-semar2.png">
+        <img src="assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar Admin</div>
     </a>
@@ -13,7 +13,7 @@
     ?>  
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
-        <img src="img/o-semar2.png">
+        <img src="assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar</div>
     </a>
@@ -22,7 +22,7 @@
     ?>
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
-        <img src="img/o-semar2.png">
+        <img src="assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar RT</div>
     </a>
@@ -31,7 +31,7 @@
     ?>
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
       <div class="sidebar-brand-icon">
-        <img src="img/o-semar2.png">
+        <img src="assets/img/o-semar2.png">
       </div>
       <div class="sidebar-brand-text mx-3">O-Semar RW</div>
     </a>
@@ -49,38 +49,38 @@
         Layanan
       </div>
       <li class="nav-item">
-        <a class="nav-link" href="surat/index.php">
+        <a class="nav-link" href="../surat/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pengajuan Surat</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="iuran/index.php">
+        <a class="nav-link" href="../iuran/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pembayaran Iuran</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="laporan/index.php">
+        <a class="nav-link" href="../laporan/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pelaporan</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="adminduk/kartu_keluarga/index.php">
+        <a class="nav-link" href="../adminduk/kartu_keluarga/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Kartu Keluarga</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pengumuman/index.php">
+        <a class="nav-link" href="../pengumuman/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pengumuman Warga</span>
         </a>
       </li>
       <?php if($_SESSION["keadaan"] == "sudah_login_rt" || $_SESSION["keadaan"] == "sudah_login_rw" || $_SESSION['keadaan'] == "sudah_login_admin") { ?>
       <li class="nav-item">
-        <a class="nav-link" href="adminduk/list_penduduk/index.php">
+        <a class="nav-link" href="../adminduk/list_penduduk/index.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Daftar Penduduk</span>
         </a>
@@ -95,19 +95,19 @@
         Administrator
       </div>
       <li class="nav-item">
-        <a class="nav-link" href="super/pengaturan.php">
+        <a class="nav-link" href="../super/pengaturan.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pengaturan Wilayah</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="super/list_rt.php">
+        <a class="nav-link" href="../super/list_rt.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pengaturan RT</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="super/list_rw.php">
+        <a class="nav-link" href="../super/list_rw.php">
           <i class="far fa-fw fa-window-maximize"></i>
           <span>Pengaturan RW</span>
         </a>

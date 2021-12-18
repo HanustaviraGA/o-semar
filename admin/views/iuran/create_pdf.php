@@ -1,9 +1,9 @@
 <?php
-require('fpdf.php');
-$pdf=new FPDF('P','mm',array(100,100));
+require_once 'fpdf.php';
+$pdf = new FPDF('P','mm',array(100,100));
 $pdf->AddPage();
 
-include ('../../koneksi.php');
+include_once '../../../koneksi.php';
 $id = $_GET['id'];
 $sql = "SELECT * FROM tagihan WHERE id_tagihan='$id'";
 $result = mysqli_query($koneksi, $sql);
@@ -88,5 +88,3 @@ if($status == 'Unpaid'){
     VALUES ('$cek_nik', '$id', '$filename', 'Pembayaran Tagihan', '$date', '$status', '-')";
     $exec_lampiran = mysqli_query($koneksi, $lampiran);
 }
-
-?>

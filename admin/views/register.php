@@ -8,11 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="img/logo/logo.png" rel="icon">
+  <link href="assets/img/logo/logo.png" rel="icon">
   <title>O-Semar - Pendaftaran</title>
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="css/ruang-admin.min.css" rel="stylesheet">
+  <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/ruang-admin.min.css" rel="stylesheet">
 
 </head>
 
@@ -29,7 +29,7 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Pendaftaran</h1>
                   </div>
-                  <form action="../api/rest.php?function=register&key=buwinakeren" method="POST">
+                  <form action="../../api/rest.php?function=register&key=buwinakeren" method="POST">
                     <div class="form-group">
                       <label>Nomor KK</label>
                       <input type="text" class="form-control" name="no_kk" id="no_kk" placeholder="Masukan Nomor KK Anda" required>
@@ -80,10 +80,10 @@
     </div>
   </div>
   <!-- Register Content -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="js/ruang-admin.min.js"></script>
+  <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="assets/js/ruang-admin.min.js"></script>
   <script>
     var password = document.getElementById("password")
   , confirm_password = document.getElementById("c_password");

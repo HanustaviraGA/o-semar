@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Untuk melihat pengumuman
  * 
  * @return json
