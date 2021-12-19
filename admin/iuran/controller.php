@@ -12,7 +12,7 @@
             $tanggal = $data['tanggal'];
             $rekening = $data['rekening'];
             // Default value
-            $prefix = 'SRT';
+            $prefix = 'TGHN';
             $uniqid = uniqid($prefix);
             // Cek Nama Penduduk
             $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
@@ -22,8 +22,8 @@
             $rt_penduduk = $data_nama['id_rt'];
             $rw_penduduk = $data_nama['id_rw'];
             // Eksekusi
-            $sql = "INSERT INTO tagihan(id_tagihan, nik, id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, rekening, bukti_pembayaran, tanggal_pembayaran) 
-            VALUES ('$uniqid', '$nik', '$rt_penduduk', '$rw_penduduk', '$perihal', $nominal, '$tanggal', 'Unpaid', '$rekening', '-', '-')";
+            $sql = "INSERT INTO tagihan(id_tagihan, nik, id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, rekening, bukti_pembayaran) 
+            VALUES ('$uniqid', '$nik', '$rt_penduduk', '$rw_penduduk', '$perihal', $nominal, '$tanggal', 'Unpaid', '$rekening', '-')";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
                 header("Location: index.php?pesan=Sukses !");
