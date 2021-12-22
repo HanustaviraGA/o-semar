@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "*.sql": "sql",
-        "*.css": "css",
-        "uttils.h": "c"
-    }
-}

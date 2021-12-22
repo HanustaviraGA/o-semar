@@ -11,6 +11,7 @@ require_once "./route/logout.php";
 require_once "./route/lihat_kk.php";
 require_once "./route/lihat_daftar_surat.php";
 require_once "./route/lihat_daftar_laporan.php";
+require_once "./route/lihat_daftar_laporan_by_id.php";
 require_once "./route/lihat_iuran.php";
 require_once "./route/lihat_jenis_surat.php";
 require_once "./route/lihat_pengumuman.php";
