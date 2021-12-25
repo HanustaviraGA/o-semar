@@ -13,13 +13,10 @@ function lihat_daftar_laporan()
     $sql = "SELECT * FROM pelaporan WHERE nik = ?";
     $data = query($koneksi, $sql, 's', [$esc_nik]);
     if ($data) {
-        $data = $koneksi->prepare("SELECT pelaporan.nik, pelaporan.id_pelaporan, 
+        $data = $koneksi->prepare("SELECT nik, id_pelaporan, 
         id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status, 
-        alasan, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
-        FROM pelaporan INNER JOIN lampiran ON lampiran.kode = pelaporan.id_pelaporan  
-        WHERE pelaporan.nik = ? AND jenis_lampiran = ?");
-        $laporan_mas = 'Laporan Masyarakat';
-        $data->bind_param('ss', $esc_nik, $laporan_mas);
+        alasan FROM pelaporan WHERE nik = ?");
+        $data->bind_param('s', $esc_nik);
         $data->execute();
         $data_res = $data->get_result();
         if ($data_res->num_rows > 0) {

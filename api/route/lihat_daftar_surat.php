@@ -15,13 +15,10 @@ function lihat_daftar_surat()
     $sql = "SELECT * FROM suratketerangan WHERE nik = ?";
     $data = query($koneksi, $sql, 's', [$esc_nik]);
     if ($data) {
-        $data = $koneksi->prepare("SELECT suratketerangan.nik, suratketerangan.no_surat, 
+        $data = $koneksi->prepare("SELECT nik, no_surat, 
         id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, keterangan, status, 
-        alasan, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran 
-        FROM suratketerangan INNER JOIN lampiran ON lampiran.kode = suratketerangan.no_surat  
-        WHERE suratketerangan.nik = ? AND jenis_lampiran = ?");
-        $pengajuan = 'Pengajuan Surat';
-        $data->bind_param('ss', $esc_nik, $pengajuan);
+        alasan FROM suratketerangan WHERE nik = ?");
+        $data->bind_param('s', $esc_nik);
         $data->execute();
         $data_res = $data->get_result();
         if ($data_res->num_rows > 0) {
@@ -36,12 +33,7 @@ function lihat_daftar_surat()
                     'tanggal_pengajuan' => $identitas['tanggal_pengajuan'],
                     'keterangan' => $identitas['keterangan'],
                     'status' => $identitas['status'],
-                    'alasan' => $identitas['alasan'],
-                    'lampiran' => 'https://o-semar.com/admin/surat/berkas/' . $identitas['lampiran'],
-                    'jenis_lampiran' => $identitas['jenis_lampiran'],
-                    'tanggal_lampiran' => $identitas['tanggal_lampiran'],
-                    'status_lampiran' => $identitas['status_lampiran'],
-                    'ket_lampiran' => $identitas['ket_lampiran']
+                    'alasan' => $identitas['alasan']
                 );
             }
             $response = generate_response(1, 'Sukses', $respond);
@@ -52,5 +44,9 @@ function lihat_daftar_surat()
             header('Content-Type: application/json');
             echo json_encode($response);
         }
+    }else{
+        $response = generate_response(0, 'Tidak ada Data');
+        header('Content-Type: application/json');
+        echo json_encode($response);
     }
 }
