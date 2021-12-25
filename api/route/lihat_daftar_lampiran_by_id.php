@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Untuk mendapatkan daftar laporan by id pelaporan
+ * Untuk mendapatkan daftar lampiran by id pelaporan
  * 
  * @return json
  */
-function lihat_daftar_laporan_by_id()
+function lihat_daftar_lampiran_by_id()
 {
     global $koneksi;
-    if (isset($_POST)) {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $id_pelaporan = mysqli_real_escape_string($koneksi, $_POST['id_pelaporan']);
         try {
             $data = query(
@@ -24,19 +24,35 @@ function lihat_daftar_laporan_by_id()
                 $response = array();
                 foreach ($data as $val) {
                     $filename = $basepath . "admin/berkas/laporan/" . $val["lampiran"];
-
+                    // Read laporan file in byte
                     $file = fopen($filename, "rb");
                     $file_data = "";
                     while (!feof($file)) {
                         $file_data .= fgetc($file);
                     }
                     fclose($file);
-                    
+                    // Store to response (Conpressed) -> Perbedaannya cuma sedikit
+                    // $response += array(
+                    //     "id_pelaporan" => $val["id_pelaporan"],
+                    //     "nama_lampiran" => $val["lampiran"],
+                    //     "ekstensi_lampiran" => pathinfo(urlencode($filename), PATHINFO_EXTENSION),
+                    //     "compressed" => true,
+                    //     "compression_method" => "gzip",
+                    //     "data_lampiran" => base64_encode(gzcompress($file_data, 9))
+                    // );
+                    // Store to response (Uncompressed)
+                    // $response += array(
+                    //     "id_pelaporan" => $val["id_pelaporan"],
+                    //     "nama_lampiran" => $val["lampiran"],
+                    //     "ekstensi_lampiran" => pathinfo(urlencode($filename), PATHINFO_EXTENSION),
+                    //     "data_lampiran" => base64_encode($file_data)
+                    // );
+                    // Store to response (Resource directed to another link)
                     $response += array(
                         "id_pelaporan" => $val["id_pelaporan"],
                         "nama_lampiran" => $val["lampiran"],
                         "ekstensi_lampiran" => pathinfo(urlencode($filename), PATHINFO_EXTENSION),
-                        "data_lampiran" => base64_encode($file_data)
+                        "data_lampiran" => "http://localhost/o-semar/api/rest.php?function=get_berkas&key=buwinakeren&jenis_berkas=laporan&nama_berkas=" . $val["lampiran"]
                     );
                 }
                 $result = array(
@@ -66,6 +82,11 @@ function lihat_daftar_laporan_by_id()
         }
     } else {
         header("HTTP/ 405");
+        header("Content-Type: application/json");
+        echo json_encode(array(
+            "status" => 405,
+            "msg" => "Method Not Allowed"
+        ));
         exit();
     }
 }

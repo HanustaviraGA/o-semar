@@ -26,7 +26,6 @@ function lihat_daftar_laporan()
             while ($identitas = $data_res->fetch_array()) {
                 $respond[] = array(
                     'nik' => $identitas['nik'],
-                    'id_pelaporan' => $identitas['id_pelaporan'],
                     'id_rt' => $identitas['id_rt'],
                     'id_rw' => $identitas['id_rw'],
                     'kategori' => $identitas['kategori'],
@@ -34,11 +33,7 @@ function lihat_daftar_laporan()
                     'tanggal_pelaporan' => $identitas['tanggal_pelaporan'],
                     'status' => $identitas['status'],
                     'alasan' => $identitas['alasan'],
-                    'lampiran' => 'https://o-semar.com/admin/laporan/berkas/' . $identitas['lampiran'],
-                    'jenis_lampiran' => $identitas['jenis_lampiran'],
-                    'tanggal_lampiran' => $identitas['tanggal_lampiran'],
-                    'status_lampiran' => $identitas['status_lampiran'],
-                    'ket_lampiran' => $identitas['ket_lampiran']
+                    'id_pelaporan' => $identitas['id_pelaporan']
                 );
             }
             $response = generate_response(1, 'Sukses', $respond);
