@@ -12,7 +12,7 @@ function logout()
     session_unset();
     session_destroy();
     if ($filter == 1) {
-        header("location:../admin/login.php?pesan=Anda telah berhasil logout");
+        header("location:../admin/views/login.php?pesan=Anda telah berhasil logout");
     } else if ($filter == 0) {
         $response = generate_response(1, 'Sukses');
         header('Content-Type: application/json');

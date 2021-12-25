@@ -36,16 +36,16 @@
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>O-SEMAR Admin - List Pengajuan</title>
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Select2 -->
-  <link href="../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <!-- O-Semar CSS -->
-  <link href="../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
   <!-- Bootstrap DatePicker -->  
-  <link href="../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
+  <link href="../assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
 </head>
 
 <body id="page-top">
@@ -77,7 +77,7 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="controller.php?aksi=tambah" method="POST" enctype="multipart/form-data">  
+                  <form action="../../controller/controller.php?aksi=tambah_iuran" method="POST" enctype="multipart/form-data">  
                     <div class="form-group">
                       <label for="exampleInputEmail1">Perihal Pembayaran</label>
                       <input type="text" class="form-control" name="perihal" id="perihal">
@@ -200,7 +200,7 @@
                   <p>Are you sure you want to logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>
+                  <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
                     <input type="hidden" name="filter" id="filter" value="1">
                     <button type="submit" class="btn btn-primary">Logout</button>

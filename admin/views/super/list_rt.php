@@ -58,7 +58,7 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="controller.php?aksi=tambah_rt" method="POST" enctype="multipart/form-data">
+                  <form action="../../controller/controller.php?aksi=tambah_rt" method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                       <label for="exampleInputEmail1">Nomor RT</label>
                       <input type="text" class="form-control" name="rt" id="rt">

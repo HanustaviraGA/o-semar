@@ -72,7 +72,7 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="tambah.php" method="POST" enctype="multipart/form-data">  
+                  <form action="../../controller/controller.php?aksi=tambah_pengumuman" method="POST" enctype="multipart/form-data">  
                     <div class="form-group">
                       <label for="exampleInputEmail1">Perihal</label>
                       <input type="text" class="form-control" name="perihal" id="perihal">

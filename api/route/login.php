@@ -26,8 +26,8 @@ function login()
             $identitas = $data_res->fetch_assoc();
             $nik = $identitas['nik'];
             $password = $identitas['password'];
-            // $verify = password_verify($esc_password, $password);
-            $verify = $esc_password == $password ? true : false;
+            $verify = password_verify($esc_password, $password);
+            // $verify = $esc_password == $password ? true : false;
             if ($verify) {
                 // Cek apakah penduduk ini Penduduk Biasa, RT, RW, atau Super Admin
                 // Apakah RT ?
@@ -230,14 +230,14 @@ function login()
                 }
                 // Cek apa ini web atau mobile yang kirim
                 if ($filter == 1) {
-                    header("location:../admin/index.php?pesan=Sukses");
+                    header("location:../admin/views/index.php?pesan=Sukses");
                 } else if ($filter == 0) {
                     header('Content-Type: application/json');
                     echo json_encode($response);
                 }
             } else {
                 if ($filter == 1) {
-                    header("location:../admin/login.php?pesan=Data tidak ditemukan !");
+                    header("location:../admin/views/login.php?pesan=Data tidak ditemukan !");
                 } else if ($filter == 0) {
                     $response = generate_response(2, 'Data tidak ditemukan');
                     header('Content-Type: application/json');
@@ -246,7 +246,7 @@ function login()
             }
         } else {
             if ($filter == 1) {
-                header("location:../admin/login.php?pesan=Data tidak ditemukan !");
+                header("location:../admin/views/login.php?pesan=Data tidak ditemukan !");
             } else if ($filter == 0) {
                 $response = generate_response(2, 'Data tidak ditemukan');
                 header('Content-Type: application/json');
@@ -255,7 +255,7 @@ function login()
         }
     } else {
         if ($filter == 1) {
-            header("location:../admin/login.php?pesan=Data tidak boleh kosong !");
+            header("location:../admin/views/login.php?pesan=Data tidak boleh kosong !");
         } else if ($filter == 0) {
             $response = generate_response(2, 'Data tidak boleh kosong');
             header('Content-Type: application/json');

@@ -1,5 +1,5 @@
 <?php
-  include '../../koneksi.php';
+  include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
     header("Location: ../login.php");
@@ -60,7 +60,7 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="controller.php?aksi=update_rt" method="POST" enctype="multipart/form-data">
+                  <form action="../../controller/controller.php?aksi=update_rt" method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                       <label for="exampleInputEmail1">Nomor RT</label>
                       <input type="text" class="form-control" value="<?= $data['id_rt']?>" name="rt" id="rt" readonly>

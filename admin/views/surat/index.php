@@ -109,7 +109,7 @@
               <div class="card mb-4">
                 <div class="card mb-4">
                   <div class="card-body">
-                  <form action="tambah.php" method="POST" enctype="multipart/form-data">  
+                  <form action="../../controller/controller.php?aksi=tambah_surat" method="POST" enctype="multipart/form-data">  
                   <div class="form-group">
                         <label for="select2SinglePlaceholder">Pilih Surat</label>
                         <select class="jenis form-control" name="jenis" id="jenis" onchange="yesnoCheck(this);">

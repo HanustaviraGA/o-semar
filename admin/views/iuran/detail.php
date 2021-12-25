@@ -161,7 +161,7 @@ $dataNama = mysqli_fetch_array($queryNama);
                   <p>Are you sure you want to logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>
+                  <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
                     <input type="hidden" name="filter" id="filter" value="1">
                     <button type="submit" class="btn btn-primary">Logout</button>

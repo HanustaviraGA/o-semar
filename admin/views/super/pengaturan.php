@@ -59,7 +59,7 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <form action="controller.php?aksi=update" method="POST">
+                        <form action="../../controller/controller.php?aksi=update" method="POST">
                             <div class="form-group">
                                 <label for="select2SinglePlaceholder">Provinsi</label>
                                 <select class="provinsi form-control" name="provinsi" id="provinsi">

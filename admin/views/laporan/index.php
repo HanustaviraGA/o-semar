@@ -105,7 +105,7 @@ $query = mysqli_query($koneksi, $sql);
             <div class="card mb-4">
               <div class="card mb-4">
                 <div class="card-body">
-                  <form action="controller.php" method="POST" enctype="multipart/form-data">
+                  <form action="../../controller/controller.php?aksi=tambah_laporan" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="select2SinglePlaceholder">Pilih Kategori Laporan</label>
                       <select class="form-control" name="kategori" id="kategori" onchange="yesnoCheck(this);">

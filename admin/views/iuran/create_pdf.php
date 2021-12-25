@@ -57,7 +57,7 @@ if($status == 'Unpaid'){
     // File
     $date = date('Y-m-d');
     $filename=$id.'_'.$cek_nik.'.pdf';
-    $pdf->Output('F', 'berkas/' . $filename, true);
+    $pdf->Output('F', '../berkas/' . $filename, true);
     $pdf->Output();
     // Masuk daftar lampiran
     $lampiran = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
@@ -81,7 +81,7 @@ if($status == 'Unpaid'){
     // File
     $date = date('Y-m-d');
     $filename=$id.'_'.$cek_nik.'.pdf';
-    $pdf->Output('F', 'berkas/' . $filename, true);
+    $pdf->Output('F', '../berkas/' . $filename, true);
     $pdf->Output();
     // Masuk daftar lampiran
     $lampiran = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
