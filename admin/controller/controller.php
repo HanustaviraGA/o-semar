@@ -61,7 +61,11 @@
             if(isset($_POST['submit'])){
                 $nama = $_POST['nama'];
                 $keterangan = $_POST['keterangan'];
-                $kategori = $_POST['kategori'];
+                if(isset($_POST['kategori'])){
+                    $kategori = $_POST['kategori'];
+                }else if(!isset($_POST['kategori'])){
+                    $kategori = $_POST['kategori_lainnya'];
+                }
                 $prefix = 'LPR';
                 $uniqid = uniqid($prefix);
                 if(isset($_FILES["files"]) && !empty($_FILES["files"]["name"])){
@@ -77,10 +81,10 @@
                         if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp'))) {
                             $filename_without_ext = basename($original_filename, '.'.$ext);
                             $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
-                            move_uploaded_file($file_tmp,'../berkas/'.$new_filename);
+                            move_uploaded_file($file_tmp,'../berkas/laporan/'.$new_filename);
                             // Masuk Lampiran
-                            $sql = "INSERT INTO lampiran(nik, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                            VALUES('$nik', '$new_filename', 'Laporan Masyarakat', '$tanggal', 'Pending', '-')";
+                            $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                            VALUES('$nik', '$uniqid', '$new_filename', 'Laporan Masyarakat', '$tanggal', 'Pending', '-')";
                             $query = mysqli_query($koneksi, $sql);
                             $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
                             VALUES ('$uniqid', '$nik', '$rt', '$rw', '$kategori', '$keterangan', '$tanggal', 'Pending')";
@@ -121,7 +125,7 @@
                         if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'))) {
                             $filename_without_ext = basename($original_filename, '.'.$ext);
                             $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
-                            move_uploaded_file($file_tmp,'../berkas/'.$new_filename);
+                            move_uploaded_file($file_tmp,'../berkas/pengumuman'.$new_filename);
                             // Masuk Lampiran
                             $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
                             VALUES('$nik', '$uniqid', '$new_filename', 'Pengumuman Warga', '$tanggal', 'Pending', '-')";
@@ -259,7 +263,11 @@
             if(isset($_POST['submit'])){
                 $nama = $_POST['nama'];
                 $keterangan = $_POST['keterangan'];
-                $jenis = $_POST['jenis'];
+                if(isset($_POST['jenis'])){
+                    $jenis = $_POST['jenis'];
+                }else if(!isset($_POST['jenis'])){
+                    $jenis = $_POST['jenis_lainnya'];
+                }
                 $keperluan = $_POST['keperluan'];
                 $prefix = 'SRT';
                 $uniqid = uniqid($prefix);
@@ -276,18 +284,18 @@
                         if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'))) {
                             $filename_without_ext = basename($original_filename, '.'.$ext);
                             $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
-                            move_uploaded_file($file_tmp,'berkas/'.$new_filename);
+                            move_uploaded_file($file_tmp,'../berkas/surat/'.$new_filename);
                             // Masuk Lampiran
-                            $sql = "INSERT INTO lampiran(nik, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                            VALUES('$nik', '$new_filename', 'Laporan Masyarakat', '$tanggal', 'Pending', '-')";
+                            $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                            VALUES('$nik', '$uniqid', '$new_filename', 'Pengajuan Surat', '$tanggal', 'Pending', '-')";
                             $query = mysqli_query($koneksi, $sql);
                             $sql_pelaporan = "INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, keterangan, status)
                             VALUES ('$uniqid', '$nik', '$rt', '$rw', '$jenis', '$keperluan', '$tanggal', '$keterangan', 'Pending')";
                             $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
-                            header("Location: index.php?pesan=Berhasil");
+                            header("Location: ../views/surat/index.php?pesan=Berhasil");
                         }
                         else{
-                            header("Location: index.php?pesan=Gagal");
+                            header("Location: ../views/surat/index.php?pesan=Gagal");
                         }
                     }
                 }else{
@@ -302,7 +310,7 @@
             $sql = "UPDATE suratketerangan SET status='$new', alasan='' WHERE no_surat='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/index.php?pesan=Sukses !");
+                header("Location: ../views/surat/index.php?pesan=Sukses !");
                 exit;
             }
             break;
@@ -313,7 +321,7 @@
             $sql = "UPDATE suratketerangan SET status='$new', alasan='$catatan' WHERE no_surat='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/index.php?pesan=Sukses !");
+                header("Location: ../views/surat/index.php?pesan=Sukses !");
                 exit;
             }
             break;
@@ -322,7 +330,7 @@
             $sql = "DELETE FROM suratketerangan WHERE no_surat='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/index.php?pesan=Sukses");
+                header("Location: ../views/surat/index.php?pesan=Sukses");
                 exit;
             }    
             break;

@@ -119,7 +119,7 @@ $query = mysqli_query($koneksi, $sql);
                     </div>
                     <div class="form-group" id="ifYes" style="display: none;">
                       <label for="exampleInputEmail1">Silahkan Ketik Kategori Laporan Anda</label>
-                      <input type="text" class="form-control" name="kategori" id="kategori">
+                      <input type="text" class="form-control" name="kategori_lainnya" id="kategori_lainnya">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nama</label>

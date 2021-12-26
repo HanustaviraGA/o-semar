@@ -127,7 +127,7 @@
                     </div>
                     <div class="form-group" id="ifYes" style="display: none;">
                       <label for="exampleInputEmail1">Silahkan Ketik Jenis Surat Anda</label>
-                      <input type="text" class="form-control" name="jenis" id="jenis">
+                      <input type="text" class="form-control" name="jenis_lain" id="jenis_lain">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nama</label>

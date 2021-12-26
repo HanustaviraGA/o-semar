@@ -19,10 +19,10 @@ function lihat_iuran()
     if ($esc_filter == 0) {
         $data = $koneksi->prepare("SELECT nik, id_tagihan, 
         id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, 
-        rekening, bukti_pembayaran, tanggal_pembayaran FROM tagihan WHERE nik = ?");
+        rekening, bukti_pembayaran, tanggal_pembayaran FROM tagihan WHERE nik = ? AND status_pembayaran = ?");
         $laporan_mas = 'Pembayaran Tagihan';
         $unpaid = 'Unpaid';
-        $data->bind_param('s', $esc_nik);
+        $data->bind_param('ss', $esc_nik, $unpaid);
         $data->execute();
         $data_res = $data->get_result();
         if ($data_res->num_rows > 0) {
@@ -52,15 +52,12 @@ function lihat_iuran()
     }
     // Paid
     else if ($esc_filter == 1) {
-        $data = $koneksi->prepare("SELECT tagihan.nik, tagihan.id_tagihan, 
+        $data = $koneksi->prepare("SELECT nik, id_tagihan, 
         id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, 
-        rekening, bukti_pembayaran, tanggal_pembayaran, lampiran, jenis_lampiran, tanggal_lampiran, 
-        status_lampiran, ket_lampiran FROM tagihan INNER JOIN 
-        lampiran ON lampiran.kode = tagihan.id_tagihan  
-        WHERE tagihan.nik = ? AND jenis_lampiran = ? AND status_lampiran = ?");
+        rekening, bukti_pembayaran, tanggal_pembayaran FROM tagihan WHERE nik = ? AND status_pembayaran = ?");
         $laporan_mas = 'Pembayaran Tagihan';
-        $unpaid = 'Paid';
-        $data->bind_param('sss', $esc_nik, $laporan_mas, $unpaid);
+        $paid = 'Paid';
+        $data->bind_param('ss', $esc_nik, $paid);
         $data->execute();
         $data_res = $data->get_result();
         if ($data_res->num_rows > 0) {
@@ -76,12 +73,7 @@ function lihat_iuran()
                     'status_pembayaran' => $identitas['status_pembayaran'],
                     'rekening' => $identitas['rekening'],
                     'bukti_pembayaran' => 'https://o-semar.com/admin/iuran/berkas/' . $identitas['bukti_pembayaran'],
-                    'tanggal_pembayaran' => $identitas['tanggal_pembayaran'],
-                    'lampiran' => 'https://o-semar.com/admin/iuran/berkas/' . $identitas['lampiran'],
-                    'jenis_lampiran' => $identitas['jenis_lampiran'],
-                    'tanggal_lampiran' => $identitas['tanggal_lampiran'],
-                    'status_lampiran' => $identitas['status_lampiran'],
-                    'ket_lampiran' => $identitas['ket_lampiran']
+                    'tanggal_pembayaran' => $identitas['tanggal_pembayaran']
                 );
             }
             $response = generate_response(1, 'Sukses', $respond);
