@@ -75,7 +75,7 @@ function lihat_daftar_lampiran_by_id()
                     // while (!feof($file)) {
                     //     $file_data .= fgetc($file);
                     // }
-                    fclose($file);
+                    // fclose($file);
                     // Store to response (Conpressed) -> Perbedaannya cuma sedikit
                     // $response += array(
                     //     "id_pelaporan" => $val["id_pelaporan"],
