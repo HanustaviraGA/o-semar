@@ -70,11 +70,11 @@ function lihat_daftar_lampiran_by_id()
                         $filename = $basepath . "admin/berkas/iuran/" . $val["lampiran"];
                     }
                     // Read laporan file in byte
-                    $file = fopen($filename, "rb");
-                    $file_data = "";
-                    while (!feof($file)) {
-                        $file_data .= fgetc($file);
-                    }
+                    // $file = fopen($filename, "rb");
+                    // $file_data = "";
+                    // while (!feof($file)) {
+                    //     $file_data .= fgetc($file);
+                    // }
                     fclose($file);
                     // Store to response (Conpressed) -> Perbedaannya cuma sedikit
                     // $response += array(
