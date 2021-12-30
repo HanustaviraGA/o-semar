@@ -8,7 +8,7 @@
  * $result = query($conn, $query, "ss", ["Bob", "Johnson"]);
  * 
  * returns array (
- *      0=> array('firstName' => 'Bob', 'lastName' => 'Johnson')
+ *      "0" => array("firstName" => "Bob", "lastName" => "Johnson")
  * )
  * 
  * Reference: https://www.php.net/manual/en/mysqli.prepare.php#107200

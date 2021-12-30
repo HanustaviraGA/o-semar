@@ -139,13 +139,15 @@ function lihat_daftar_lampiran_by_id()
                     "status" => 200,
                     "data" => $response
                 );
+                header("HTTP/ 200");
                 header("Content-Type: application/json");
                 echo json_encode($result);
                 exit();
             } else {
                 header("Content-Type: application/json");
+                header("HTTP/ 500");
                 echo json_encode(array(
-                    "status" => 200,
+                    "status" => 500,
                     "msg" => "No data available"
                 ));
                 exit();

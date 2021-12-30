@@ -3,7 +3,6 @@
 require_once "../koneksi.php";
 require_once "./query.php";
 require_once "./generate_response.php";
-require_once "./cors.php";
 require_once "./route/get_berkas.php";
 require_once "./route/get_penduduk_data.php";
 require_once "./route/register.php";
@@ -29,11 +28,11 @@ $masuk = $_REQUEST;
  */
 if (!empty($_GET['function']) && function_exists($_GET['function'])) {
     if (empty($_GET['key'])) {
-        echo '<p>Key is required</p>';
         $response = array(
-            'status' => 403,
-            'message' => 'Forbidden'
+            'status' => 401,
+            'message' => 'Key is required'
         );
+        header("HTTP/ 401");
         header('Content-Type: application/json');
         echo json_encode($response);
     } else {
@@ -44,6 +43,7 @@ if (!empty($_GET['function']) && function_exists($_GET['function'])) {
                 'status' => 401,
                 'message' => 'Unauthorized access'
             );
+            header("HTTP/ 401");
             header('Content-Type: application/json');
             echo json_encode($response);
         }
@@ -53,7 +53,7 @@ if (!empty($_GET['function']) && function_exists($_GET['function'])) {
         'status' => 404,
         'message' => 'Not Found'
     );
-    header('Content-Type: application/json');
     header('HTTP/ 404');
+    header('Content-Type: application/json');
     echo json_encode($response);
 }
