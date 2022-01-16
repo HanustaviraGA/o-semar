@@ -112,16 +112,15 @@
                   <form action="../../controller/controller.php?aksi=tambah_surat" method="POST" enctype="multipart/form-data">  
                   <div class="form-group">
                         <label for="select2SinglePlaceholder">Pilih Surat</label>
-                        <select class="jenis form-control" name="jenis" id="jenis" onchange="yesnoCheck(this);">
+                        <select class="jenis form-control" name="jenis" id="jenis" onchange="yesnoCheck(this); getBerkas(this.value);">
                           <option>Pilih</option>
-                          <option value="Surat Keterangan Tidak Mampu">Surat Keterangan Tidak Mampu</option>
-                          <option value="Surat Keterangan Usaha">Surat Keterangan Usaha</option>
-                          <option value="Surat Keterangan Domisili">Surat Keterangan Domisili</option>
-                          <option value="Surat Keterangan Belum Menikah">Surat Keterangan Belum Menikah</option>
-                          <option value="Surat Pengantar KTP">Surat Pengantar KTP</option>
-                          <option value="Surat Pengantar Akta Kelahiran">Surat Pengantar Akta Kelahiran</option>
-                          <option value="Surat Pengantar Nikah">Surat Pengantar Nikah</option>
-                          <option value="Surat Pengantar Cerai">Surat Pengantar Cerai</option>
+                          <?php 
+                            $query = "SELECT * FROM jenis_surat";
+                            $exec = mysqli_query($koneksi,$query);
+                          ?>
+                          <?php while ($jenis = mysqli_fetch_array($exec)){ ?>
+                            <option value="<?= $jenis['jenis'];?>"><?= $jenis['jenis'];?></option>
+                          <?php } ?>
                           <option>Lainnya</option>
                         </select>  
                     </div>
@@ -138,12 +137,20 @@
                       <input type="text" class="form-control" name="nik" id="nik" value="<?php echo $_SESSION['nik']; ?>" readonly>
                     </div>
                     <div class="form-group">
+                      <label for="exampleInputEmail1">Tujuan</label>
+                      <input type="text" class="form-control" name="tujuan" id="tujuan">
+                    </div>
+                    <div class="form-group">
                       <label for="exampleInputEmail1">Keperluan</label>
                       <input type="text" class="form-control" name="keperluan" id="keperluan">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Keterangan</label>
                       <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Daftar Keperluan Berkas</label>
+                      <textarea class="form-control" name="berkas_apa" id="berkas_apa" readonly></textarea>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Berkas</label>
@@ -399,13 +406,27 @@
   </script>
   <script>
     function yesnoCheck(that) {
-    if (that.value == "Lainnya") {
-    alert("Pastikan anda mengetik jenis surat dengan jelas");
-        document.getElementById("ifYes").style.display = "block";
-    } else {
-        document.getElementById("ifYes").style.display = "none";
+      if (that.value == "Lainnya") {
+      alert("Pastikan anda mengetik jenis surat dengan jelas");
+          document.getElementById("ifYes").style.display = "block";
+      } else {
+          document.getElementById("ifYes").style.display = "none";
+      }
+
     }
-}
+  </script>
+  <script>
+    function getBerkas(val){
+    //We create ajax function
+      $.ajax({
+        type: "POST",
+        url: "list.php",
+        data: "berkas="+val,
+        success: function(data){
+          $("#berkas_apa").html(data);
+        }
+      });
+    }
   </script>
   <script>
     $('#plusInput').on('click', function () {

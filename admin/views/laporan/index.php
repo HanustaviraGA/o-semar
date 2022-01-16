@@ -90,8 +90,10 @@ $query = mysqli_query($koneksi, $sql);
                             <td><?= $data['kategori'] ?></td>
                             <td><?= $data['tanggal_pelaporan'] ?></td>
                             <td>
-                              DUMMY
-                            </td>
+                            <a href="detail.php?id=<?= $data['id_pelaporan'] ?>">
+                              <button class="btn btn-primary">Detail</button>
+                            </a>
+                          </td>
                           </tr>
                         <?php endwhile; ?>
                       </tbody>
