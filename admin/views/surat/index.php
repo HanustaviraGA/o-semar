@@ -2,7 +2,7 @@
   include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan'])) {
-    header("Location: ../login.php");
+    header("Location: ../login");
     exit;
   }
   
@@ -18,13 +18,16 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="../assets/img/logo/logo.png" rel="icon">
-  <title>O-SEMAR Admin - List Pengajuan</title>
+  <title>O-SEMAR - Pengajuan Surat</title>
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
   <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Select2 -->
   <link href="../assets/vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
 </head>
 
 <body id="page-top">
@@ -93,7 +96,7 @@
                           <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
-                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                            <a href="detail?id=<?= $data['no_surat'] ?>">
                               <button class="btn btn-primary">Detail</button>
                             </a>
                           </td>
@@ -148,7 +151,7 @@
                       <label for="exampleInputEmail1">Keterangan</label>
                       <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="daftar_berkas">
                       <label for="exampleInputEmail1">Daftar Keperluan Berkas</label>
                       <textarea class="form-control" name="berkas_apa" id="berkas_apa" readonly></textarea>
                     </div>
@@ -215,7 +218,7 @@
                           <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
-                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                            <a href="detail?id=<?= $data['no_surat'] ?>">
                               <button class="btn btn-primary">Detail</button>
                             </a>
                           </td>
@@ -269,7 +272,7 @@
                           <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
-                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                            <a href="detail?id=<?= $data['no_surat'] ?>">
                               <button class="btn btn-primary">Detail</button>
                             </a>
                           </td>
@@ -323,7 +326,7 @@
                           <td><?= $data['keperluan'] ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
-                            <a href="detail.php?id=<?= $data['no_surat'] ?>">
+                            <a href="detail?id=<?= $data['no_surat'] ?>">
                               <button class="btn btn-primary">Detail</button>
                             </a>
                           </td>
@@ -344,13 +347,13 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin untuk logout ?</p>
                 </div>
                 <div class="modal-footer">
                   <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
@@ -374,7 +377,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../assets/js/ruang-admin.min.js"></script>
@@ -404,15 +407,54 @@
 
     });
   </script>
+  <?php 
+  
+  if(isset($_GET['pesan'])){
+    $pesan = $_GET['pesan'];
+    if($pesan == 'sukses'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil !',
+                  text: 'Data berhasil disimpan'
+                })
+                </script>";
+    }else if($pesan == 'gagal'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal !',
+                  text: 'Silahkan coba lagi'
+                })
+                </script>";
+    }
+  }
+
+  ?>
   <script>
     function yesnoCheck(that) {
       if (that.value == "Lainnya") {
-      alert("Pastikan anda mengetik jenis surat dengan jelas");
-          document.getElementById("ifYes").style.display = "block";
+        Swal.fire({
+          title: 'Konfirmasi',
+          text: "Pastikan anda mengetik jenis surat dengan jelas",
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+              document.getElementById("ifYes").style.display = "block";
+              document.getElementById("daftar_berkas").style.display = "none";
+          } else if (result.isDenied) {
+            document.getElementById("ifYes").style.display = "none";
+            document.getElementById("daftar_berkas").style.display = "block";
+          }
+        })
       } else {
           document.getElementById("ifYes").style.display = "none";
+          document.getElementById("daftar_berkas").style.display = "block";
       }
-
     }
   </script>
   <script>
@@ -420,7 +462,7 @@
     //We create ajax function
       $.ajax({
         type: "POST",
-        url: "list.php",
+        url: "list",
         data: "berkas="+val,
         success: function(data){
           $("#berkas_apa").html(data);

@@ -35,7 +35,7 @@ function register()
         );
         if (count($count) > 0) {
             if ($filter == 1) {
-                header("Location: ../admin/register.php?pesan=Terdapat Pengguna dengan Data yang Sama !");
+                header("Location: ../admin/register?pesan=sama");
             } else if ($filter == 0) {
                 $response = [
                     'status' => 2,
@@ -54,7 +54,7 @@ function register()
             );
             if ($query) {
                 if ($filter == 1) {
-                    header("Location: ../admin/login.php?pesan=Registrasi Berhasil !");
+                    header("Location: ../admin/views/login?pesan=sukses");
                 } else if ($filter == 0) {
                     $response = [
                         'status' => 1,
@@ -66,7 +66,7 @@ function register()
                 }
             } else {
                 if ($filter == 1) {
-                    header("Location: ../admin/register.php?pesan=Registrasi Gagal !");
+                    header("Location: ../admin/views/register?pesan=gagal");
                 } else if ($filter == 0) {
                     $response = [
                         'status' => 0,

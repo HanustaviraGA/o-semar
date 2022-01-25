@@ -1,6 +1,6 @@
 <?php 
 
 // Redirect to Login
-header("Location: admin/views/login.php");
+header("Location: admin/views/login");
 
 ?>

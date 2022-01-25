@@ -2,7 +2,7 @@
     include '../../koneksi.php';
     session_start();
     if(!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_admin") {
-        header("Location: login.php?pesan=Anda harus login dulu !");
+        header("Location: login?pesan=Anda harus login dulu !");
         exit;
     }else if (isset($_SESSION['keadaan']) && $_SESSION['keadaan'] == "sudah_login_admin") {
         echo "";
@@ -75,7 +75,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="assets/img/logo/logo.png" rel="icon">
-  <title>O-Semar - Dashboard</title>
+  <title>O-SEMAR - Dashboard</title>
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="assets/css/ruang-admin.min.css" rel="stylesheet">
@@ -217,7 +217,7 @@
                   <?php }else if($status == "sudah_login_admin"){?>
                     <h6 class="m-0 font-weight-bold text-primary">Iuran Warga</h6>
                   <?php }?>
-                  <a class="m-0 float-right btn btn-danger btn-sm" href="iuran/index.php">Selengkapnya<i
+                  <a class="m-0 float-right btn btn-danger btn-sm" href="iuran/index">Selengkapnya<i
                       class="fas fa-chevron-right"></i></a>
                 </div>
                 <div class="table-responsive">
@@ -258,7 +258,7 @@
                             <span class="badge badge-danger">Belum Terbayar</span>
                           <?php } ?></td>
                           <td>
-                            <a href="detail.php?id=<?= $data['id_tagihan'] ?>">
+                            <a href="detail?id=<?= $data['id_tagihan'] ?>">
                               <button class="btn btn-primary">Detail</button>
                             </a>
                           </td>
@@ -322,13 +322,13 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin untuk logout ?</p>
                 </div>
                 <div class="modal-footer">
                   <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>

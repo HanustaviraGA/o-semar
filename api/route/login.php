@@ -230,7 +230,7 @@ function login()
                     }
                     // Cek apa ini web atau mobile yang kirim
                     if ($filter == 1) {
-                        header("Location: ../admin/views/index.php?pesan=Sukses");
+                        header("Location: ../admin/views/index?pesan=sukses");
                     } else if ($filter == 0) {
                         header("HTTP/ 200");
                         header('Content-Type: application/json');
@@ -239,7 +239,7 @@ function login()
                     }
                 } else {
                     if ($filter == 1) {
-                        header("Location: ../admin/views/login.php?pesan=Data tidak ditemukan !");
+                        header("Location: ../admin/views/login?pesan=Data tidak ditemukan !");
                     } else if ($filter == 0) {
                         $response = generate_response(2, 'Data tidak ditemukan');
                         header("HTTP/ 500");
@@ -250,7 +250,7 @@ function login()
                 }
             } else {
                 if ($filter == 1) {
-                    header("Location: ../admin/views/login.php?pesan=Data tidak ditemukan !");
+                    header("Location: ../admin/views/login?pesan=Data tidak ditemukan !");
                 } else if ($filter == 0) {
                     $response = generate_response(2, 'Data tidak ditemukan');
                     header("HTTP/ 500");
@@ -261,7 +261,7 @@ function login()
             }
         } else {
             if ($filter == 1) {
-                header("Location: ../admin/views/login.php?pesan=Data tidak boleh kosong !");
+                header("Location: ../admin/views/login?pesan=Data tidak boleh kosong !");
             } else if ($filter == 0) {
                 $response = generate_response(2, 'Data tidak boleh kosong');
                 header("HTTP/ 500");

@@ -13,7 +13,8 @@
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="assets/css/ruang-admin.min.css" rel="stylesheet">
-
+  <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-gradient-login">
@@ -67,7 +68,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="font-weight-bold small" href="login.php">Sudah memiliki akun ? Klik disini</a>
+                    <a class="font-weight-bold small" href="login">Sudah memiliki akun ? Klik disini</a>
                   </div>
                   <div class="text-center">
                   </div>
@@ -80,7 +81,7 @@
     </div>
   </div>
   <!-- Register Content -->
-  <script src="assets/vendor/jquery/jquery.min.js"></script>
+  
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="assets/js/ruang-admin.min.js"></script>
@@ -99,6 +100,38 @@
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
   </script>
+  <?php 
+  
+  if(isset($_GET['pesan'])){
+    $pesan = $_GET['pesan'];
+    if($pesan == 'sukses'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil !',
+                  text: 'Data berhasil disimpan'
+                })
+                </script>";
+    }else if($pesan == 'gagal'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal !',
+                  text: 'Silahkan coba lagi'
+                })
+                </script>";
+    }else if($pesan == 'sama'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal !',
+                  text: 'Anda telah terdaftar sebelumnya, silahkan login'
+                })
+                </script>";
+    }
+  }
+
+  ?>
 </body>
 
 </html>

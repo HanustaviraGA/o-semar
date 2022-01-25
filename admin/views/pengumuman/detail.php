@@ -2,7 +2,7 @@
   include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
-    header("Location: ../login.php");
+    header("Location: ../login");
     exit;
   }
     $id = $_GET['id'];
@@ -22,7 +22,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="../assets/img/logo/logo.png" rel="icon">
-  <title>O-SEMAR Admin - List Pengajuan</title>
+  <title>O-SEMAR Admin - Detail Pengumuman <?= $id ?></title>
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
@@ -59,13 +59,13 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Detail Surat - <?= $id ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Pengumuman - <?= $id ?></h6>
                 </div>
                 <div class="card mb-4">
                 <div class="card-body">
                   <form action="controller.php" method="POST">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Id Pengumuman</label>
+                      <label for="exampleInputEmail1">ID Pengumuman</label>
                       <input type="text" class="form-control" value="<?= $dataID['id'] ?>" readonly>
                     </div>
                     <div class="form-group">
@@ -188,13 +188,13 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin untuk logout ?</p>
                 </div>
                 <div class="modal-footer">
                   <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>

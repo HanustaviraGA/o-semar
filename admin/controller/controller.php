@@ -27,7 +27,10 @@
             VALUES ('$uniqid', '$nik', '$rt_penduduk', '$rw_penduduk', '$perihal', $nominal, '$tanggal', 'Unpaid', '$rekening', '-')";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/iuran/index.php?pesan=Sukses !");
+                header("Location: ../views/iuran/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/iuran/index?pesan=gagal");
                 exit;
             }
             break;
@@ -37,7 +40,10 @@
             $sql = "UPDATE iuran SET status='$new', catatan='' WHERE id='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/iuran/index.php?pesan=Sukses !");
+                header("Location: ../views/iuran/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/iuran/index?pesan=gagal");
                 exit;
             }
             break;
@@ -48,7 +54,10 @@
             $sql = "UPDATE iuran SET status='$new', catatan='$catatan' WHERE id='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/iuran/index.php?pesan=Sukses !");
+                header("Location: ../views/iuran/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/iuran/index?pesan=gagal");
                 exit;
             }
             break;
@@ -89,10 +98,10 @@
                             $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
                             VALUES ('$uniqid', '$nik', '$rt', '$rw', '$kategori', '$keterangan', '$tanggal', 'Pending')";
                             $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
-                            header("Location: ../views/laporan/index.php?pesan=Berhasil");
+                            header("Location: ../views/laporan/index?pesan=sukses");
                         }
                         else{
-                            header("Location: ../views/laporan/index.php?pesan=Gagal");
+                            header("Location: ../views/laporan/index?pesan=ekstensi");
                         }
                     }
                 }else{
@@ -133,10 +142,10 @@
                             $sql_pelaporan = "INSERT INTO pengumuman(id, pengumuman, isi, tanggal, id_rt, id_rw, pengirim)
                             VALUES ('$uniqid', '$perihal', '$keterangan', '$tanggal', '$rt', '$rw', '$nama')";
                             $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
-                            header("Location: ../views/pengumuman/index.php?pesan=Berhasil");
+                            header("Location: ../views/pengumuman/index?pesan=sukses");
                         }
                         else{
-                            header("Location: ../views/pengumuman/index.php?pesan=Gagal");
+                            header("Location: ../views/pengumuman/index?pesan=ekstensi");
                         }
                     }
                 }else{
@@ -184,7 +193,10 @@
             WHERE identifier='1'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/pengaturan.php?pesan=Sukses !");
+                header("Location: ../views/super/pengaturan.php?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/super/pengaturan.php?pesan=gagal");
                 exit;
             }
             break;
@@ -201,7 +213,10 @@
             $sql = "INSERT INTO msrt (id_rt, id_rw, nik_ketuart, nama_rt) VALUES ('$rt', '$rw', '$nik', '$nama_pejabat')";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/list_rt.php?pesan=Sukses !");
+                header("Location: ../views/super/list_rt?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/super/list_rt?pesan=gagal");
                 exit;
             }
             break;
@@ -217,7 +232,10 @@
             $sql = "UPDATE msrt SET nik_ketuart='$nik', nama_rt='$nama_pejabat' WHERE id_rt='$rt'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/list_rt.php?pesan=Sukses !");
+                header("Location: ../views/super/list_rt?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/super/list_rt?pesan=gagal");
                 exit;
             }
             break;
@@ -234,7 +252,10 @@
             $sql = "INSERT INTO msrw(id_rw, id_kelurahan, nik_ketuarw, nama_rw) VALUES ('$rw', '$kelurahan', '$nik', '$nama_pejabat')";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/list_rw.php?pesan=Sukses !");
+                header("Location: ../views/super/list_rw?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/super/list_rw?pesan=gagal");
                 exit;
             }
             break;
@@ -250,7 +271,10 @@
             $sql = "UPDATE msrw SET nik_ketuarw='$nik', nama_rw='$nama_pejabat' WHERE id_rw='$rw'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/super/list_rw.php?pesan=Sukses !");
+                header("Location: ../views/super/list_rw?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/super/list_rw?pesan=gagal");
                 exit;
             }
             break;
@@ -293,10 +317,10 @@
                             $sql_pelaporan = "INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, tujuan, keterangan, status)
                             VALUES ('$uniqid', '$nik', '$rt', '$rw', '$jenis', '$keperluan', '$tanggal', '$tujuan', '$keterangan', 'Pending')";
                             $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
-                            header("Location: ../views/surat/index.php?pesan=Berhasil");
+                            header("Location: ../views/surat/index?sukses=sukses");
                         }
                         else{
-                            header("Location: ../views/surat/index.php?pesan=Gagal");
+                            header("Location: ../views/surat/index?pesan=gagal");
                         }
                     }
                 }else{
@@ -311,7 +335,10 @@
             $sql = "UPDATE suratketerangan SET status='$new', alasan='' WHERE no_surat='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/surat/index.php?pesan=Sukses !");
+                header("Location: ../views/surat/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
                 exit;
             }
             break;
@@ -322,7 +349,10 @@
             $sql = "UPDATE suratketerangan SET status='$new', alasan='$catatan' WHERE no_surat='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/surat/index.php?pesan=Sukses !");
+                header("Location: ../views/surat/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
                 exit;
             }
             break;
@@ -331,9 +361,12 @@
             $sql = "DELETE FROM suratketerangan WHERE no_surat='$id'";
             $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
             if($query){
-                header("Location: ../views/surat/index.php?pesan=Sukses");
+                header("Location: ../views/surat/index?pesan=sukses");
                 exit;
-            }    
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
+                exit;
+            }
             break;
         // PDF
         case 'create_pdf_iuran':
@@ -444,6 +477,11 @@
             $result_nama = mysqli_query($koneksi, $nama);
             $identifikasi_nama = mysqli_fetch_array($result_nama);
 
+            // Ketua RT dan rw
+            $nama_ketua = "SELECT nama_rt, nama_rw FROM msrt INNER JOIN msrw WHERE msrt.id_rt = '$identifikasi[id_rt]' AND msrw.id_rw = '$identifikasi[id_rw]'";
+            $exec_ketua = mysqli_query($koneksi, $nama_ketua);
+            $fetch_ketua = mysqli_fetch_array($exec_ketua);
+
             // Mssetting
             $nama_daerah = "SELECT * FROM mssettings";
             $exec_daerah = mysqli_query($koneksi, $nama_daerah);
@@ -468,12 +506,24 @@
             $kewarganegaraan = $identifikasi_nama['kewarganegaraan'];
             $no_kk = $identifikasi_nama['no_kk'];
             
+            // Ubah tanggal lahir
+            $month = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
+            $tanggal_hari = (int)date('d', strtotime($tanggal_lahir));
+            $bulan_hari = $month[((int)date('m', strtotime($tanggal_lahir))) - 1];
+            $tahun_hari = (int)date('Y', strtotime($tanggal_lahir));
+
             // Surat
             $total = $identifikasi['jenis'];
             $jenis = $identifikasi['keperluan'];
             $tujuan = $identifikasi['tujuan'];
             $status = $identifikasi['tanggal_pengajuan'];
             $rekening = $identifikasi['keterangan'];
+
+            // Ubah tanggal surat
+            $month = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
+            $tanggal_status = (int)date('d', strtotime($status));
+            $bulan_status = $month[((int)date('m', strtotime($status))) - 1];
+            $tahun_status = (int)date('Y', strtotime($status));
 
             $bagian_akhir_keldesa = explode(' ', $daerah);
             $keldesa_akhir = array_pop($bagian_akhir_keldesa);
@@ -510,7 +560,7 @@
             $pdf->Cell( 0, 3, 'Jenis Kelamin                 : '.$jenis_kelamin, 0, 0, 'J');
             $pdf->Ln(7);
             $pdf->cell(10,0.5);
-            $pdf->Cell( 0, 3, 'Tempat / Tanggal Lahir  : '.$tempat_lahir.' / '.$tanggal_lahir, 0, 0, 'J');
+            $pdf->Cell( 0, 3, 'Tempat / Tanggal Lahir  : '.$tempat_lahir.' / '.$tanggal_hari.' '.$bulan_hari.' '.$tahun_hari, 0, 0, 'J');
             $pdf->Ln(7);
             $pdf->cell(10,0.5);
             $pdf->Cell( 0, 3, 'Kawin / Tidak Kawin     : '.$status_perkawinan, 0, 0, 'J');
@@ -522,7 +572,7 @@
             $pdf->Cell( 0, 3, 'Kewarganegaraan           : '.$kewarganegaraan, 0, 0, 'J');
             $pdf->Ln(7);
             $pdf->cell(10,0.5);
-            $pdf->Cell( 0, 3, 'Nomor KK / KTP           : '.$cek_nik, 0, 0, 'J');
+            $pdf->Cell( 0, 3, 'Nomor KK / KTP           : '.$cek_nik.' / '.$no_kk, 0, 0, 'J');
             $pdf->Ln(7);
             $pdf->cell(10,0.5);
             $pdf->Cell( 0, 3, 'Tujuan                            : '.$tujuan, 0, 0, 'J');
@@ -538,12 +588,12 @@
             $nama_kabkota = $fetch_daerah['nama_kabkota'];
             $bagian_akhir = explode(' ', $nama_kabkota);
             $kabkota_akhir = array_pop($bagian_akhir);
-            $pdf->Cell( 0, 3, 'Tanda tangan.'.'                                                                                             '.$kabkota_akhir.'.......................... 20.........', 0, 0, 'J');
+            $pdf->Cell( 0, 3, 'Tanda tangan.'.'                                                                                             '.$kabkota_akhir.', '.$tanggal_status.' '.$bulan_status.' '.$tahun_status.'', 0, 0, 'J');
             $pdf->Ln(7);
             $pdf->cell(7,0.5);
             $pdf->Cell( 0, 3, 'yang bersangkutan                                                                                                            Ketua RT', 0, 0, 'J');
             $pdf->Ln(20);
-            $pdf->Cell( 0, 3, '(.........................................)                                                                                      (.........................................)', 0, 0, 'J');
+            $pdf->Cell( 0, 3, '('.$nama.')                                                                                      ('.$fetch_ketua['nama_rt'].')', 0, 0, 'J');
             $pdf->Ln(10);
             $pdf->Cell( 0, 3, 'No. : ...... / 402 / 96.06 / 03.V / 20 .....', 0, 0, 'J');
             $pdf->Ln(15);
@@ -551,7 +601,7 @@
             $pdf->Ln(7);
             $pdf->Cell( 0, 3, 'Ketua RW. '.$nomor_rw, 0, 0, 'C');
             $pdf->Ln(20);
-            $pdf->Cell( 0, 3, '(.........................................)', 0, 0, 'C');
+            $pdf->Cell( 0, 3, '('.$fetch_ketua['nama_rw'].')', 0, 0, 'C');
             // File
             $date = date('Y-m-d');
             $filename=$id.'_'.$cek_nik.'.pdf';

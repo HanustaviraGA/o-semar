@@ -15,3 +15,9 @@ Options -Indexes
     Header set Access-Control-Allow-Credentials: true
     Header set Access-Control-Max-Age: 86400
 </FilesMatch>
+
+# Run Php without filename extension
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php

@@ -2,7 +2,7 @@
   include '../../../koneksi.php';
   session_start();
   if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user") {
-    header("Location: ../login.php");
+    header("Location: ../login");
     exit;
   }
   $sql = "SELECT * FROM msrt";
@@ -18,7 +18,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>O-SEMAR Admin - List Pengajuan</title>
+  <title>O-SEMAR - Daftar RT</title>
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
@@ -124,7 +124,7 @@
                           <td><?= $data ['id_rt'] ?></td>
                           <td><?= $data ['id_rw'] ?></td>
                           <td><?= $data ['nama_rt'] ?></td>
-                          <td><a href="ubah_rt.php?id=<?= $data['id_rt'] ?>">
+                          <td><a href="ubah_rt?id=<?= $data['id_rt'] ?>">
                                 <button class="btn btn-primary">Ubah</button>    
                               </a>
                           </td>
@@ -144,13 +144,13 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin untuk logout ?</p>
                 </div>
                 <div class="modal-footer">
                   <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
