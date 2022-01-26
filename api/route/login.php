@@ -52,6 +52,11 @@ function login()
                     if ($data_rt_num > 0 && $data_rw_num == 0 && $data_admin_num != 1) {
                         session_start();
                         session_regenerate_id(true);
+                        // ========================
+                        // Generate CSRF Token
+                        // ========================
+                        // generate_token();
+                        // ========================
                         $_SESSION['nama_admin'] = $identitas['nama'];
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];
@@ -97,6 +102,11 @@ function login()
                     else if ($data_rt_num == 0 && $data_rw_num > 0 && $data_admin_num != 1) {
                         session_start();
                         session_regenerate_id(true);
+                        // ========================
+                        // Generate CSRF Token
+                        // ========================
+                        // generate_token();
+                        // ========================
                         $_SESSION['nama_admin'] = $identitas['nama'];
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];
@@ -142,6 +152,11 @@ function login()
                     else if ($data_rt_num == 0 && $data_rw_num == 0 && $data_admin_num != 1) {
                         session_start();
                         session_regenerate_id(true);
+                        // ========================
+                        // Generate CSRF Token
+                        // ========================
+                        // generate_token();
+                        // ========================
                         $_SESSION['nama_admin'] = $identitas['nama'];
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];
@@ -187,6 +202,11 @@ function login()
                     else if ($data_rt_num == 0 && $data_rw_num == 0 && $data_admin_num == 1) {
                         session_start();
                         session_regenerate_id(true);
+                        // ========================
+                        // Generate CSRF Token
+                        // ========================
+                        // generate_token();
+                        // ========================
                         $_SESSION['nama_admin'] = $identitas['nama'];
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];

@@ -1,6 +1,7 @@
 <?php
 
 require_once "../koneksi.php";
+require_once "../csrf.php";
 require_once "./query.php";
 require_once "./generate_response.php";
 require_once "./route/get_berkas.php";
