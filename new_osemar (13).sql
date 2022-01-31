@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Jan 2022 pada 07.37
+-- Waktu pembuatan: 31 Jan 2022 pada 07.51
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 8.1.1
 
@@ -73,31 +73,13 @@ CREATE TABLE `lampiran` (
 --
 
 INSERT INTO `lampiran` (`nik`, `kode`, `lampiran`, `jenis_lampiran`, `tanggal_lampiran`, `status_lampiran`, `ket_lampiran`) VALUES
-('987456321', '2', '2_987456321.pdf', 'Pembayaran Tagihan', '2021-12-18', 'Paid', '-'),
-('321654999', 'SRT61af1997e721a', '61af1997e7222_321654999.png', 'Pengajuan Surat', '2021-12-07', 'Pending', '-'),
-('321654999', 'SRT61af1997e721a', '61af1997e8165_321654999.jpg', 'Pengajuan Surat', '2021-12-07', 'Pending', '-'),
-('123456789', 'LPR61af1ceacf32d', '61af1ceacf336_123456789.jpg', 'Laporan Masyarakat', '2021-12-07', 'Pending', '-'),
-('123456789', 'LPR61af1ceacf32d', '61af1cead2a92_123456789.png', 'Laporan Masyarakat', '2021-12-07', 'Pending', '-'),
-('321654999', 'SRT61af46c62d2da', '61af46c62d2e3_321654999.png', 'Pengajuan Surat', '2021-12-07', 'Pending', '-'),
-('321654999', 'SRT61af46c62d2da', '61af46c62e6b1_321654999.jpg', 'Pengajuan Surat', '2021-12-07', 'Pending', '-'),
-('123456789', 'TGHN61b2228ee549c', '61b2228ee56a3_123456789.png', 'Pembayaran Tagihan', '2021-12-09', 'Unpaid', '-'),
-('123456789', 'Tidak Diketahui', '61b5099b70d9b_123456789.png', 'Pengumuman Warga', '2021-12-11', 'Pending', '-'),
-('123456789', 'PNG61c73424c4190', '61c73424c419f_123456789.png', 'Pengumuman Warga', '2021-12-25', 'Pending', '-'),
-('123456789', 'LPR61cbee8966699', '61cbee89666bf_123456789.jpg', 'Laporan Masyarakat', '2021-12-29', 'Pending', '-'),
-('321654987', 'SRT61cbeeacba857', '61cbeeacba874_321654987.jpeg', 'Pengajuan Surat', '2021-12-29', 'Pending', '-'),
-('321654987', 'SRT61cbeeacba857', '61cbeeacbb6cb_321654987.jpeg', 'Pengajuan Surat', '2021-12-29', 'Pending', '-'),
-('123456789', 'LPR61cbeee5b1d71', '61cbeee5b1d91_123456789.jpg', 'Laporan Masyarakat', '2021-12-29', 'Pending', '-'),
-('123456789', 'LPR61cbef3c5da25', '61cbef3c5da47_123456789.png', 'Laporan Masyarakat', '2021-12-29', 'Pending', '-'),
-('321654987', 'SRT61e4e8fd8b787', '61e4e8fd8b793_321654987.jpg', 'Pengajuan Surat', '2022-01-17', 'Pending', '-'),
-('321654987', 'SRT61e4e9d321c99', '61e4e9d321ca0_321654987.jpg', 'Pengajuan Surat', '2022-01-17', 'Pending', '-'),
-('321654987', 'SRT61e4ec35210b5', '61e4ec35210be_321654987.png', 'Pengajuan Surat', '2022-01-17', 'Pending', '-'),
-('123456789', 'A98EDB', 'A98EDB_123456789.pdf', 'Pembayaran Tagihan', '2022-01-04', '2021-10-13', '-'),
-('123456789', 'SRT61b60297baa51', 'SRT61b60297baa51_123456789.pdf', 'Pembayaran Tagihan', '2021-12-13', 'Unpaid', '-'),
-('123456789', 'SRT61bc7e8554a3c', 'SRT61bc7e8554a3c_123456789.pdf', 'Pembayaran Tagihan', '2021-12-17', 'Unpaid', '-'),
-('123456789', 'SRT61bc8264282a5', 'SRT61bc8264282a5_123456789.pdf', 'Pembayaran Tagihan', '2021-12-17', 'Unpaid', '-'),
-('321654987', 'SRT61cbeeacba857', 'SRT61cbeeacba857_321654987.pdf', 'Pembayaran Tagihan', '2022-01-04', '2021-12-29', '-'),
-('321654987', 'SRT61e4e9d321c99', 'SRT61e4e9d321c99_321654987.pdf', 'Pembayaran Tagihan', '2022-01-17', '2022-01-17', '-'),
-('987456321', 'TGHN61b2228ee549c', 'TGHN61b2228ee549c_123456789.pdf', 'Pembayaran Tagihan', '2021-12-13', 'Paid', '-');
+('321654987', 'SRT61f2592130e18', '61f2592130e25_321654987.png', 'Pengajuan Surat', '2022-01-27', 'Telah Diperiksa', ''),
+('321654987', 'SRT61f2592130e18', '61f2592131f02_321654987.png', 'Pengajuan Surat', '2022-01-27', 'Telah Diperiksa', ''),
+('321654987', 'LPR61f32ed6e7caa', '61f32ed6e7cb2_321654987.jpg', 'Laporan Masyarakat', '2022-01-28', 'Pending', '-'),
+('321654987', 'LPR61f32ed6e7caa', '61f32ed6e9cfe_321654987.jpg', 'Laporan Masyarakat', '2022-01-28', 'Pending', '-'),
+('321654987', 'TGHN61f329af94a17', '61f3d0204116f_321654987.jpg', 'Pembayaran Tagihan', '2022-01-28', 'Telah Diperiksa', 'Paid'),
+('123456789', 'PNG61f338c370c6e', 'PNG61f338c370c6e_123456789.jpg', 'Pengumuman Warga', '2022-01-28', '-', '-'),
+('321654987', 'SRT61f2592130e18', 'SRT61f2592130e18_321654987.pdf', 'Pengajuan Surat', '2022-01-28', 'Telah Diperiksa', '');
 
 -- --------------------------------------------------------
 
@@ -210,9 +192,11 @@ CREATE TABLE `msrt` (
 --
 
 INSERT INTO `msrt` (`id_rt`, `id_rw`, `nik_ketuart`, `nama_rt`) VALUES
+('1', '9', '3741554', 'Dionisius'),
 ('4', '8', '456789123', 'Cheryl Almeira'),
 ('5', '8', '12345678900', 'Zulkifli'),
-('6', '8', '3741520', 'Suhartini');
+('6', '8', '3741520', 'Suhartini'),
+('7', '8', '3534342493434', 'Luki');
 
 -- --------------------------------------------------------
 
@@ -285,10 +269,7 @@ CREATE TABLE `pelaporan` (
 --
 
 INSERT INTO `pelaporan` (`id_pelaporan`, `nik`, `id_rt`, `id_rw`, `kategori`, `keterangan`, `tanggal_pelaporan`, `status`, `alasan`) VALUES
-('LPR61af1ceacf32d', '123456789', '4', '8', 'Tata Tertib', 'Mohon agar segera ditindaklanjuti', '2021-12-07', 'Pending', ''),
-('LPR61cbee8966699', '123456789', '4', '8', 'Parkir sembarangan', 'ada orang parkir sembarangan', '2021-12-29', 'Pending', '-'),
-('LPR61cbeee5b1d71', '123456789', '4', '8', 'apapap', 'lpapaap', '2021-12-29', 'Pending', '-'),
-('LPR61cbef3c5da25', '123456789', '4', '8', 'Tata Tertib', 'Mohon agar segera ditindaklanjuti', '2021-12-29', 'Pending', '-');
+('LPR61f32ed6e7caa', '321654987', '5', '8', 'Sarana dan Prasarana', 'Hadir ', '2022-01-28', 'Pending', '');
 
 -- --------------------------------------------------------
 
@@ -378,9 +359,7 @@ CREATE TABLE `pengumuman` (
 --
 
 INSERT INTO `pengumuman` (`id`, `pengumuman`, `isi`, `tanggal`, `id_rt`, `id_rw`, `pengirim`) VALUES
-('A975541', 'Penertiban Parkir Liar Warga', 'Dimohon bagi warga RT 4 RW 8 untuk tidak memarkirkan kendaraannya di tepi jalan umum.', '2021-12-04', '5', '8', 'Kepala RW 8 - Andru Baskara Putra'),
-('PNG61b5099b70d8e', 'Himbauan Masyarakat', 'Berjaga jaga dengan COVID-19', '2021-12-11', '4', '8', 'Hanustavira Guru Acarya'),
-('PNG61c73424c4190', 'Jalan Berlubang', 'Dimohon bagi para pengguna jalan desa agar berhati hati saat berkendara', '2021-12-25', '4', '8', 'Hanustavira Guru Acarya');
+('PNG61f338c370c6e', 'Bayar Keamanan dan Ketertiban', 'Hati hati ada hajatan', '2022-01-28', '4', '8', 'Hanustavira Guru Acarya');
 
 -- --------------------------------------------------------
 
@@ -407,13 +386,7 @@ CREATE TABLE `suratketerangan` (
 --
 
 INSERT INTO `suratketerangan` (`no_surat`, `nik`, `id_rt`, `id_rw`, `jenis`, `keperluan`, `tanggal_pengajuan`, `tujuan`, `keterangan`, `status`, `alasan`) VALUES
-('A98EDB', '123456789', '4', '8', '', 'Pengurusan Izin Usaha', '2021-10-13', '', 'Dibutuhkan mendesak', 'Terverifikasi', ''),
-('SRT61af1997e721a', '321654999', '4', '8', 'Surat Keterangan Belum Menikah', 'Pengurusan Surat Kerja', '2021-12-07', '', 'Dibutuhkan Mendesak', 'Pending', '-'),
-('SRT61af46c62d2da', '321654999', '4', '8', 'Surat Keterangan Penghasilan', 'Pengurusan Beasiswa', '2021-12-07', '', 'Dibutuhkan Mendesak', 'Pending', '-'),
-('SRT61cbeeacba857', '321654987', '5', '8', 'Surat Pengantar KTP', 'Test', '2021-12-29', '', 'Test', 'Pending', 'Tidak Diketahui'),
-('SRT61e4e8fd8b787', '321654987', '5', '8', 'Surat Keterangan Penghasilan', 'Test', '2022-01-17', 'Keberangkatan ke luar negeri', 'Hadir', 'Pending', 'Tidak Diketahui'),
-('SRT61e4e9d321c99', '321654987', '5', '8', 'Surat Keterangan Pindah Masuk', 'Keberangkatan ke luar negeri', '2022-01-17', 'Keberangkatan ke luar negeri', 'Hadir', 'Pending', 'Tidak Diketahui'),
-('SRT61e4ec35210b5', '321654987', '5', '8', 'Surat Keterangan Penghasilan', 'Mancing di sawah', '2022-01-17', 'Mancing di sawah', 'Hadir', 'Pending', 'Tidak Diketahui');
+('SRT61f2592130e18', '321654987', '5', '8', 'Surat Keterangan Penghasilan', 'Keberangkatan ke luar negeri', '2022-01-27', 'Mancing di sawah', 'Hadir', 'Terverifikasi', '');
 
 -- --------------------------------------------------------
 
@@ -440,22 +413,7 @@ CREATE TABLE `tagihan` (
 --
 
 INSERT INTO `tagihan` (`id_tagihan`, `nik`, `id_rt`, `id_rw`, `jenis_tagihan`, `total_tagihan`, `jatuh_tempo`, `status_pembayaran`, `rekening`, `bukti_pembayaran`, `tanggal_pembayaran`) VALUES
-('2', '987456321', '4', '8', 'Kebersihan', 100000, '2021-10-17', 'Paid', '555555', 'null', '2021-10-18'),
-('SRT61b60297baa51', '123456789', '4', '8', 'Bayar Parkir', 150000, '2021-12-31', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61baf13fc92fd', '123456789', '4', '8', 'Bayar Parkir', 150000, '2021-12-16', 'Unpaid', 'BCA : 1234567', '-', '0000-00-00'),
-('SRT61bc7e8554a3c', '123456789', '4', '8', 'Uang Keamanan', 50000, '2021-12-29', 'Unpaid', 'BCA : 1234567', '-', '0000-00-00'),
-('SRT61bc8264282a5', '123456789', '4', '8', 'Bayar Keamanan dan Ketertiban', 150000, '2021-12-23', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61bd6a1a81410', '123456789', '4', '8', '', 1000, '2021-12-20', 'Unpaid', '111111111111', '-', '0000-00-00'),
-('SRT61be97fd79813', '0087964', 'Tidak Diketahui', 'Tidak Diketahui', 'Bayar Parkir', 25000, '2021-12-22', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61be99f374333', '12345678900', 'Tidak Diketahui', 'Tidak Diketahui', 'Bayar Keamanan dan Ketertiban', 25000, '2021-12-24', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61be9c44ea997', '35794510335481', '4', '9', 'Bayar Tagihan Air', 50000, '1970-01-01', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61be9c95bf85f', '3534342493436', 'Tidak Diketahui', 'Tidak Diketahui', 'Bayar Tagihan Air', 150000, '0000-00-00', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61be9cc18938f', '0087964', 'Tidak Diketahui', 'Tidak Diketahui', 'Iuran Listrik', 25000, '2021-12-23', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61be9d0932f9b', '222333666', '4', '8', 'Iuran Hajatan', 560000, '2021-12-31', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('SRT61be9d421e329', '654987321', '4', '8', 'Iuran Kematian', 560000, '0000-00-00', 'Unpaid', '00039147791', '-', '0000-00-00'),
-('TGHN61b2228ee549c', '123456789', '4', '8', 'Keamanan', 500000, '2021-10-01', 'Paid', '444444', '61b2228ee56a3_123456789.png', '2021-10-07'),
-('TGHN61c733be14a3c', '0087964', 'Tidak Diketahui', 'Tidak Diketahui', 'Bayar Tagihan Air', 153000, '2021-12-29', 'Unpaid', '00039147791', '-', '2021-12-25'),
-('TGHN61c733e95d6f9', '123456789', '4', '8', 'Uang Keamanan', 25000, '2022-01-01', 'Unpaid', '00039147791', '-', '2021-12-25');
+('TGHN61f329af94a17', '321654987', '5', '8', 'Bayar Tagihan Air', 153000, '2022-01-31', 'Paid', 'BCA : 1234567', '61f3d0204116f_321654987.jpg', '2022-01-28');
 
 --
 -- Indexes for dumped tables
