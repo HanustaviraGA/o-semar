@@ -16,17 +16,22 @@
             $prefix = 'TGHN';
             $uniqid = uniqid($prefix);
             // Cek Nama Penduduk
-            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
-            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
-            $data_nama = mysqli_fetch_array($query_nama);
+            $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
+            $nama->bind_param('s', $nik);
+            $nama->execute();
+            $nama2 = $nama->get_result();
+            $data_nama = $nama2->fetch_assoc();
             $nama_penduduk = $data_nama['nama'];
             $rt_penduduk = $data_nama['id_rt'];
             $rw_penduduk = $data_nama['id_rw'];
             // Eksekusi
-            $sql = "INSERT INTO tagihan(id_tagihan, nik, id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, rekening, bukti_pembayaran) 
-            VALUES ('$uniqid', '$nik', '$rt_penduduk', '$rw_penduduk', '$perihal', $nominal, '$tanggal', 'Unpaid', '$rekening', '-')";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $sql = $koneksi->prepare("INSERT INTO tagihan(id_tagihan, nik, id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, rekening, bukti_pembayaran) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $unpaid = 'Unpaid';
+            $strip = '-';
+            $sql->bind_param('ssssssssss', $uniqid, $nik, $rt_penduduk, $rw_penduduk, $perihal, $nominal, $tanggal, $unpaid, $rekening, $strip);
+            $query = $sql->execute();
+            if($query == true){
                 header("Location: ../views/iuran/index?pesan=sukses");
                 exit;
             }else{
@@ -36,10 +41,25 @@
             break;
         case 'verifikasi_iuran' :
             $id = $data['id'];
-            $new = "Terverifikasi";
-            $sql = "UPDATE iuran SET status='$new', catatan='' WHERE id='$id'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $id_lampiran = $data['lampiran'];
+            $paid = 'Paid';
+            $status_lampiran = 'Telah Diperiksa';
+            // Tabel tagihan
+            $sql = $koneksi->prepare("UPDATE tagihan SET status_pembayaran=? WHERE id_tagihan=?");
+            $sql->bind_param('ss', $paid, $id);
+            $sql_status = $sql->execute();
+            // Tabel lampiran
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $paid, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $paid, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+
+            if($sql_status == true && $sql_lampiran_status == true){
                 header("Location: ../views/iuran/index?pesan=sukses");
                 exit;
             }else{
@@ -49,16 +69,77 @@
             break;
         case 'tolak_iuran':
             $id = $data['id'];
-            $new = "Ditolak";
+            $id_lampiran = $data['lampiran'];
             $catatan = $data['alasan'];
-            $sql = "UPDATE iuran SET status='$new', catatan='$catatan' WHERE id='$id'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $unpaid = 'Unpaid';
+            // Tabel tagihan
+            $sql = $koneksi->prepare("UPDATE tagihan SET status_pembayaran=? WHERE id_tagihan=?");
+            $sql->bind_param('ss', $unpaid, $id);
+            $sql_status = $sql->execute();
+            // Tabel lampiran
+            $status_lampiran = 'Telah Diperiksa';
+            // Tabel lampiran
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+
+            if($sql_status == true && $sql_lampiran_status == true){
                 header("Location: ../views/iuran/index?pesan=sukses");
                 exit;
             }else{
                 header("Location: ../views/iuran/index?pesan=gagal");
                 exit;
+            }
+            break;
+        case 'bayar_iuran':
+            if(isset($_POST['submit'])){
+                $id = $_POST['id'];
+                $nik = $_SESSION['nik'];
+                $tanggal = date("Y-m-d");
+                $prefix = 'TGHN';
+                $uniqid = uniqid($prefix);
+                if(isset($_FILES["files"]) && !empty($_FILES["files"]["name"])){
+                    foreach($_FILES['files']['tmp_name'] as $key => $tmp_name ){
+                        $file_name = $key.$_FILES['files']['name'][$key];
+                        $file_size =$_FILES['files']['size'][$key];
+                        $file_tmp =$_FILES['files']['tmp_name'][$key];
+                        $file_type=$_FILES['files']['type'][$key];
+                        
+                        $original_filename = $_FILES['files']['name'][$key];
+                        $ext = strtolower(pathinfo($_FILES["files"]["name"][$key], PATHINFO_EXTENSION));
+                        // check extension and upload
+                        if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp'))) {
+                            $filename_without_ext = basename($original_filename, '.'.$ext);
+                            $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
+                            move_uploaded_file($file_tmp,'../berkas/iuran/'.$new_filename);
+                            // Masuk Lampiran
+                            $sql = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                            VALUES(?, ?, ?, ?, ?, ?, ?)");
+                            $jenis_lampiran = 'Pembayaran Tagihan';
+                            $tipe_status = 'Pending';
+                            $strip = '-';
+                            $sql->bind_param('sssssss', $nik, $id, $new_filename, $jenis_lampiran, $tanggal, $tipe_status, $strip);
+                            $sql_lampiran = $sql->execute();
+                            $sql2 = $koneksi->prepare("UPDATE tagihan SET bukti_pembayaran = ? WHERE id_tagihan = ?");
+                            $sql2->bind_param('ss', $new_filename, $id);
+                            $sql_tagihan = $sql2->execute();
+                            header("Location: ../views/iuran/index?pesan=sukses");
+                        }
+                        else{
+                            header("Location: ../views/iuran/index?pesan=ekstensi");
+                        }
+                    }
+                }else{
+                    header("Location: ../views/iuran/index?pesan=nofile");
+                }
+            }else{
+                header("Location: ../views/iuran/index?pesan=error");
             }
             break;
         // Laporan
@@ -92,12 +173,17 @@
                             $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
                             move_uploaded_file($file_tmp,'../berkas/laporan/'.$new_filename);
                             // Masuk Lampiran
-                            $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                            VALUES('$nik', '$uniqid', '$new_filename', 'Laporan Masyarakat', '$tanggal', 'Pending', '-')";
-                            $query = mysqli_query($koneksi, $sql);
-                            $sql_pelaporan = "INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
-                            VALUES ('$uniqid', '$nik', '$rt', '$rw', '$kategori', '$keterangan', '$tanggal', 'Pending')";
-                            $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
+                            $sql = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                            VALUES(?, ?, ?, ?, ?, ?, ?)");
+                            $jenis_lampiran = 'Laporan Masyarakat';
+                            $tipe_status = 'Pending';
+                            $strip = '-';
+                            $sql->bind_param('sssssss', $nik, $uniqid, $new_filename, $jenis_lampiran, $tanggal, $tipe_status, $strip);
+                            $sql_lampiran = $sql->execute();
+                            $sql2 = $koneksi->prepare("INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                            $sql2->bind_param('ssssssss', $uniqid, $nik, $rt, $rw, $kategori, $keterangan, $tanggal, $tipe_status);
+                            $sql_laporan = $sql2->execute();
                             header("Location: ../views/laporan/index?pesan=sukses");
                         }
                         else{
@@ -105,9 +191,69 @@
                         }
                     }
                 }else{
-                    
+                    header("Location: ../views/laporan/index?pesan=nofile");
                 }
+            }else{
+                header("Location: ../views/laporan/index?pesan=gagal");
             }                  
+            break;
+        case 'verifikasi_laporan':
+            $id = $data['id'];
+            $id_lampiran = $data['lampiran'];
+            $catatan = $data['alasan'];
+            $verified = 'Terverifikasi';
+            $status_lampiran = 'Telah Diperiksa';
+            // Tabel tagihan
+            $sql = $koneksi->prepare("UPDATE pelaporan SET status=?, alasan=? WHERE id_pelaporan=?");
+            $sql->bind_param('sss', $verified, $catatan, $id);
+            $sql_status = $sql->execute();
+            // Tabel lampiran
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+
+            if($sql_status == true && $sql_lampiran_status == true){
+                header("Location: ../views/laporan/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/laporan/index?pesan=gagal");
+                exit;
+            }
+            break;
+        case 'tolak_laporan':
+            $id = $data['id'];
+            $id_lampiran = $data['lampiran'];
+            $catatan = $data['alasan'];
+            $verified = 'Pending';
+            $status_lampiran = 'Telah Diperiksa';
+            // Tabel tagihan
+            $sql = $koneksi->prepare("UPDATE pelaporan SET status=?, alasan=? WHERE id_pelaporan=?");
+            $sql->bind_param('sss', $verified, $catatan, $id);
+            $sql_status = $sql->execute();
+            // Tabel lampiran
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+
+            if($sql_status == true && $sql_lampiran_status == true){
+                header("Location: ../views/laporan/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/laporan/index?pesan=gagal");
+                exit;
+            }
             break;
         // Pengumuman
         case 'tambah_pengumuman':
@@ -133,15 +279,19 @@
                         // check extension and upload
                         if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'))) {
                             $filename_without_ext = basename($original_filename, '.'.$ext);
-                            $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
-                            move_uploaded_file($file_tmp,'../berkas/pengumuman'.$new_filename);
+                            $new_filename = $uniqid .  '_' . $nik . '.' . $ext;
+                            move_uploaded_file($file_tmp,'../berkas/pengumuman/'.$new_filename);
                             // Masuk Lampiran
-                            $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                            VALUES('$nik', '$uniqid', '$new_filename', 'Pengumuman Warga', '$tanggal', 'Pending', '-')";
-                            $query = mysqli_query($koneksi, $sql);
-                            $sql_pelaporan = "INSERT INTO pengumuman(id, pengumuman, isi, tanggal, id_rt, id_rw, pengirim)
-                            VALUES ('$uniqid', '$perihal', '$keterangan', '$tanggal', '$rt', '$rw', '$nama')";
-                            $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
+                            $sql = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                            VALUES(?, ?, ?, ?, ?, ?, ?)");
+                            $jenis_lampiran = 'Pengumuman Warga';
+                            $strip = '-';
+                            $sql->bind_param('sssssss', $nik, $uniqid, $new_filename, $jenis_lampiran, $tanggal, $strip, $strip);
+                            $sql_lampiran = $sql->execute();
+                            $sql_pengumuman = $koneksi->prepare("INSERT INTO pengumuman(id, pengumuman, isi, tanggal, id_rt, id_rw, pengirim)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)");
+                            $sql_pengumuman->bind_param('sssssss', $uniqid, $perihal, $keterangan, $tanggal, $rt, $rw, $nama);
+                            $sql_pengumuman_status = $sql_pengumuman->execute();
                             header("Location: ../views/pengumuman/index?pesan=sukses");
                         }
                         else{
@@ -149,8 +299,10 @@
                         }
                     }
                 }else{
-                    
+                    header("Location: ../views/pengumuman/index?pesan=file");
                 }
+            }else{
+                header("Location: ../views/pengumuman/index?pesan=gagal");
             }                  
             break;
         // Super
@@ -160,39 +312,49 @@
             $kabkota = $data['kabkota'];
             $kecamatan = $data['kecamatan'];
             $kelurahan = $data['desa_kelurahan'];
-            // Nama Wilayah
-            $nama_provinsi = "SELECT * FROM msprovinsi WHERE id_provinsi='$provinsi'";
-            $nama_kabkota = "SELECT * FROM mskabkota WHERE id_kabkota='$kabkota'";
-            $nama_kecamatan = "SELECT * FROM mskecamatan WHERE id_kecamatan='$kecamatan'";
-            $nama_kelurahan = "SELECT * FROM mskelurahan WHERE id_kelurahan='$kelurahan'";
-
-            $query_provinsi = mysqli_query($koneksi, $nama_provinsi) or die(mysqli_error($koneksi));
-            $query_kabkota = mysqli_query($koneksi, $nama_kabkota) or die(mysqli_error($koneksi));
-            $query_kecamatan = mysqli_query($koneksi, $nama_kecamatan) or die(mysqli_error($koneksi));
-            $query_kelurahan = mysqli_query($koneksi, $nama_kelurahan) or die(mysqli_error($koneksi));
-
-            $dataProvinsi = mysqli_fetch_array($query_provinsi);
-            $dataKabkota = mysqli_fetch_array($query_kabkota);
-            $dataKecamatan = mysqli_fetch_array($query_kecamatan);
-            $dataKelurahan = mysqli_fetch_array($query_kelurahan);
-
+            // Nama Provinsi
+            $nama_provinsi = $koneksi->prepare("SELECT * FROM msprovinsi WHERE id_provinsi=?");
+            $nama_provinsi->bind_param('s', $provinsi);
+            $nama_provinsi->execute();
+            $nama_provinsi2 = $nama_provinsi->get_result();
+            $dataProvinsi = $nama_provinsi2->fetch_assoc();
             $currentProv = $dataProvinsi['nama_provinsi'];
+            // Nama Kabkota
+            $nama_kabkota = $koneksi->prepare("SELECT * FROM mskabkota WHERE id_kabkota=?");
+            $nama_kabkota->bind_param('s', $kabkota);
+            $nama_kabkota->execute();
+            $nama_kabkota2 = $nama_kabkota->get_result();
+            $dataKabkota = $nama_kabkota2->fetch_assoc();
             $currentKota = $dataKabkota['nama_kabkota'];
+            // Nama Kecamatan
+            $nama_kecamatan = $koneksi->prepare("SELECT * FROM mskecamatan WHERE id_kecamatan=?");
+            $nama_kecamatan->bind_param('s', $kecamatan);
+            $nama_kecamatan->execute();
+            $nama_kecamatan2 = $nama_kecamatan->get_result();
+            $dataKecamatan = $nama_kecamatan2->fetch_assoc();
             $currentKec = $dataKecamatan['nama_kecamatan'];
+            // Nama Kelurahan
+            $nama_kelurahan = $koneksi->prepare("SELECT * FROM mskelurahan WHERE id_kelurahan=?");
+            $nama_kelurahan->bind_param('s', $kelurahan);
+            $nama_kelurahan->execute();
+            $nama_kelurahan2 = $nama_kelurahan->get_result();
+            $dataKelurahan = $nama_kelurahan2->fetch_assoc();
             $currentKel = $dataKelurahan['nama_kelurahan'];
-
-            $sql = "UPDATE mssettings SET 
-            id_provinsi='$provinsi',
-            nama_provinsi='$currentProv', 
-            id_kabkota='$kabkota',
-            nama_kabkota='$currentKota', 
-            id_kecamatan='$kecamatan',
-            nama_kecamatan='$currentKec', 
-            id_kelurahan='$kelurahan',
-            nama_kelurahan='$currentKel' 
-            WHERE identifier='1'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            // Set
+            $sql = $koneksi->prepare("UPDATE mssettings SET 
+            id_provinsi=?, 
+            nama_provinsi=?, 
+            id_kabkota=?,
+            nama_kabkota=?,
+            id_kecamatan=?,
+            nama_kecamatan=?,
+            id_kelurahan=?,
+            nama_kelurahan=?
+            WHERE identifier=?");
+            $satu = '1';
+            $sql->bind_param('sssssssss', $provinsi, $currentProv, $kabkota, $currentKota, $kecamatan, $currentKec, $kelurahan, $currentKel, $satu);
+            $query = $sql->execute();
+            if($query == true){
                 header("Location: ../views/super/pengaturan.php?pesan=sukses");
                 exit;
             }else{
@@ -205,14 +367,17 @@
             $rw = $data['rw'];
             $nik = $data['nik'];
             // Cek Nama Pejabat
-            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
-            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
-            $data_nama = mysqli_fetch_array($query_nama);
+            $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
+            $nama->bind_param('s', $nik);
+            $nama->execute();
+            $nama2 = $nama->get_result();
+            $data_nama = $nama2->fetch_assoc();
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = "INSERT INTO msrt (id_rt, id_rw, nik_ketuart, nama_rt) VALUES ('$rt', '$rw', '$nik', '$nama_pejabat')";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $sql = $koneksi->prepare("INSERT INTO msrt (id_rt, id_rw, nik_ketuart, nama_rt) VALUES (?, ?, ?, ?)");
+            $sql->bind_param('ssss', $rt, $rw, $nik, $nama_pejabat);
+            $query = $sql->execute();
+            if($query == true){
                 header("Location: ../views/super/list_rt?pesan=sukses");
                 exit;
             }else{
@@ -224,14 +389,17 @@
             $rt = $data['id_rt'];
             $nik = $data['nik'];
             // Cek Nama Pejabat
-            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
-            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
-            $data_nama = mysqli_fetch_array($query_nama);
+            $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
+            $nama->bind_param('s', $nik);
+            $nama->execute();
+            $nama2 = $nama->get_result();
+            $data_nama = $nama2->fetch_assoc(); 
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = "UPDATE msrt SET nik_ketuart='$nik', nama_rt='$nama_pejabat' WHERE id_rt='$rt'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $sql = $koneksi->prepare("UPDATE msrt SET nik_ketuart=?, nama_rt=? WHERE id_rt=?");
+            $sql->bind_param('sss', $nik, $nama_pejabat, $rt);
+            $query = $sql->execute();
+            if($query == true){
                 header("Location: ../views/super/list_rt?pesan=sukses");
                 exit;
             }else{
@@ -244,14 +412,17 @@
             $kelurahan = $data['kelurahan'];
             $nik = $data['nik'];
             // Cek Nama Pejabat
-            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
-            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
-            $data_nama = mysqli_fetch_array($query_nama);
+            $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
+            $nama->bind_param('s', $nik);
+            $nama->execute();
+            $nama2 = $nama->get_result();
+            $data_nama = $nama2->fetch_assoc();
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = "INSERT INTO msrw(id_rw, id_kelurahan, nik_ketuarw, nama_rw) VALUES ('$rw', '$kelurahan', '$nik', '$nama_pejabat')";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $sql = $koneksi->prepare("INSERT INTO msrw(id_rw, id_kelurahan, nik_ketuarw, nama_rw) VALUES (?, ?, ?, ?)");
+            $sql->bind_param('ssss', $rw, $kelurahan, $nik, $nama_pejabat);
+            $query = $sql->execute();
+            if($query == true){
                 header("Location: ../views/super/list_rw?pesan=sukses");
                 exit;
             }else{
@@ -263,14 +434,17 @@
             $rw = $data['id_rw'];
             $nik = $data['nik'];
             // Cek Nama Pejabat
-            $nama = "SELECT * FROM penduduk WHERE nik='$nik'";
-            $query_nama = mysqli_query($koneksi, $nama) or die(mysqli_error($koneksi));
-            $data_nama = mysqli_fetch_array($query_nama);
+            $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
+            $nama->bind_param('s', $nik);
+            $nama->execute();
+            $nama2 = $nama->get_result();
+            $data_nama = $nama2->fetch_assoc(); 
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = "UPDATE msrw SET nik_ketuarw='$nik', nama_rw='$nama_pejabat' WHERE id_rw='$rw'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $sql = $koneksi->prepare("UPDATE msrw SET nik_ketuarw=?, nama_rw=? WHERE id_rw=?");
+            $sql->bind_param('sss', $nik, $nama_pejabat, $rw);
+            $query = $sql->execute();
+            if($query == true){
                 header("Location: ../views/super/list_rw?pesan=sukses");
                 exit;
             }else{
@@ -311,30 +485,52 @@
                             $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
                             move_uploaded_file($file_tmp,'../berkas/surat/'.$new_filename);
                             // Masuk Lampiran
-                            $sql = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                            VALUES('$nik', '$uniqid', '$new_filename', 'Pengajuan Surat', '$tanggal', 'Pending', '-')";
-                            $query = mysqli_query($koneksi, $sql);
-                            $sql_pelaporan = "INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, tujuan, keterangan, status)
-                            VALUES ('$uniqid', '$nik', '$rt', '$rw', '$jenis', '$keperluan', '$tanggal', '$tujuan', '$keterangan', 'Pending')";
-                            $query_pelaporan = mysqli_query($koneksi, $sql_pelaporan);
+                            $sql = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                            VALUES(?, ?, ?, ?, ?, ?, ?)");
+                            $jenis_lampiran = 'Pengajuan Surat';
+                            $tipe_status = 'Pending';
+                            $strip = '-';
+                            $sql->bind_param('sssssss', $nik, $uniqid, $new_filename, $jenis_lampiran, $tanggal, $tipe_status, $strip);
+                            $sql_lampiran = $sql->execute();
+                            $sql_surat = $koneksi->prepare("INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, tujuan, keterangan, status)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            $sql_surat->bind_param('ssssssssss', $uniqid, $nik, $rt, $rw, $jenis, $keperluan, $tanggal, $tujuan, $keterangan, $tipe_status);
+                            $sql_surat->execute();
                             header("Location: ../views/surat/index?sukses=sukses");
                         }
                         else{
-                            header("Location: ../views/surat/index?pesan=gagal");
+                            header("Location: ../views/surat/index?pesan=ekstensi");
                         }
                     }
                 }else{
-                    
+                    header("Location: ../views/surat/index?pesan=file");
                 }
                 
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
             }                  
             break;
         case 'verifikasi_surat' :
             $id = $data['id'];
+            $id_lampiran = $data['lampiran'];
             $new = "Terverifikasi";
-            $sql = "UPDATE suratketerangan SET status='$new', alasan='' WHERE no_surat='$id'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $empty = ' ';
+            $status_lampiran = 'Telah Diperiksa';
+            // Tabel pelaporan
+            $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, alasan=? WHERE no_surat=?");
+            $sql->bind_param('sss', $new, $catatan, $id);
+            $sql_status = $sql->execute();
+            // Tabel lampiran
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+            if($sql_status == true && $sql_lampiran_status == true){
                 header("Location: ../views/surat/index?pesan=sukses");
                 exit;
             }else{
@@ -344,11 +540,25 @@
             break;
         case 'tolak_surat':
             $id = $data['id'];
+            $id_lampiran = $data['lampiran'];
             $new = "Ditolak";
             $catatan = $data['alasan'];
-            $sql = "UPDATE suratketerangan SET status='$new', alasan='$catatan' WHERE no_surat='$id'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $status_lampiran = 'Telah Diperiksa';
+            // Tabel suratketerangan
+            $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, alasan=? WHERE no_surat=?");
+            $sql->bind_param('sss', $new, $catatan, $id);
+            $query = $sql->execute();
+            // Tabel lampiran
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+            if($query == true && $sql_lampiran_status == true){
                 header("Location: ../views/surat/index?pesan=sukses");
                 exit;
             }else{
@@ -358,9 +568,10 @@
             break;
         case 'hapus_surat' :
             $id = $data['id'];
-            $sql = "DELETE FROM suratketerangan WHERE no_surat='$id'";
-            $query = mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
-            if($query){
+            $sql = $koneksi->prepare("DELETE FROM suratketerangan WHERE no_surat=?");
+            $sql->bind_param('s', $id);
+            $query = $sql->execute();
+            if($query == true){
                 header("Location: ../views/surat/index?pesan=sukses");
                 exit;
             }else{
@@ -375,15 +586,18 @@
             $pdf->AddPage();
 
             $id = $_GET['id'];
-            $sql = "SELECT * FROM tagihan WHERE id_tagihan='$id'";
-            $result = mysqli_query($koneksi, $sql);
-            $identifikasi = mysqli_fetch_array($result);
+            $sql = $koneksi->prepare("SELECT * FROM tagihan WHERE id_tagihan=?");
+            $sql->bind_param('s', $id);
+            $sql->execute();
+            $sql2 = $sql->get_result();
+            $identifikasi = $sql2->fetch_assoc();
             // Cek Nama
             $cek_nik = $identifikasi['nik'];
-            $nama = "SELECT nama, alamat FROM penduduk WHERE nik='$cek_nik'";
-            $result_nama = mysqli_query($koneksi, $nama);
-            $identifikasi_nama = mysqli_fetch_array($result_nama);
-
+            $nama = $koneksi->prepare("SELECT nama, alamat FROM penduduk WHERE nik=?");
+            $nama->bind_param('s', $cek_nik);
+            $nama->execute();
+            $nama2 = $nama->get_result();
+            $identifikasi_nama = $nama2->fetch_assoc();
             $nomor = $identifikasi['id_tagihan'];
             $nama = $identifikasi_nama['nama'];
             $alamat = $identifikasi_nama['alamat'];
@@ -430,9 +644,12 @@
                 $pdf->Output('F', '../berkas/iuran/' . $filename, true);
                 $pdf->Output();
                 // Masuk daftar lampiran
-                $lampiran = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
-                VALUES ('$cek_nik', '$id', '$filename', 'Pembayaran Tagihan', '$date', '$status', '-')";
-                $exec_lampiran = mysqli_query($koneksi, $lampiran);
+                $lampiran = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
+                VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $jenis_lampiran = 'Pembayaran Tagihan';
+                $strip = '-';
+                $lampiran->bind_param('sssssss', $cek_nik, $id, $filename, $jenis_lampiran, $date, $status, $strip);
+                $lampiran->execute();
                 
             }else if($status == 'Paid'){
                 $tanggal = $identifikasi['tanggal_pembayaran'];
@@ -454,9 +671,12 @@
                 $pdf->Output('F', '../berkas/iuran/' . $filename, true);
                 $pdf->Output();
                 // Masuk daftar lampiran
-                $lampiran = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
-                VALUES ('$cek_nik', '$id', '$filename', 'Pembayaran Tagihan', '$date', '$status', '-')";
-                $exec_lampiran = mysqli_query($koneksi, $lampiran);
+                $lampiran = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
+                VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $jenis_lampiran = 'Pembayaran Tagihan';
+                $strip = '-';
+                $lampiran->bind_param('sssssss', $cek_nik, $id, $filename, $jenis_lampiran, $date, $status, $strip);
+                $lampiran->execute();
             }
             break;
         case 'create_pdf_surat':
@@ -466,26 +686,33 @@
             $pdf->AddPage();
 
             $id = $_GET['id'];
-            $sql = "SELECT * FROM suratketerangan WHERE no_surat='$id'";
-            $result = mysqli_query($koneksi, $sql);
-            $identifikasi = mysqli_fetch_array($result);
+            $sql = $koneksi->prepare("SELECT * FROM suratketerangan WHERE no_surat=?");
+            $sql->bind_param('s', $id);
+            $sql->execute();
+            $sql2 = $sql->get_result();
+            $identifikasi = $sql2->fetch_assoc();
             // Cek Nama
             $cek_nik = $identifikasi['nik'];
-            $nama = "SELECT nama, alamat, pekerjaan, jenis_kelamin, tempat_lahir, 
+            $nama = $koneksi->prepare("SELECT nama, alamat, pekerjaan, jenis_kelamin, tempat_lahir, 
             tanggal_lahir, status_perkawinan, kewarganegaraan, no_kk, agama 
-            FROM penduduk WHERE nik='$cek_nik'";
-            $result_nama = mysqli_query($koneksi, $nama);
-            $identifikasi_nama = mysqli_fetch_array($result_nama);
+            FROM penduduk WHERE nik=?");
+            $nama->bind_param('s', $cek_nik);
+            $nama->execute();
+            $nama2 = $nama->get_result();
+            $identifikasi_nama = $nama2->fetch_assoc();
 
             // Ketua RT dan rw
-            $nama_ketua = "SELECT nama_rt, nama_rw FROM msrt INNER JOIN msrw WHERE msrt.id_rt = '$identifikasi[id_rt]' AND msrw.id_rw = '$identifikasi[id_rw]'";
-            $exec_ketua = mysqli_query($koneksi, $nama_ketua);
-            $fetch_ketua = mysqli_fetch_array($exec_ketua);
+            $nama_ketua = $koneksi->prepare("SELECT nama_rt, nama_rw FROM msrt INNER JOIN msrw WHERE msrt.id_rt = ? AND msrw.id_rw = ?");
+            $nama_ketua->bind_param('ss', $identifikasi['id_rt'], $identifikasi['id_rw']);
+            $nama_ketua->execute();
+            $nama_ketua2 = $nama_ketua->get_result();
+            $fetch_ketua = $nama_ketua2->fetch_assoc();
 
             // Mssetting
-            $nama_daerah = "SELECT * FROM mssettings";
-            $exec_daerah = mysqli_query($koneksi, $nama_daerah);
-            $fetch_daerah = mysqli_fetch_array($exec_daerah);
+            $nama_daerah = $koneksi->prepare("SELECT * FROM mssettings");
+            $nama_daerah->execute();
+            $nama_daerah2 = $nama_daerah->get_result();
+            $fetch_daerah = $nama_daerah2->fetch_assoc();
             $daerah = strtoupper($fetch_daerah['nama_kelurahan']);
             $id_provinsi_no = $fetch_daerah['id_provinsi'];
             $id_kabkota_no = $fetch_daerah['id_kabkota'];
@@ -605,12 +832,15 @@
             // File
             $date = date('Y-m-d');
             $filename=$id.'_'.$cek_nik.'.pdf';
-            $pdf->Output('F', '../berkas/iuran/' . $filename, true);
+            $pdf->Output('F', '../berkas/surat/' . $filename, true);
             $pdf->Output();
             // Masuk daftar lampiran
-            $lampiran = "INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
-            VALUES ('$cek_nik', '$id', '$filename', 'Pembayaran Tagihan', '$date', '$status', '-')";
-            $exec_lampiran = mysqli_query($koneksi, $lampiran);
+            $lampiran = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran)
+            VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $jenis_lampiran = 'Pengajuan Surat';
+            $strip = 'Surat Pengantar/Keterangan';
+            $lampiran->bind_param('sssssss', $cek_nik, $id, $filename, $jenis_lampiran, $date, $status, $strip);
+            $lampiran->execute();
             break;
         default:
         echo 'gk masuk';

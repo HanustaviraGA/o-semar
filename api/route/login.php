@@ -61,6 +61,7 @@ function login()
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];
                         $_SESSION['no_kk'] = $identitas['no_kk'];
+                        $_SESSION['alamat'] = $identitas['alamat'];
                         $_SESSION['rt'] = $identitas['id_rt'];
                         $_SESSION['rw'] = $identitas['id_rw'];
                         $_SESSION['keadaan'] = "sudah_login_rt";
@@ -110,6 +111,7 @@ function login()
                         $_SESSION['nama_admin'] = $identitas['nama'];
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];
+                        $_SESSION['alamat'] = $identitas['alamat'];
                         $_SESSION['no_kk'] = $identitas['no_kk'];
                         $_SESSION['rt'] = $identitas['id_rt'];
                         $_SESSION['rw'] = $identitas['id_rw'];
@@ -160,6 +162,7 @@ function login()
                         $_SESSION['nama_admin'] = $identitas['nama'];
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];
+                        $_SESSION['alamat'] = $identitas['alamat'];
                         $_SESSION['no_kk'] = $identitas['no_kk'];
                         $_SESSION['rt'] = $identitas['id_rt'];
                         $_SESSION['rw'] = $identitas['id_rw'];
@@ -210,6 +213,7 @@ function login()
                         $_SESSION['nama_admin'] = $identitas['nama'];
                         $_SESSION['user_admin'] = $identitas['username'];
                         $_SESSION['nik'] = $identitas['nik'];
+                        $_SESSION['alamat'] = $identitas['alamat'];
                         $_SESSION['no_kk'] = $identitas['no_kk'];
                         $_SESSION['rt'] = $identitas['id_rt'];
                         $_SESSION['rw'] = $identitas['id_rw'];
@@ -259,7 +263,7 @@ function login()
                     }
                 } else {
                     if ($filter == 1) {
-                        header("Location: ../admin/views/login?pesan=Data tidak ditemukan !");
+                        header("Location: ../admin/views/login?pesan=gagal");
                     } else if ($filter == 0) {
                         $response = generate_response(2, 'Data tidak ditemukan');
                         header("HTTP/ 500");
@@ -270,7 +274,7 @@ function login()
                 }
             } else {
                 if ($filter == 1) {
-                    header("Location: ../admin/views/login?pesan=Data tidak ditemukan !");
+                    header("Location: ../admin/views/login?pesan=gagal");
                 } else if ($filter == 0) {
                     $response = generate_response(2, 'Data tidak ditemukan');
                     header("HTTP/ 500");
@@ -281,7 +285,7 @@ function login()
             }
         } else {
             if ($filter == 1) {
-                header("Location: ../admin/views/login?pesan=Data tidak boleh kosong !");
+                header("Location: ../admin/views/login?pesan=gagal");
             } else if ($filter == 0) {
                 $response = generate_response(2, 'Data tidak boleh kosong');
                 header("HTTP/ 500");

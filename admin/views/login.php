@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="assets/img/logo/logo.png" rel="icon">
+  <link href="assets/img/icon_osemar.png" rel="icon">
   <title>O-Semar - Login</title>
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -28,7 +28,8 @@
               <div class="col-lg-12">
                 <div class="login-form">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Selamat Datang ! Silahkan Login untuk Melanjutkan</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Selamat Datang di O-Semar !</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Silahkan Login untuk Melanjutkan</h1>
                   </div>
                   <form action="../../api/rest.php?function=login&key=buwinakeren" method="POST" class="user">
                     <div class="form-group">
@@ -46,7 +47,7 @@
                   <hr>
                   <div class="text-center">
                     <h1 class="h6 text-gray-900 mb-3">Sudah punya Akun ? Jika belum, daftar disini !</h1>
-                    <a class="font-weight-bold small" href="register">Buat Akun !</a>
+                    <a href="register" class="btn btn-primary btn-block">Buat Akun !</a>
                   </div>
                   <div class="text-center">
                   </div>
@@ -72,7 +73,7 @@
                 Swal.fire({
                   icon: 'success',
                   title: 'Berhasil !',
-                  text: 'Data berhasil disimpan'
+                  text: 'Anda berhasil login'
                 })
                 </script>";
     }else if($pesan == 'gagal'){

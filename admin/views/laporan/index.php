@@ -17,7 +17,7 @@ $query = mysqli_query($koneksi, $sql);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="img/logo/logo.png" rel="icon">
+  <link href="../assets/img/icon_osemar.png" rel="icon">
   <title>O-SEMAR - Daftar Laporan</title>
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -61,45 +61,49 @@ $query = mysqli_query($koneksi, $sql);
               <div class="col-lg-12">
                 <div class="card mb-4">
                   <div class="table-responsive p-3">
-                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                      <thead class="thead-light">
-                        <tr>
-                          <th>Nama Pelapor</th>
-                          <th>Kategori</th>
-                          <th>Tanggal</th>
-                          <th>Aksi</th>
-                        </tr>
-                      </thead>
-                      <tfoot>
-                        <tr>
-                          <th>Nama Pelapor</th>
-                          <th>Kategori</th>
-                          <th>Tanggal</th>
-                          <th>Aksi</th>
-                        </tr>
-                      </tfoot>
-
-                      <tbody>
-                        <?php while ($data = mysqli_fetch_array($query)) : ?>
-                          <tr>
-                            <?php
-                            $nik = $data['nik'];
-                            $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
-                            $queryID = mysqli_query($koneksi, $sqlID);
-                            $dataID = mysqli_fetch_array($queryID);
-                            ?>
-                            <td><?= $dataID['nama'] ?></td>
-                            <td><?= $data['kategori'] ?></td>
-                            <td><?= $data['tanggal_pelaporan'] ?></td>
-                            <td>
-                            <a href="detail?id=<?= $data['id_pelaporan'] ?>">
-                              <button class="btn btn-primary">Detail</button>
-                            </a>
-                          </td>
-                          </tr>
-                        <?php endwhile; ?>
-                      </tbody>
-                    </table>
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+              <thead class="thead-light">
+                <tr>
+                  <th>Nama Pelapor</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Nama Pelapor</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <?php while ($data = mysqli_fetch_array($query)) : ?>
+                  <tr>
+                    <?php
+                    $nik = $data['nik'];
+                    $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                    $queryID = mysqli_query($koneksi, $sqlID);
+                    $dataID = mysqli_fetch_array($queryID);
+                    ?>
+                    <td><?= $dataID['nama'] ?></td>
+                    <td><?= $data['kategori'] ?></td>
+                    <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                      <span class="badge badge-success">Lunas</span>
+                    <?php }else if($data['status'] == 'Pending'){?>
+                      <span class="badge badge-danger">Pending</span>
+                    <?php } ?></td>
+                    <td><?= $data['tanggal_pelaporan'] ?></td>
+                    <td>
+                      <a href="detail.php?id=<?= $data['id_pelaporan'] ?>" class="btn btn-primary">Detail</a>
+                    </td>
+                  </tr>
+                <?php endwhile; ?>
+              </tbody>
+            </table>
                   </div>
                 </div>
               </div>
@@ -166,43 +170,49 @@ $query = mysqli_query($koneksi, $sql);
           <div class="col-lg-12">
             <div class="card mb-4">
               <div class="table-responsive p-3">
-                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                  <thead class="thead-light">
-                    <tr>
-                      <th>Nama Pelapor</th>
-                      <th>Kategori</th>
-                      <th>Tanggal</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Nama Pelapor</th>
-                      <th>Kategori</th>
-                      <th>Tanggal</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </tfoot>
-
-                  <tbody>
-                    <?php while ($data = mysqli_fetch_array($query)) : ?>
-                      <tr>
-                        <?php
-                        $nik = $data['nik'];
-                        $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
-                        $queryID = mysqli_query($koneksi, $sqlID);
-                        $dataID = mysqli_fetch_array($queryID);
-                        ?>
-                        <td><?= $dataID['nama'] ?></td>
-                        <td><?= $data['kategori'] ?></td>
-                        <td><?= $data['tanggal_pelaporan'] ?></td>
-                        <td>
-                          DUMMY
-                        </td>
-                      </tr>
-                    <?php endwhile; ?>
-                  </tbody>
-                </table>
+              <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+              <thead class="thead-light">
+                <tr>
+                  <th>Nama Pelapor</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Nama Pelapor</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <?php while ($data = mysqli_fetch_array($query)) : ?>
+                  <tr>
+                    <?php
+                    $nik = $data['nik'];
+                    $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                    $queryID = mysqli_query($koneksi, $sqlID);
+                    $dataID = mysqli_fetch_array($queryID);
+                    ?>
+                    <td><?= $dataID['nama'] ?></td>
+                    <td><?= $data['kategori'] ?></td>
+                    <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                      <span class="badge badge-success">Lunas</span>
+                    <?php }else if($data['status'] == 'Pending'){?>
+                      <span class="badge badge-danger">Pending</span>
+                    <?php } ?></td>
+                    <td><?= $data['tanggal_pelaporan'] ?></td>
+                    <td>
+                      <a href="detail.php?id=<?= $data['id_pelaporan'] ?>" class="btn btn-primary">Detail</a>
+                    </td>
+                  </tr>
+                <?php endwhile; ?>
+              </tbody>
+            </table>
               </div>
             </div>
           </div>
@@ -216,43 +226,49 @@ $query = mysqli_query($koneksi, $sql);
         <div class="col-lg-12">
           <div class="card mb-4">
             <div class="table-responsive p-3">
-              <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                <thead class="thead-light">
+            <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+              <thead class="thead-light">
+                <tr>
+                  <th>Nama Pelapor</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Nama Pelapor</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <?php while ($data = mysqli_fetch_array($query)) : ?>
                   <tr>
-                    <th>Nama Pelapor</th>
-                    <th>Kategori</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
+                    <?php
+                    $nik = $data['nik'];
+                    $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
+                    $queryID = mysqli_query($koneksi, $sqlID);
+                    $dataID = mysqli_fetch_array($queryID);
+                    ?>
+                    <td><?= $dataID['nama'] ?></td>
+                    <td><?= $data['kategori'] ?></td>
+                    <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                      <span class="badge badge-success">Lunas</span>
+                    <?php }else if($data['status'] == 'Pending'){?>
+                      <span class="badge badge-danger">Pending</span>
+                    <?php } ?></td>
+                    <td><?= $data['tanggal_pelaporan'] ?></td>
+                    <td>
+                      <a href="detail.php?id=<?= $data['id_pelaporan'] ?>" class="btn btn-primary">Detail</a>
+                    </td>
                   </tr>
-                </thead>
-                <tfoot>
-                  <tr>
-                    <th>Nama Pelapor</th>
-                    <th>Kategori</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                  </tr>
-                </tfoot>
-
-                <tbody>
-                  <?php while ($data = mysqli_fetch_array($query)) : ?>
-                    <tr>
-                      <?php
-                      $nik = $data['nik'];
-                      $sqlID = "SELECT nama FROM penduduk WHERE nik='$nik'";
-                      $queryID = mysqli_query($koneksi, $sqlID);
-                      $dataID = mysqli_fetch_array($queryID);
-                      ?>
-                      <td><?= $dataID['nama'] ?></td>
-                      <td><?= $data['kategori'] ?></td>
-                      <td><?= $data['tanggal_pelaporan'] ?></td>
-                      <td>
-                        DUMMY
-                      </td>
-                    </tr>
-                  <?php endwhile; ?>
-                </tbody>
-              </table>
+                <?php endwhile; ?>
+              </tbody>
+            </table>
             </div>
           </div>
         </div>
@@ -266,11 +282,12 @@ $query = mysqli_query($koneksi, $sql);
       <div class="col-lg-12">
         <div class="card mb-4">
           <div class="table-responsive p-3">
-            <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover">
               <thead class="thead-light">
                 <tr>
                   <th>Nama Pelapor</th>
                   <th>Kategori</th>
+                  <th>Status</th>
                   <th>Tanggal</th>
                   <th>Aksi</th>
                 </tr>
@@ -279,11 +296,11 @@ $query = mysqli_query($koneksi, $sql);
                 <tr>
                   <th>Nama Pelapor</th>
                   <th>Kategori</th>
+                  <th>Status</th>
                   <th>Tanggal</th>
                   <th>Aksi</th>
                 </tr>
               </tfoot>
-
               <tbody>
                 <?php while ($data = mysqli_fetch_array($query)) : ?>
                   <tr>
@@ -295,9 +312,14 @@ $query = mysqli_query($koneksi, $sql);
                     ?>
                     <td><?= $dataID['nama'] ?></td>
                     <td><?= $data['kategori'] ?></td>
+                    <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                      <span class="badge badge-success">Lunas</span>
+                    <?php }else if($data['status'] == 'Pending'){?>
+                      <span class="badge badge-danger">Pending</span>
+                    <?php } ?></td>
                     <td><?= $data['tanggal_pelaporan'] ?></td>
                     <td>
-                      DUMMY
+                      <a href="detail.php?id=<?= $data['id_pelaporan'] ?>" class="btn btn-primary">Detail</a>
                     </td>
                   </tr>
                 <?php endwhile; ?>
@@ -309,7 +331,6 @@ $query = mysqli_query($koneksi, $sql);
     </div>
   <?php } ?>
   </div>
-
 
   <!-- Modal Logout -->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -356,9 +377,17 @@ $query = mysqli_query($koneksi, $sql);
 
   <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function() {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+    $(document).ready(function () {
+      $('#dataTable').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
   <script>

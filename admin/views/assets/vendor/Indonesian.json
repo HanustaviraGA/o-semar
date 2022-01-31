@@ -1,0 +1,23 @@
+{ 
+	"sEmptyTable": "Tidak ada data dalam tabel", 
+	"sInfo": "_START_ hingga _END_ dari _TOTAL_ entri", 
+	"sInfoEmpty": "0 hingga 0 dari 0 entri", 
+	"sInfoFiltered": "(difilter dari _MAX_ entri )", 
+	"sInfoPostFix": "", 
+	"sInfoThousands": ".", 
+	"sLengthMenu": "Tampilkan _MENU_ item", 
+	"sLoadingRecords": "Memuat...", 
+	"sProcessing": "Mohon tunggu... ", 
+	"sSearch": "Cari", 
+	"sZeroRecords": "Tidak ada catatan yang ditemukan.", 
+	"oPaginate":{ 
+		"sFirst": "Pertama", 
+		"sPrevious": "Sebelumnya", 
+		"sNext": "Selanjutnya", 
+		"sLast": "Terakhir" 
+	}, 
+	"oAria": {
+		"sSortAscending": ": aktifkan untuk mengurutkan kolom secara menaik", 
+		"sSortDescending": ": aktifkan untuk mengurutkan kolom secara menurun" 
+	} 
+}

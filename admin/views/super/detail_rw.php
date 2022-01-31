@@ -30,7 +30,7 @@ assets/<?php
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="img/logo/logo.png" rel="icon">
+  <link href="../assets/img/icon_osemar.png" rel="icon">
   <title>O-SEMAR - Detail RW</title>
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -40,6 +40,8 @@ assets/<?php
   <link href="../assets/vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <!-- O-Semar CSS -->
   <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body id="page-top">
@@ -177,7 +179,7 @@ assets/<?php
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../assets/js/ruang-admin.min.js"></script>
@@ -211,6 +213,30 @@ assets/<?php
       });
     });
   </script>
+  <?php 
+  
+  if(isset($_GET['pesan'])){
+    $pesan = $_GET['pesan'];
+    if($pesan == 'sukses'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil !',
+                  text: 'Data berhasil disimpan'
+                })
+                </script>";
+    }else if($pesan == 'gagal'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal !',
+                  text: 'Silahkan coba lagi'
+                })
+                </script>";
+    }
+  }
+
+  ?>
 </body>
 
 </html>

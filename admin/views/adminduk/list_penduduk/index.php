@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="img/logo/logo.png" rel="icon">
+  <link href="../../assets/img/icon_osemar.png" rel="icon">
   <title>O-SEMAR - Daftar Penduduk</title>
   <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -109,8 +109,8 @@
                           <td><?= $data['id_rt']?></td>
                           <td><?= $data['id_rw']?></td>
                           <td>
-                            <a href="detail">
-                              <button class="btn btn-primary" type="submit">Detail</button>
+                            <a href="detail?id=<?= $data['nik']?>">
+                              <button class="btn btn-primary">Detail</button>
                             </a>
                           </td>
                         </tr>
@@ -170,8 +170,16 @@
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+      $('#dataTable').DataTable({
+        "language": {
+          "url": "../../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "language": {
+          "url": "../../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
 <?php 

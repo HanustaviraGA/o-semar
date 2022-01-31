@@ -21,12 +21,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="../assets/img/logo/logo.png" rel="icon">
+  <link href="../assets/img/icon_osemar.png" rel="icon">
   <title>O-SEMAR Admin - Detail Pengumuman <?= $id ?></title>
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
   <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body id="page-top">
@@ -45,11 +47,9 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">DataTables</h1>
+            <h1 class="h3 mb-0 text-gray-800">Pengumuman</h1>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active" aria-current="page">DataTables</li>
+              <li class="breadcrumb-item"><a href="./">Kembali</a></li>
             </ol>
           </div>
 
@@ -81,11 +81,11 @@
                       <input type="text" class="form-control" value="<?= $dataID['tanggal'] ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Id RT</label>
+                      <label for="exampleInputPassword1">ID RT</label>
                       <input type="text" class="form-control" value="<?= $dataID['id_rt'] ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Id RW</label>
+                      <label for="exampleInputPassword1">ID RW</label>
                       <input type="text" class="form-control" value="<?= $dataID['id_rw'] ?>" readonly>
                     </div>
                     <div class="form-group">
@@ -96,41 +96,7 @@
                     </div>
                   </form>
                   <br>
-                  <div>
-                    <a href="controller.php?id=<?= $dataID['id'] ?>&aksi=verifikasi">
-                      <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
-                    </a>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
-                    <a href="controller.php?id=<?= $dataID['id'] ?>&aksi=hapus">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#808080; border-color:#808080;">Hapus</button>
-                    </a>
-                      
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Alasan Penolakan</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <form action="controller.php?aksi=tolak" method="POST">
-                        <div class="modal-body">
-                          <div class="form-group">
-                            <label for="message-text" class="col-form-label">Ketik Alasan:</label>
-                            <textarea class="form-control" name="alasan" id="alasan"></textarea>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <input type="hidden" name="id" id="id" value="<?= $dataID['id'] ?>">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                          <button type="submit" class="btn btn-primary">Kirim Alasan</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
                 </div>
-                  </div>
                 </div>
               </div>
               </div>
@@ -263,7 +229,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../assets/js/ruang-admin.min.js"></script>
@@ -274,11 +240,42 @@
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+      $('#dataTable').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
+<?php 
+  
+  if(isset($_GET['pesan'])){
+    $pesan = $_GET['pesan'];
+    if($pesan == 'sukses'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil !',
+                  text: 'Data berhasil disimpan'
+                })
+                </script>";
+    }else if($pesan == 'gagal'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal !',
+                  text: 'Silahkan coba lagi'
+                })
+                </script>";
+    }
+  }
 
+  ?>
 </body>
 
 </html>

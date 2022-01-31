@@ -3,37 +3,33 @@
     <?php if($_SESSION["keadaan"] == "sudah_login_admin") {
     ?>  
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index">
-      <div class="sidebar-brand-icon">
-        <img src="assets/img/o-semar2.png">
+      <div class="sidebar-brand-text mx-3">
+        <img src="assets/img/icon_osemar_navbar3.png" style="max-width:130px;">
       </div>
-      <div class="sidebar-brand-text mx-3">O-Semar Admin</div>
     </a>
     <?php
     } else if($_SESSION["keadaan"] == "sudah_login_penduduk"){
     ?>  
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index">
-      <div class="sidebar-brand-icon">
-        <img src="assets/img/o-semar2.png">
+      <div class="sidebar-brand-text mx-3">
+        <img src="assets/img/icon_osemar_navbar3.png" style="max-width:130px;">
       </div>
-      <div class="sidebar-brand-text mx-3">O-Semar</div>
     </a>
     <?php
     } else if ($_SESSION["keadaan"] == "sudah_login_rt") {
     ?>
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index">
-      <div class="sidebar-brand-icon">
-        <img src="assets/img/o-semar2.png">
+      <div class="sidebar-brand-text mx-3">
+        <img src="assets/img/icon_osemar_navbar3.png" style="max-width:130px;">
       </div>
-      <div class="sidebar-brand-text mx-3">O-Semar RT</div>
     </a>
     <?php
     } else if ($_SESSION["keadaan"] == "sudah_login_rw") {
     ?>
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index">
-      <div class="sidebar-brand-icon">
-        <img src="assets/img/o-semar2.png">
+      <div class="sidebar-brand-text mx-3">
+        <img src="assets/img/icon_osemar_navbar3.png" style="max-width:130px;">
       </div>
-      <div class="sidebar-brand-text mx-3">O-Semar RW</div>
     </a>
     <?php
     }

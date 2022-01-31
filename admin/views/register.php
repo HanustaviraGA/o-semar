@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="assets/img/logo/logo.png" rel="icon">
+  <link href="assets/img/icon_osemar.png" rel="icon">
   <title>O-Semar - Pendaftaran</title>
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -66,9 +66,8 @@
                     </div>
                     <hr>
                   </form>
-                  <hr>
                   <div class="text-center">
-                    <a class="font-weight-bold small" href="login">Sudah memiliki akun ? Klik disini</a>
+                    <a href="login" class="btn btn-primary btn-block">Sudah memiliki akun ? Klik disini</a>
                   </div>
                   <div class="text-center">
                   </div>

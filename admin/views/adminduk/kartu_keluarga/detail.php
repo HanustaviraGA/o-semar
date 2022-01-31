@@ -7,19 +7,30 @@ if (!isset($_SESSION['keadaan']) && !$_SESSION['keadaan'] == "sudah_login_user")
 }
 $id = $_GET['id'];
 // Tabel Penduduk
-$sqlNama = "SELECT * FROM penduduk WHERE no_kk='$id'";
-$queryNama = mysqli_query($koneksi, $sqlNama);
+$sqlNama = $koneksi->prepare("SELECT * FROM penduduk WHERE no_kk=?");
+$sqlNama->bind_param('s', $id);
+$sqlNama->execute();
+$queryNama = $sqlNama->get_result();
+
 // Tabel Penduduk 2
-$sqlNama2 = "SELECT * FROM penduduk WHERE no_kk='$id'";
-$queryNama2 = mysqli_query($koneksi, $sqlNama2);
+$sqlNama2 = $koneksi->prepare("SELECT * FROM penduduk WHERE no_kk=?");
+$sqlNama2->bind_param('s', $id);
+$sqlNama2->execute();
+$queryNama2 = $sqlNama2->get_result();
+
 // Wilayah
 $sqlWil = "SELECT * FROM mssettings WHERE identifier='1'";
 $queryWil = mysqli_query($koneksi, $sqlWil);
 $dataWil = mysqli_fetch_array($queryWil);
+
 // Identitas Kepala Keluarga
-$sqlNamaKK = "SELECT * FROM penduduk WHERE no_kk='$id' AND kepala_keluarga=1";
-$queryNamaKK = mysqli_query($koneksi, $sqlNamaKK);
-$dataNamaKK = mysqli_fetch_array($queryNamaKK);
+$sqlNamaKK = $koneksi->prepare("SELECT * FROM penduduk WHERE no_kk=? AND kepala_keluarga=?");
+$kepala_keluarga = 1;
+$sqlNamaKK->bind_param('ss', $id, $kepala_keluarga);
+$sqlNamaKK->execute();
+$queryNamaKK = $sqlNamaKK->get_result();
+$dataNamaKK = $queryNamaKK->fetch_assoc();
+
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +42,7 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="img/logo/logo.png" rel="icon">
+  <link href="../../assets/img/icon_osemar.png" rel="icon">
   <title>O-SEMAR - KK No. <?php echo $id; ?></title>
   <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -59,9 +70,7 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Kartu Keluarga No. <?php echo $id; ?></h1>
             <ol class="breadcrumb">
-              <a href="berkas/<?php echo $dataNamaKK['foto_kk']; ?>">
-                <button class="btn btn-primary">Foto KK</button>
-              </a>
+              <a href="./">Kembali</a>
             </ol>
           </div>
 
@@ -117,10 +126,11 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
                 </div>
               </div>
             </div>
-          </div>
-          <!--Row-->
-          <!-- DataTable with Hover -->
+            <!-- DataTable with Hover -->
           <div class="col-lg-12">
+            <div class="card mb-4">
+              <a href="../list_penduduk/detail.php" class="btn btn-primary">Tambah Anggota Keluarga</a>
+            </div>
             <div class="card mb-4">
               <div class="table-responsive p-3">
                 <table class="table align-items-center table-flush table-hover" id="dataTableHover">
@@ -150,7 +160,7 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
                   </tfoot>
                   <tbody>
                     <?php $a = 1;
-                    while ($dataNama2 = mysqli_fetch_array($queryNama2)) : ?>
+                    while ($dataNama2 = $queryNama2->fetch_assoc()) : ?>
                       <tr>
                         <td><?= $a++ ?></td>
                         <td><?= $dataNama2['nama'] ?></td>
@@ -197,7 +207,7 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
                   </tfoot>
                   <tbody>
                     <?php $a = 1;
-                    while ($dataNama = mysqli_fetch_array($queryNama)) : ?>
+                    while ($dataNama = $queryNama->fetch_assoc()) : ?>
                       <tr>
                         <td><?= $a++ ?></td>
                         <td><?= $dataNama['status_perkawinan'] ?></td>
@@ -214,6 +224,9 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
               </div>
             </div>
           </div>
+          </div>
+          <!--Row-->
+          
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -243,19 +256,6 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
         <!---Container Fluid-->
       </div>
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script>
-                document.write(new Date().getFullYear());
-              </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
-            </span>
-          </div>
-        </div>
-      </footer>
-      <!-- Footer -->
     </div>
   </div>
 
@@ -274,15 +274,31 @@ $dataNamaKK = mysqli_fetch_array($queryNamaKK);
 
   <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function() {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+    $(document).ready(function () {
+      $('#dataTable').DataTable({
+        "language": {
+          "url": "../../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "language": {
+          "url": "../../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
   <script>
-    $(document).ready(function() {
-      $('#dataTables').DataTable(); // ID From dataTable 
-      $('#dataTableHovers').DataTable(); // ID From dataTable with Hover
+    $(document).ready(function () {
+      $('#dataTables').DataTable({
+        "language": {
+          "url": "../../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHovers').DataTable({
+        "language": {
+          "url": "../../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
 <?php 

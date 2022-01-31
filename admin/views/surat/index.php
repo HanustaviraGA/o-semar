@@ -69,6 +69,7 @@
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -78,6 +79,7 @@
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -94,6 +96,11 @@
                           <td><?= $data['no_surat'] ?></td>
                           <td><?= $result['nama'] ?></td>
                           <td><?= $data['keperluan'] ?></td>
+                          <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                            <span class="badge badge-success">Terverifikasi</span>
+                          <?php }else if($data['status'] == 'Pending'){?>
+                            <span class="badge badge-danger">Pending</span>
+                          <?php } ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
                             <a href="detail?id=<?= $data['no_surat'] ?>">
@@ -185,12 +192,13 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -200,6 +208,7 @@
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -216,6 +225,11 @@
                           <td><?= $data['no_surat'] ?></td>
                           <td><?= $result['nama'] ?></td>
                           <td><?= $data['keperluan'] ?></td>
+                          <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                            <span class="badge badge-success">Terverifikasi</span>
+                          <?php }else if($data['status'] == 'Pending'){?>
+                            <span class="badge badge-danger">Pending</span>
+                          <?php } ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
                             <a href="detail?id=<?= $data['no_surat'] ?>">
@@ -239,12 +253,13 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -254,6 +269,7 @@
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -270,6 +286,11 @@
                           <td><?= $data['no_surat'] ?></td>
                           <td><?= $result['nama'] ?></td>
                           <td><?= $data['keperluan'] ?></td>
+                          <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                            <span class="badge badge-success">Terverifikasi</span>
+                          <?php }else if($data['status'] == 'Pending'){?>
+                            <span class="badge badge-danger">Pending</span>
+                          <?php } ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
                             <a href="detail?id=<?= $data['no_surat'] ?>">
@@ -293,12 +314,13 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="table-responsive p-3">
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -308,6 +330,7 @@
                         <th>Nomor Surat</th>
                         <th>Nama</th>
                         <th>Keperluan</th>
+                        <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                       </tr>
@@ -324,6 +347,11 @@
                           <td><?= $data['no_surat'] ?></td>
                           <td><?= $result['nama'] ?></td>
                           <td><?= $data['keperluan'] ?></td>
+                          <td><?php if($data['status'] == 'Terverifikasi'){ ?>
+                            <span class="badge badge-success">Terverifikasi</span>
+                          <?php }else if($data['status'] == 'Pending'){?>
+                            <span class="badge badge-danger">Pending</span>
+                          <?php } ?></td>
                           <td><?= $data['tanggal_pengajuan'] ?></td>
                           <td>
                             <a href="detail?id=<?= $data['no_surat'] ?>">
@@ -389,8 +417,16 @@
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+      $('#dataTable').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
   <script>

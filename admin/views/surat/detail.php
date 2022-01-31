@@ -27,6 +27,8 @@
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/ruang-admin.min.css" rel="stylesheet">
   <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body id="page-top">
@@ -45,12 +47,11 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Detail Surat - <?= $id ?></h1>
+            <h1 class="h3 mb-0 text-gray-800">Pengajuan Surat</h1>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="../../controller/controller.php?aksi=create_pdf_surat&id=<?= $id ?>">Cetak</a></li>
+              <li class="breadcrumb-item"><a href="./">Refresh</a></li>
             </ol>
           </div>
-
           <!-- Row -->
           <div class="row">
             <!-- DataTable with Hover -->
@@ -93,49 +94,21 @@
                       <input type="text" class="form-control" value="<?= $dataID['keterangan'] ?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">status</label>
+                      <label for="exampleInputPassword1">Status</label>
                       <input type="text" class="form-control" value="<?= $dataID['status'] ?>" readonly>
                       <br>
-          
                     </div>
                   </form>
-                  <br>
-                  <div>
-                    <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=verifikasi">
-                      <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
-                    </a>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
-                    <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=hapus">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#808080; border-color:#808080;">Hapus</button>
-                    </a>
-                      
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Alasan Penolakan</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <form action="controller.php?aksi=tolak" method="POST">
-                        <div class="modal-body">
-                          <div class="form-group">
-                            <label for="message-text" class="col-form-label">Ketik Alasan:</label>
-                            <textarea class="form-control" name="alasan" id="alasan"></textarea>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <input type="hidden" name="id" id="id" value="<?= $dataID['no_surat'] ?>">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                          <button type="submit" class="btn btn-primary">Kirim Alasan</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-                  </div>
-                </div>
+                  <?php if ($dataID['status'] == 'Terverifikasi') {?>
+                    <a href="../../controller/controller.php?aksi=create_pdf_surat&id=<?= $id ?>" type="button" class="btn btn-primary" target="_blank">Cetak</a>
+                  <?php } else {?>
+
+                  <?php } ?>
+                  <?php if ($_SESSION['keadaan'] == "sudah_login_admin" || $_SESSION['keadaan'] == "sudah_login_rt" || $_SESSION['keadaan'] == "sudah_login_rw") {?>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" >Tindak Lanjut</button>
+                  <?php } else {?>
+                    
+                  <?php } ?>
               </div>
               </div>
               <div class="col-lg-12">
@@ -175,7 +148,9 @@
                         <td><?= $res_lampiran['lampiran'] ?></td>
                         <td><?= $res_lampiran['status_lampiran'] ?></td>
                         <td><?= $res_lampiran['ket_lampiran'] ?></td>
-                        <td>DUMMY</td>
+                        <td>
+                          <a href="../../berkas/surat/<?= $res_lampiran['lampiran'] ?>" class="btn btn-primary" target="_blank">Unduh</a>
+                        </td>
                       </tr>
                     <?php endwhile; ?>  
                     </tbody>
@@ -201,7 +176,7 @@
                   <p>Apakah Anda yakin untuk logout ?</p>
                 </div>
                 <div class="modal-footer">
-                  <form method="post" action=../../api/rest.php?function=logout&key=buwinakeren>
+                  <form method="post" action=../../../api/rest.php?function=logout&key=buwinakeren>
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
                     <input type="hidden" name="filter" id="filter" value="1">
                     <button type="submit" class="btn btn-primary">Logout</button>
@@ -210,50 +185,77 @@
               </div>
             </div>
           </div>
-          <!-- Modal Center -->
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalCenterTitle">Modal Vertically Centered</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div id="pdf" class="modal-body">
-                  <script src="pdfobject.js"></script>
-                  <script>PDFObject.embed("berkas/dosen.pdf", "#pdf");</script>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Modal Center -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalCenterTitle">Modal Vertically Centered</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div id="pdf" class="modal-body">
-                  Text
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <!-- Modal Center -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Keterangan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <label for="message-text" class="col-form-label">Status</label>
+                            <select class="form-control" name="status" id="status" onchange="yesnoCheck(this);">
+                              <option>Pilih</option>
+                              <option value="Diterima">Diterima</option>
+                              <option value="Ditolak">Ditolak</option>
+                            </select>
+                            <div id="diterima">
+                              <form action="../../controller/controller.php?aksi=verifikasi_surat" method="POST">
+                                <label for="message-text" class="col-form-label">Lampiran</label>
+                                <?php 
+                                  $kode_lampiran = $id;
+                                  $querykodeLampiran = "SELECT lampiran FROM lampiran WHERE kode = '$kode_lampiran'";
+                                  $lampiran_kode_exec = mysqli_query($koneksi, $querykodeLampiran); 
+                                ?>
+                                <select class="form-control" name="lampiran" id="lampiran">
+                                  <option>Pilih</option>
+                                  <?php while($fetch_kode = mysqli_fetch_array($lampiran_kode_exec)){ ?>
+                                    <option value=<?= $fetch_kode['lampiran']?>><?= $fetch_kode['lampiran']?></option>
+                                  <?php } ?>
+                                    <option value="Semua">Semua Lampiran</option>
+                                </select>
+                                <div class="modal-footer">
+                                  <input type="hidden" name="id" id="id" value="<?= $id ?>">
+                                  <div>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                            <div id="ditolak" style="display: none;">
+                              <form action="../../controller/controller.php?aksi=tolak_surat" method="POST">
+                              <label for="message-text" class="col-form-label">Lampiran</label>
+                                <?php 
+                                  $kode_lampiran = $id;
+                                  $querykodeLampiran = "SELECT lampiran FROM lampiran WHERE kode = '$kode_lampiran'";
+                                  $lampiran_kode_exec = mysqli_query($koneksi, $querykodeLampiran); 
+                                ?>
+                                <select class="form-control" name="lampiran" id="lampiran">
+                                  <option>Pilih</option>
+                                  <?php while($fetch_kode = mysqli_fetch_array($lampiran_kode_exec)){ ?>
+                                    <option value=<?= $fetch_kode['lampiran']?>><?= $fetch_kode['lampiran']?></option>
+                                  <?php } ?>
+                                    <option value="Semua">Semua</option>
+                                </select>
+                                <div class="form-group">
+                                  <label for="message-text" class="col-form-label">Tulis Keterangan Penolakan</label>
+                                  <input class="form-control" id="alasan" name="alasan"></input>
+                                </div>
+                                <div class="modal-footer">
+                                  <input type="hidden" name="id" id="id" value="<?= $id ?>">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
         </div>
         <!---Container Fluid-->
@@ -267,7 +269,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../assets/js/ruang-admin.min.js"></script>
@@ -277,12 +279,54 @@
 
   <!-- Page level custom scripts -->
   <script>
+    function yesnoCheck(that) {
+      if (that.value == "Ditolak") {
+        document.getElementById("ditolak").style.display = "block";
+        document.getElementById("diterima").style.display = "none";
+      } else {
+          document.getElementById("ditolak").style.display = "none";
+          document.getElementById("diterima").style.display = "block";
+      }
+    }
+  </script>
+  <script>
     $(document).ready(function () {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+      $('#dataTable').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
+<?php 
+  
+  if(isset($_GET['pesan'])){
+    $pesan = $_GET['pesan'];
+    if($pesan == 'sukses'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil !',
+                  text: 'Data berhasil disimpan'
+                })
+                </script>";
+    }else if($pesan == 'gagal'){
+      echo    "<script type = 'text/javascript'>
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal !',
+                  text: 'Silahkan coba lagi'
+                })
+                </script>";
+    }
+  }
 
+  ?>
 </body>
 
 </html>

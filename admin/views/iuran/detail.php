@@ -25,7 +25,7 @@ $dataNama = mysqli_fetch_array($queryNama);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="img/logo/logo.png" rel="icon">
+  <link href="../assets/img/icon_osemar.png" rel="icon">
   <title>O-SEMAR - Iuran No. <?= $id ?></title>
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -51,6 +51,7 @@ $dataNama = mysqli_fetch_array($queryNama);
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Pembayaran Iuran</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Kembali</a></li>
             </ol>
@@ -62,11 +63,11 @@ $dataNama = mysqli_fetch_array($queryNama);
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Detail Iuran - <?= $dataNama['nama'] ?></h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Iuran - <?= $dataID['id_tagihan'] ?></h6>
                 </div>
                 <div class="card mb-4">
                   <div class="card-body">
-                    <form>
+                    <form action = "../../controller/controller.php?aksi=bayar_iuran" method="POST" enctype="multipart/form-data">
                       <div class="form-group">
                         <label for="exampleInputEmail1">NIK Pembayar</label>
                         <input type="text" class="form-control" value="<?= $dataID['nik'] ?>" readonly>
@@ -95,12 +96,6 @@ $dataNama = mysqli_fetch_array($queryNama);
                         <label for="exampleInputPassword1">Bukti Pembayaran</label>
                         <input type="text" class="form-control" value="<?= $dataID['bukti_pembayaran'] ?>" readonly>
                       </div>
-                      <div>
-                        <input type="hidden" name="aksi" value="bukti">
-                        <input type="hidden" name="file" value="<?= $dataID['bukti_pembayaran'] ?>">
-                        <button class="btn btn-primary">Download Bukti</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="#modalCenter">Preview</button>
-                      </div>
                       <div class="form-group">
                         <label for="exampleInputPassword1">Tanggal Pembayaran</label>
                         <input type="text" class="form-control" value="<?= $dataID['tanggal_pembayaran'] ?>" readonly>
@@ -109,39 +104,100 @@ $dataNama = mysqli_fetch_array($queryNama);
                         <label for="exampleInputPassword1">Nomor VA</label>
                         <input type="text" class="form-control" value="<?= $dataID['rekening'] ?>" readonly>
                       </div>
+                      <?php if($_SESSION['keadaan'] == "sudah_login_penduduk"){?>
+                      <div class="file-field1" name="berkas" id="berkas">
+                        <div class="btn btn-primary btn-sm float-left">
+                          <input type="file" id="files[]" name="files[]">
+                        </div>
+                      </div>
+                      <?php } else{ ?>
+                      <?php } ?>
+                      
+                      <?php if($_SESSION['keadaan'] == "sudah_login_penduduk"){?>
+                        <br>
+                        <br>
+                        <input type="hidden" name="id" id="id" value="<?= $id ?>">
+                        <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Submit</button>
+                        </form>
+                      <?php } else{ ?>
+
+                      <?php } ?>
+                    
+                    <?php if($_SESSION['keadaan'] == "sudah_login_admin" || $_SESSION['keadaan'] == "sudah_login_rt" || $_SESSION['keadaan'] == "sudah_login_rw"){?>
+                      </form>
                       <br>
-                    </form>
-                    <a href="controller.php?aksi=verifikasi&id=<?= $dataID['id_tagihan'] ?>">
-                      <button class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
-                    </a>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Tindak Lanjut</button>
+                    <?php } else{ ?>
+
+                    <?php } ?>
+                    
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Alasan Penolakan</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Keterangan</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form action="controller.php?aksi=tolak&id=<?= $dataID['id'] ?>" method="POST">
-                              <div class="form-group">
-                                <label for="message-text" class="col-form-label">Tulis Alasan:</label>
-                                <input class="form-control" id="alasan" name="alasan"></input>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak Jadi</button>
-                                <button type="submit" class="btn btn-primary">Kirim Alasan</button>
-                              </div>
-                            </form>
+                            <label for="message-text" class="col-form-label">Status</label>
+                            <select class="form-control" name="status" id="status" onchange="yesnoCheck(this);">
+                              <option value="Diterima">Diterima</option>
+                              <option value="Ditolak">Ditolak</option>
+                            </select>
+                            <div id="diterima">
+                              <form action="../../controller/controller.php?aksi=verifikasi_iuran" method="POST">
+                                <label for="message-text" class="col-form-label">Lampiran</label>
+                                <?php 
+                                  $kode_lampiran = $id;
+                                  $querykodeLampiran = "SELECT lampiran FROM lampiran WHERE kode = '$kode_lampiran'";
+                                  $lampiran_kode_exec = mysqli_query($koneksi, $querykodeLampiran); 
+                                ?>
+                                <select class="form-control" name="lampiran" id="lampiran">
+                                  <?php while($fetch_kode = mysqli_fetch_array($lampiran_kode_exec)){ ?>
+                                    <option value=<?= $fetch_kode['lampiran']?>><?= $fetch_kode['lampiran']?></option>
+                                  <?php } ?>
+                                </select>
+                                <div class="modal-footer">
+                                  <input type="hidden" name="id" id="id" value="<?= $id ?>">
+                                  <div>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                            <div id="ditolak" style="display: none;">
+                              <form action="../../controller/controller.php?aksi=tolak_iuran" method="POST">
+                              <label for="message-text" class="col-form-label">Lampiran</label>
+                                <?php 
+                                  $kode_lampiran = $id;
+                                  $querykodeLampiran = "SELECT lampiran FROM lampiran WHERE kode = '$kode_lampiran'";
+                                  $lampiran_kode_exec = mysqli_query($koneksi, $querykodeLampiran); 
+                                ?>
+                                <select class="form-control" name="lampiran" id="lampiran">
+                                  <?php while($fetch_kode = mysqli_fetch_array($lampiran_kode_exec)){ ?>
+                                    <option value=<?= $fetch_kode['lampiran']?>><?= $fetch_kode['lampiran']?></option>
+                                  <?php } ?>
+                                </select>
+                                <div class="form-group">
+                                  <label for="message-text" class="col-form-label">Tulis Keterangan Penolakan</label>
+                                  <input class="form-control" id="alasan" name="alasan"></input>
+                                </div>
+                                <div class="modal-footer">
+                                  <input type="hidden" name="id" id="id" value="<?= $id ?>">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                </div>
+                              </form>
+                            </div>
                           </div>
-
-
                         </div>
                       </div>
                     </div>
                     <!-- batas -->
+
                   </div>
                 </div>
               </div>
@@ -183,7 +239,9 @@ $dataNama = mysqli_fetch_array($queryNama);
                         <td><?= $res_lampiran['lampiran'] ?></td>
                         <td><?= $res_lampiran['status_lampiran'] ?></td>
                         <td><?= $res_lampiran['ket_lampiran'] ?></td>
-                        <td>DUMMY</td>
+                        <td>
+                          <a href="../../berkas/iuran/<?= $res_lampiran['lampiran'] ?>" class="btn btn-primary" target="_blank">Unduh</a>
+                        </td>
                       </tr>
                     <?php endwhile; ?>  
                     </tbody>
@@ -246,19 +304,6 @@ $dataNama = mysqli_fetch_array($queryNama);
         <!---Container Fluid-->
       </div>
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script>
-                document.write(new Date().getFullYear());
-              </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
-            </span>
-          </div>
-        </div>
-      </footer>
-      <!-- Footer -->
     </div>
   </div>
 
@@ -277,9 +322,28 @@ $dataNama = mysqli_fetch_array($queryNama);
 
   <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function() {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+    function yesnoCheck(that) {
+      if (that.value == "Ditolak") {
+        document.getElementById("ditolak").style.display = "block";
+        document.getElementById("diterima").style.display = "none";
+      } else {
+          document.getElementById("ditolak").style.display = "none";
+          document.getElementById("diterima").style.display = "block";
+      }
+    }
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('#dataTable').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "language": {
+          "url": "../assets/vendor/Indonesian.json"
+        }
+      }); // ID From dataTable with Hover
     });
   </script>
 <?php 

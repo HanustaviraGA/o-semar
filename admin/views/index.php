@@ -74,7 +74,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="assets/img/logo/logo.png" rel="icon">
+  <link href="assets/img/icon_osemar.png" rel="icon">
   <title>O-SEMAR - Dashboard</title>
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -258,7 +258,7 @@
                             <span class="badge badge-danger">Belum Terbayar</span>
                           <?php } ?></td>
                           <td>
-                            <a href="detail?id=<?= $data['id_tagihan'] ?>">
+                            <a href="iuran/detail?id=<?= $data['id_tagihan'] ?>">
                               <button class="btn btn-primary">Detail</button>
                             </a>
                           </td>
