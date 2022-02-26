@@ -14,7 +14,7 @@
         if (!isset($_SESSION["token"])) {
             $_SESSION["token"] = bin2hex(random_bytes(16));
         }
-        header("X-CSRF_TOKEN: " . $_SESSION["token"]);
+        header("X-CSRF-TOKEN: " . $_SESSION["token"]);
     }
     /**
      * Validate CSRF Token from Request Header
