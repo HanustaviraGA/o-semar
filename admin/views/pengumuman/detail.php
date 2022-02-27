@@ -89,6 +89,7 @@
                       <input type="text" class="form-control" value="<?= $dataID['id_rw'] ?>" readonly>
                     </div>
                     <div class="form-group">
+<<<<<<< HEAD:admin/views/pengumuman/detail.php
                       <label for="exampleInputPassword1">Pengirim</label>
                       <input type="text" class="form-control" value="<?= $dataID['pengirim'] ?>" readonly>
                       <br>
@@ -96,6 +97,46 @@
                     </div>
                   </form>
                   <br>
+=======
+                      <label for="exampleInputPassword1">status</label>
+                      <input type="text" class="form-control" value="<?= $dataID['status'] ?>" readonly>
+                    </div>
+                  </form>
+                  <br>
+                  <div>
+                    <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=verifikasi">
+                      <button type="submit" class="btn btn-primary" style="background-color:#77dd77; border-color:#77dd77;">Verifikasi</button>
+                    </a>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#ff6961; border-color:#ff6961;">Tolak</button>
+                    <a href="controller.php?id=<?= $dataID['no_surat'] ?>&aksi=hapus">
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color:#808080; border-color:#808080;">Hapus</button>
+                    </a>
+                  </div>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Alasan Penolakan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form action="controller.php?aksi=tolak" method="POST">
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="message-text" class="col-form-label">Ketik Alasan:</label>
+                            <textarea class="form-control" name="alasan" id="alasan"></textarea>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <input type="hidden" name="id" id="id" value="<?= $dataID['no_surat'] ?>">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                          <button type="submit" class="btn btn-primary">Kirim Alasan</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+>>>>>>> 99d6034d03adbc4c57cd403ba4044fa91dc1f1fa:admin/surat/detail.php
                 </div>
                 </div>
               </div>
@@ -145,6 +186,51 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Lampiran</h6>
+              </div>
+              <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Lampiran</th>
+                      <th>Status Lampiran</th>
+                      <th>Keterangan Lampiran</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Lampiran</th>
+                      <th>Status Lampiran</th>
+                      <th>Keterangan Lampiran</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <?php 
+                      $lampiran = $id;
+                      $queryLampiran = "SELECT lampiran, status_lampiran, ket_lampiran FROM lampiran WHERE kode = '$lampiran'";
+                      $lampiran_exec = mysqli_query($koneksi, $queryLampiran); 
+                  ?>
+                  <?php $a = 1; while($res_lampiran = mysqli_fetch_array($lampiran_exec)):?>
+                    <tr>
+                      <td><?= $a++ ?></td>
+                      <td><?= $res_lampiran['lampiran'] ?></td>
+                      <td><?= $res_lampiran['status_lampiran'] ?></td>
+                      <td><?= $res_lampiran['ket_lampiran'] ?></td>
+                      <td>DUMMY</td>
+                    </tr>
+                  <?php endwhile; ?>  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           </div>
           <!--Row-->
 
