@@ -1,0 +1,5 @@
+# Deny All to access
+Deny from all
+# Allow Localhost to access
+Allow from 127.0.0.1
+Allow from ::1

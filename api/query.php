@@ -8,7 +8,7 @@
  * $result = query($conn, $query, "ss", ["Bob", "Johnson"]);
  * 
  * returns array (
- *      0=> array('firstName' => 'Bob', 'lastName' => 'Johnson')
+ *      "0" => array("firstName" => "Bob", "lastName" => "Johnson")
  * )
  * 
  * Reference: https://www.php.net/manual/en/mysqli.prepare.php#107200
@@ -16,9 +16,9 @@
  * @param string $query
  * @param string|null $type
  * @param array|null $params
- * @return array|ErrorException
+ * @return array|ErrorException|null
  */
-function query(mysqli $conn, string $query, ?string $type = null, ?array $params = null): array|Error
+function query(mysqli $conn, string $query, ?string $type = null, ?array $params = null): array|ErrorException|null
 {
     $bindParams = array();
     // Hold value if Query Result is noy one
