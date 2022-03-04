@@ -1,5 +1,5 @@
 <?php
-	require 'autoload.php';
+	require_once 'autoload.php';
 
 	$host = $_ENV['DB_HOST'];
 	$user = $_ENV['DB_USERNAME'];

@@ -1,5 +1,7 @@
 # O-Semar
 
+**Branch ini merupakan rilis nightly alpha, jadi masih belum stabil dan belum siap digunakan**
+
 Lupa singkatannya apa...
 
 Website yang digunakan untuk mengatur permasalahan administrasi ditingkat RT/RW.

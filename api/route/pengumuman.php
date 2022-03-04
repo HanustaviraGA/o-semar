@@ -1,15 +1,12 @@
 <?php
 
-/**
- * Untuk Logout
- * 
- * @return json
- */
-function logout()
-{
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $response = Logout::api_post();
-        header("HTTP/ 200");
+function pengumuman() {
+    if ($_SERVER["REQUEST_METHOD"] === "GET") {
+        $response = Pengumuman::api_get();
+        if (!$response->status)
+            header("HTTP/ 400");
+        else
+            header("HTTP/ 200");
         header('Content-Type: application/json');
         echo json_encode($response);
     } else {

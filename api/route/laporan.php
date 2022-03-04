@@ -1,14 +1,21 @@
 <?php
 
 /**
- * Registrasi penduduk
+ * Untuk olah laporan
  * 
  * @return json
  */
-function register()
-{
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $response = Register::api_post();
+function laporan() {
+    if ($_SERVER["REQUEST_METHOD"] === "GET") {
+        $response = Laporan::api_get();
+        if (!$response->status)
+            header("HTTP/ 400");
+        else
+            header("HTTP/ 200");
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    } else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $response = Laporan::api_post();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {

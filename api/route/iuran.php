@@ -1,14 +1,16 @@
 <?php
 
-/**
- * Registrasi penduduk
- * 
- * @return json
- */
-function register()
-{
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $response = Register::api_post();
+function iuran() {
+    if ($_SERVER["REQUEST_METHOD"] === "GET") {
+        $response = Iuran::api_get();
+        if (!$response->status)
+            header("HTTP/ 400");
+        else
+            header("HTTP/ 200");
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    } else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $response = Iuran::api_post();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {
