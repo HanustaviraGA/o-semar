@@ -21,7 +21,7 @@ Website yang digunakan untuk mengatur permasalahan administrasi ditingkat RT/RW.
 * Fikri (Mobile)
 * Hafizh (Mobile)
 
-Website Template by Indri Juanda
+Website Template by [Indri Juanda - Ruang Admin](https://github.com/indrijunanda/RuangAdmin)
 
 # License
 
@@ -34,3 +34,5 @@ Proprietary Software licensed by:
 * Rafli Athala Jaskandi
 * M. Fikri Immamudin
 * Hafizh Naufal
+
+Under HAKI Regulation.
