@@ -12,10 +12,7 @@ class Logout extends Controller
     public static function api_post()
     {
         self::clear_session();
-        return (object) array(
-            'status' => true,
-            'msg' => 'Sukses'
-        );
+        return self::response(true, 'Logout sukses!');
     }
 
     private static function clear_session()

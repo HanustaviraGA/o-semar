@@ -11,14 +11,8 @@ class Iuran extends Controller
     public static function api_get()
     {
         // Prevent XSS and Escape Special Chars
-        $nik = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_GET['nik'], ENT_COMPAT)
-        );
-        $status = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_GET['status'], ENT_COMPAT)
-        );
+        $nik = self::sanitize($_GET['nik']);
+        $status = self::sanitize($_GET['status']);
 
         if ($status === 'unpaid') {
             $response = self::get_unpaid_iuran($nik);
@@ -27,10 +21,7 @@ class Iuran extends Controller
             $response = self::get_paid_iuran($nik);
             return $response;
         } else {
-            return (object) array(
-                'status' => false,
-                'error' => 'Parameter tidak diketahui'
-            );
+            return self::response(false, 'Parameter tidak diketahui');
         }
     }
 
@@ -38,17 +29,16 @@ class Iuran extends Controller
      * Wish can use PUT and DELETE Method, sticking with CRUD concept
      */
 
+    /**
+     * Delete data iuran
+     *
+     * @return object
+     */
     public static function api_post()
     {
         // Prevent XSS and Escape Special Chars
-        $nik = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['nik'], ENT_COMPAT)
-        );
-        $id = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['id'], ENT_COMPAT)
-        );
+        $nik = self::sanitize($_POST['nik']);
+        $id = self::sanitize($_POST['id']);
 
         $file = $_FILES['files'];
         $tanggal = date('Y-m-d');
@@ -70,45 +60,77 @@ class Iuran extends Controller
                 return $response;
         }
 
-        return (object) array(
-            'status' => true,
-            'msg' => 'Sukses'
-        );
+        return self::response(true, 'Sukses menghapus data iuran');
     }
 
     private static function get_unpaid_iuran(string $nik)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare("SELECT nik, id_tagihan, 
-        id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, 
-        rekening, bukti_pembayaran, tanggal_pembayaran FROM tagihan WHERE nik = ? AND status_pembayaran = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                nik, 
+                id_tagihan, 
+                id_rt, 
+                id_rw, 
+                jenis_tagihan, 
+                total_tagihan, 
+                jatuh_tempo, 
+                status_pembayaran, 
+                rekening, 
+                bukti_pembayaran, 
+                tanggal_pembayaran 
+            FROM 
+                tagihan 
+            WHERE 
+                nik = ? AND 
+                status_pembayaran = ?"
+        );
         $stmt->bind_param('ss', $nik, 'Unpaid');
         $stmt->execute();
+
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
+
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
-            return (object) array(
-                'status' => true,
-                $response
-            );
+            
+            return self::response(true, $response);
         } else
-            return (object) array(
-                'status' => false,
-                'error' => 'Tidak ada data'
-            );
+            return self::error('Tidak ada data iuran tersimpan');
     }
 
     private static function get_paid_iuran(string $nik)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare("SELECT nik, id_tagihan, 
-        id_rt, id_rw, jenis_tagihan, total_tagihan, jatuh_tempo, status_pembayaran, 
-        rekening, bukti_pembayaran, tanggal_pembayaran FROM tagihan WHERE nik = ? AND status_pembayaran = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                nik, 
+                id_tagihan, 
+                id_rt, 
+                id_rw, 
+                jenis_tagihan, 
+                total_tagihan, 
+                jatuh_tempo, 
+                status_pembayaran, 
+                rekening, 
+                bukti_pembayaran, 
+                tanggal_pembayaran 
+            FROM 
+                tagihan 
+            WHERE 
+                nik = ? AND 
+                status_pembayaran = ?"
+        );
         $stmt->bind_param('ss', $nik, 'Paid');
         $stmt->execute();
+
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
+
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object())
@@ -116,40 +138,39 @@ class Iuran extends Controller
                     'bukti_pembayaran' => 'http://localhost/o-semar/api/rest?function=get_berkas&jenis_berkas=iuran&nama_berkas' . $obj->bukti_pembayaran,
                     $obj
                 ));
-            return (object) array(
-                'status' => true,
-                $response
-            );
+
+            return self::response(true, $response);
         } else
-            return (object) array(
-                'status' => false,
-                'error' => 'Tidak ada data'
-            );
+            return self::error('Tidak ada data iuran yang sudah terbayar tersimpan');
     }
 
     private static function get_tagihan(string $nik, string $id)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare("SELECT * FROM tagihan WHERE nik = ? AND id_tagihan = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                tagihan 
+            WHERE 
+                nik = ? AND 
+                id_tagihan = ?"
+        );
         $stmt->bind_param('ss', $nik, $id);
         $stmt->execute();
 
-        if ($stmt->errno !== 0) {
-            return (object) array(
-                'status' => false,
-                'error' => $stmt->error
-            );
-        }
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
 
         $result = $stmt->get_result();
-        while ($obj = $result->fetch_object())
-            array_push($response, $obj);
+        if ($result->num_rows > 0) {
+            while ($obj = $result->fetch_object())
+                array_push($response, $obj);
 
-        return (object) array(
-            'status' => true,
-            $response
-        );
+            return self::response(true, $response);
+        } else
+            return self::error('Tidak ada data tagihan tersimpan');
     }
 
     private static function insert_lampiran(
@@ -158,8 +179,8 @@ class Iuran extends Controller
         string $tanggal,
         $file
     ) {
-        $data = self::get_tagihan($nik, $id);
-        if (count($data) > 0) {
+        $tagihan = self::get_tagihan($nik, $id);
+        if (count($tagihan->data) > 0) {
             foreach ($file['tmp_name'] as $key) {
                 $file_tmp = $file['tmp_name'][$key];
                 $file_extension = strtolower(pathinfo($file['name'][$key], PATHINFO_EXTENSION));
@@ -167,24 +188,38 @@ class Iuran extends Controller
                 if (in_array($file_extension, array('jpg', 'jpeg', 'png', 'gif', 'bmp'))) {
                     $new_filename = uniqid() .  '_' . $nik . '.' . $file_extension;
                     move_uploaded_file($file_tmp, "../admin/iuran/berkas/$new_filename");
-                }
+                } else
+                    return self::error('Ekstensi file tidak dapat diterima');
 
-                $stmt = self::$mysqli->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-                VALUES(?, ?, ?, 'Pembayaran Tagihan', ?, 'Unpaid', '-')");
+                $stmt = self::$mysqli->prepare(
+                    "INSERT INTO lampiran
+                        (
+                            nik, 
+                            kode, 
+                            lampiran, 
+                            jenis_lampiran, 
+                            tanggal_lampiran, 
+                            status_lampiran, 
+                            ket_lampiran
+                            ) 
+                    VALUES
+                        (
+                            ?, 
+                            ?, 
+                            ?, 
+                            'Pembayaran Tagihan', 
+                            ?, 
+                            'Unpaid', 
+                            '-'
+                        )"
+                );
                 $stmt->bind_param('ssss', $nik, $id, $new_filename, $tanggal);
                 $stmt->execute();
 
-                if ($stmt->errno !== 0) {
-                    return (object) array(
-                        'status' => false,
-                        'error' => $stmt->error
-                    );
-                }
+                if ($stmt->errno !== 0)
+                    return self::error($stmt->error);
 
-                return (object) array(
-                    'status' => true,
-                    'msg' => 'Insert sukses'
-                );
+                return self::response(true, 'Berhasil memasukkan data tagihan');
             }
         }
     }
@@ -196,20 +231,20 @@ class Iuran extends Controller
         else
             $status = 'Unpaid';
 
-        $stmt = self::$mysqli->prepare("UPDATE tagihan SET status_pembayaran = ? WHERE id_tagihan = ?");
+        $stmt = self::$mysqli->prepare(
+            "UPDATE 
+                tagihan 
+            SET 
+                status_pembayaran = ? 
+            WHERE 
+                id_tagihan = ?"
+        );
         $stmt->bind_param('ss', $status, $id);
         $stmt->execute();
 
-        if ($stmt->errno !== 0) {
-            return (object) array(
-                'status' => false,
-                'error' => $stmt->error
-            );
-        }
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
 
-        return (object) array(
-            'status' => true,
-            'msg' => 'Update sukses'
-        );
+        return self::response(true, 'Update surat keterangan berhasil');
     }
 }

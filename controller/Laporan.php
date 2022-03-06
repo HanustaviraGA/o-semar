@@ -14,40 +14,19 @@ class Laporan extends Controller {
 
     public static function api_get() {
         // Prevent XSS and Escape Special Chars
-        $nik = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_GET['nik'], ENT_COMPAT)
-        );
+        $nik = self::sanitize($_GET['nik']);
         
         $pelaporan = self::get_pelaporan($nik);
-        return (object) array(
-            'status' => true,
-            $pelaporan
-        );
+        return $pelaporan;
     }
 
     public static function api_post() {
         // Prevent XSS and Escape Special Chars
-        $nik = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['nik'])
-        );
-        $rt = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['id_rt'])
-        );
-        $rw = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['id_rw'])
-        );
-        $kategori = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['kategori'])
-        );
-        $keterangan = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['keterangan'])
-        );
+        $nik = self::sanitize($_POST['nik']);
+        $rt = self::sanitize($_POST['id_rt']);
+        $rw = self::sanitize($_POST['id_rw']);
+        $kategori = self::sanitize($_POST['kategori']);
+        $keterangan = self::sanitize($_POST['keterangan']);
         $tanggal = date('Y-m-d');
         $prefix = 'LPR';
         $uniqid = uniqid($prefix);
@@ -60,10 +39,7 @@ class Laporan extends Controller {
             empty($kategori) ||
             empty($keterangan)
         ) {
-            return (object) array(
-                'status' => false,
-                'msg' => 'Data tidak boleh kosong'
-            );
+            return self::response(false, 'Data tidak boleh kosong');
         }
 
         if (isset($file) && !empty($file['name'])) {
@@ -84,22 +60,34 @@ class Laporan extends Controller {
         if (!$response->status)
             return $response;
 
-        return (object) array(
-            'status' => true,
-            'msg' => 'Sukses'
-        );
+        return self::response(true, 'Sukses memasukkan laporan');
     }
 
     private static function get_pelaporan(string $nik) {
         $response = array();
-        $stmt = self::$mysqli->prepare("SELECT * FROM pelaporan WHERE nik = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                pelaporan 
+            WHERE 
+                nik = ?"
+        );
         $stmt->bind_param('s', $nik);
         $stmt->execute();
+
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
+
         $result = $stmt->get_result();
-        while ($obj = $result->fetch_object()) {
-            array_push($response, $obj);
-        }
-        return $response;
+        if ($result->num_rows > 0) {
+            while ($obj = $result->fetch_object()) {
+                array_push($response, $obj);
+            }
+    
+            return self::response(true, $response);
+        } else
+            return self::response(false, 'Data tidak ditemukan');
     }
 
     private static function insert_lampiran(
@@ -117,28 +105,38 @@ class Laporan extends Controller {
                 $new_filename = $uniqid .  '_' . $nik . '.' . $file_ext;
                 move_uploaded_file($file_tmp, '../admin/laporan/berkas/' . $new_filename);
             } else {
-                return (object) array(
-                    'status' => false,
-                    'error' => 'Ekstensi file tidak dapat diterima'
-                );
+                return self::error('Ekstensi file tidak dapat diterima');
             }
         }
         // Insert entry to database
-        $stmt = self::$mysqli->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
-        VALUES(?, ?, ?, 'Laporan Masyarakat', ?, 'Pending', '-')");
+        $stmt = self::$mysqli->prepare(
+            "INSERT INTO lampiran
+                (
+                    nik, 
+                    kode, 
+                    lampiran, 
+                    jenis_lampiran, 
+                    tanggal_lampiran, 
+                    status_lampiran, 
+                    ket_lampiran
+                ) 
+            VALUES
+                (
+                    ?, 
+                    ?, 
+                    ?, 
+                    'Laporan Masyarakat', 
+                    ?, 
+                    'Pending', 
+                    '-')"
+        );
         $stmt->bind_param('ssss', $nik, $uniqid, $new_filename, $tanggal);
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return (object) array(
-                'status' => true,
-                'error' => $stmt->error
-            );
+            return self::error($stmt->error);
         else
-            return (object) array(
-                'status' => true,
-                'msg' => 'Sukses'
-            );
+            return self::response(true, 'Sukses memasukkan lampiran');
     }
 
     private static function insert_pelaporan(
@@ -151,20 +149,37 @@ class Laporan extends Controller {
         string $tanggal
     ) {
         // Insert entry to database
-        $stmt = self::$mysqli->prepare("INSERT INTO pelaporan(id_pelaporan, nik, id_rt, id_rw, kategori, keterangan, tanggal_pelaporan, status, alasan)
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending', '-')");
+        $stmt = self::$mysqli->prepare(
+            "INSERT INTO pelaporan
+                (
+                    id_pelaporan, 
+                    nik, 
+                    id_rt, 
+                    id_rw, 
+                    kategori, 
+                    keterangan, 
+                    tanggal_pelaporan, 
+                    status, 
+                    alasan
+                )
+            VALUES 
+                (
+                    ?, 
+                    ?, 
+                    ?, 
+                    ?, 
+                    ?, 
+                    ?, 
+                    ?, 
+                    'Pending', 
+                    '-')"
+        );
         $stmt->bind_param('sssssss', $uniqid, $nik, $rt, $rw, $kategori, $keterangan, $tanggal);
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return (object) array(
-                'status' => true,
-                'error' => $stmt->error
-            );
+            return self::error($stmt->error);
         else
-            return (object) array(
-                'status' => true,
-                'msg' => 'Sukses'
-            );
+            return self::response(true, 'Sukses memasukkan pelaporan');
     }
 }

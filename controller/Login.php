@@ -16,26 +16,17 @@ class Login extends Controller
     public static function api_post()
     {
         // Prevent XSS and Escape Special Chars
-        $username = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['username'], ENT_COMPAT)
-        );
-        $input_password = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['password'], ENT_COMPAT)
-        );
+        $username = self::sanitize($_POST['username']);
+        $input_password = self::sanitize($_POST['password']);
         // Check request data
         if (empty($username) || empty($password)) {
-            return (object) array(
-                'status' => false,
-                'msg' => 'Data tidak boleh kosong'
-            );
+            return self::response(false, 'Data tidak boleh kosong');
         }
         // 
         $penduduk = self::get_penduduk_by_username($username);
-        if (count($penduduk) > 0) {
-            $nik = $penduduk[0]->nik;
-            $password = $penduduk[0]->password;
+        if (count($penduduk->data) > 0) {
+            $nik = $penduduk->data[0]->nik;
+            $password = $penduduk->data[0]->password;
 
             if (password_verify($input_password, $password)) {
                 session_start();
@@ -44,13 +35,13 @@ class Login extends Controller
                     session_regenerate_id(true);
                 }
 
-                $_SESSION['nama_admin'] = $penduduk[0]->nama;
-                $_SESSION['user_admin'] = $penduduk[0]->username;
-                $_SESSION['nik'] = $penduduk[0]->nik;
-                $_SESSION['alamat'] = $penduduk[0]->alamat;
-                $_SESSION['no_kk'] = $penduduk[0]->no_kk;
-                $_SESSION['rt'] = $penduduk[0]->id_rt;
-                $_SESSION['rw'] = $penduduk[0]->id_rw;
+                $_SESSION['nama_admin'] = $penduduk->data[0]->nama;
+                $_SESSION['user_admin'] = $penduduk->data[0]->username;
+                $_SESSION['nik'] = $penduduk->data[0]->nik;
+                $_SESSION['alamat'] = $penduduk->data[0]->alamat;
+                $_SESSION['no_kk'] = $penduduk->data[0]->no_kk;
+                $_SESSION['rt'] = $penduduk->data[0]->id_rt;
+                $_SESSION['rw'] = $penduduk->data[0]->id_rw;
 
                 if (self::check_if_ketua_rt($nik))
                     $_SESSION['keadaan'] = 'sudah_login_rt';
@@ -61,41 +52,56 @@ class Login extends Controller
                 else
                     $_SESSION['keadaan'] = 'sudah_login_penduduk';
 
-                return (object) array(
-                    'status' => true,
+                return self::response(true, (object) array(
                     'jenis_session' => $_SESSION['keadaan'],
-                    $penduduk[0]
-                );
+                    $penduduk->data[0]
+                ));
             } else {
-                return (object) array(
-                    'status' => false,
-                    'msg' => 'Data tidak ditemukan'
-                );
+                return self::response(false, 'Username atau Password salah!');
             }
         } else {
-            return (object) array(
-                'status' => false,
-                'msg' => 'Data tidak ditemukan'
-            );
+            return self::response(false, 'Data user tidak ditemukan');
         }
     }
 
     private static function get_penduduk_by_username(string $username)
     {
         $response = array();
-        $stmt = self::$mysqli->prepare("SELECT * FROM penduduk WHERE username = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                penduduk 
+            WHERE 
+                username = ?"
+        );
         $stmt->bind_param('s', $username);
         $stmt->execute();
+
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
+
         $result = $stmt->get_result();
-        while ($obj = $result->fetch_object()) {
-            array_push($response, $obj);
-        }
-        return $response;
+        if ($result->num_rows > 0) {
+            while ($obj = $result->fetch_object()) {
+                array_push($response, $obj);
+            }
+    
+            return self::response(true, $response);
+        } else
+            return self::response(false, 'Data tidak ditemukan');
     }
 
     private static function check_if_ketua_rt(string $nik)
     {
-        $stmt = self::$mysqli->prepare("SELECT * FROM msrt where nik_ketuart = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                msrt 
+            WHERE 
+                nik_ketuart = ?"
+        );
         $stmt->bind_param('s', $nik);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -108,7 +114,14 @@ class Login extends Controller
 
     private static function check_if_ketua_rw(string $nik)
     {
-        $stmt = self::$mysqli->prepare("SELECT * FROM msrw where nik_ketuarw = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                msrw 
+            WHERE 
+                nik_ketuarw = ?"
+        );
         $stmt->bind_param('s', $nik);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -121,7 +134,14 @@ class Login extends Controller
 
     private static function check_if_admin(string $nik)
     {
-        $stmt = self::$mysqli->prepare("SELECT * FROM msadmin where nik = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                msadmin 
+            WHERE 
+                nik = ?"
+        );
         $stmt->bind_param('s', $nik);
         $stmt->execute();
         $result = $stmt->get_result();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Query using Prepared Statement
+ * **Deprecated** - Query using Prepared Statement
  * 
  * Example:
  * 
@@ -12,11 +12,15 @@
  * )
  * 
  * Reference: https://www.php.net/manual/en/mysqli.prepare.php#107200
+ * 
+ * **Deprecated** - Due to not flexible to query result (I think) and not used in code.
+ * 
  * @param mysqli $conn
  * @param string $query
  * @param string|null $type
  * @param array|null $params
  * @return array|ErrorException|null
+ * @deprecated 1.0.0
  */
 function query(mysqli $conn, string $query, ?string $type = null, ?array $params = null): array|ErrorException|null
 {

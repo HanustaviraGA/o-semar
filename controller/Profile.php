@@ -9,30 +9,12 @@ class Profile extends Controller
 
     public static function api_post()
     {
-        $nik = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['nik'])
-        );
-        $nik_baru = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['nik_baru'])
-        );
-        $kk = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['kk'])
-        );
-        $email = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['email'])
-        );
-        $username = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['username'])
-        );
-        $password = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['password'])
-        );
+        $nik = self::sanitize($_POST['nik']);
+        $nik_baru = self::sanitize($_POST['nik_baru']);
+        $kk = self::sanitize($_POST['kk']);
+        $email = self::sanitize($_POST['email']);
+        $username = self::sanitize($_POST['username']);
+        $password = self::sanitize($_POST['password']);
         
 
         $penduduk = self::get_user($nik);
@@ -51,36 +33,37 @@ class Profile extends Controller
                 );
             }
             return $response;
-        } else {
-            return (object) array(
-                'status' => false,
-                'error' => 'Data tidak ditemukan'
-            );
-        }
+        } else
+            return self::response(false, 'Data tidak ditemukan');
+        
     }
 
     private static function get_user(string $nik)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare("SELECT * FROM penduduk WHERE nik = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                penduduk 
+            WHERE 
+                nik = ?"
+        );
         $stmt->bind_param('s', $nik);
         $stmt->execute();
 
-        if ($stmt->errno !== 0) 
-            return (object) array(
-                'status' => false,
-                'error' => $stmt->error
-            );
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
         
         $result = $stmt->get_result();
-        while ($obj = $result->fetch_object())
-            array_push($response, $obj);
-
-        return (object) array(
-            'status' => true,
-            'data' => $response
-        );
+        if ($result->num_rows > 0) {
+            while ($obj = $result->fetch_object())
+                array_push($response, $obj);
+    
+            return self::response(true, $response);
+        } else
+            return self::response(false, 'Data tidak ditemukan');
     }
 
     private static function update_profile(
@@ -90,39 +73,44 @@ class Profile extends Controller
         string $email,
         string $username
     ) {
-        $stmt = self::$mysqli->prepare("UPDATE penduduk SET no_kk = ?, nik = ?, email = ?, username = ? WHERE nik = ?");
+        $stmt = self::$mysqli->prepare(
+            "UPDATE 
+                penduduk 
+            SET 
+                no_kk = ?, 
+                nik = ?, 
+                email = ?, 
+                username = ? 
+            WHERE 
+                nik = ?"
+        );
         $stmt->bind_param('sssss', $kk, $nik_baru, $email, $username, $nik);
         $stmt->execute();
 
         if ($stmt->errno !== 0) 
-            return (object) array(
-                'status' => false,
-                'error' => $stmt->error
-            );
+            return self::error($stmt->error);
 
-        return (object) array(
-            'status' => true,
-            'data' => 'Update sukses'
-        );
+        return self::response(true, 'Update sukses');
     }
 
     private static function update_password(
         string $nik,
         string $password
     ) {
-        $stmt = self::$mysqli->prepare("UPDATE penduduk SET password = ? WHERE nik = ?");
+        $stmt = self::$mysqli->prepare(
+            "UPDATE 
+                penduduk 
+            SET 
+                password = ? 
+            WHERE 
+                nik = ?"
+        );
         $stmt->bind_param('s', password_hash($password, PASSWORD_DEFAULT), $nik);
         $stmt->execute();
 
         if ($stmt->errno !== 0) 
-            return (object) array(
-                'status' => false,
-                'error' => $stmt->error
-            );
+        return self::error($stmt->error);
 
-        return (object) array(
-            'status' => true,
-            'data' => 'Update sukses'
-        );
+        return self::response(true, 'Update sukses');
     }
 }

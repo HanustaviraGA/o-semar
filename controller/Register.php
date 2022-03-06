@@ -16,30 +16,12 @@ class Register extends Controller
     public static function api_post()
     {
         // Prevent XSS and Escape Special Chars
-        $no_kk = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['no_kk'], ENT_COMPAT)
-        );
-        $nik = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['nik'], ENT_COMPAT)
-        );
-        $nama = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['nama'], ENT_COMPAT)
-        );
-        $email = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['email'], ENT_COMPAT)
-        );
-        $username = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['username'], ENT_COMPAT)
-        );
-        $password = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_POST['password'], ENT_COMPAT)
-        );
+        $no_kk = self::sanitize($_POST['no_kk']);
+        $nik = self::sanitize($_POST['nik']);
+        $nama = self::sanitize($_POST['nama']);
+        $email = self::sanitize($_POST['email']);
+        $username = self::sanitize($_POST['username']);
+        $password = self::sanitize($_POST['password']);
 
         if (
             empty($no_kk) ||
@@ -48,12 +30,8 @@ class Register extends Controller
             empty($email) ||
             empty($username) ||
             empty($password)
-        ) {
-            return (object) array(
-                'status' => false,
-                'msg' => 'Data tidak boleh kosong'
-            );
-        }
+        )
+            return self::response(false, 'Data tidak boleh kosong');
 
         $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -66,36 +44,55 @@ class Register extends Controller
                 $username,
                 $hash_password
             );
+            // Return Error or No Data
             if (!$response->status) {
-                return (object) array(
-                    'status' => false,
-                    'error' => $response->error
-                );
+                return $response;
             }
             return $response;
-        } else {
-            return (object) array(
-                'status' => false,
-                'msg' => 'Terdapat pengguna dengan data yang sama'
-            );
-        }
+        } else
+            return self::response(false, 'Terdapat pengguna dengan data yang sama');
     }
 
+    /**
+     * Cek jika user sudah terdaftar
+     * 
+     * Mengembalikan object dengan status true or false. Jika false
+     * maka user belum terdaftar.
+     *
+     * @param string $no_kk
+     * @param string $nik
+     * @param string $nama
+     * @param string $username
+     * @return object
+     */
     private static function check_user_duplicate(
         string $no_kk,
         string $nik,
         string $nama,
         string $username
     ) {
-        $stmt = self::$mysqli->prepare("SELECT * FROM penduduk WHERE no_kk = ? AND nik = ? AND nama = ? AND username = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM 
+                penduduk 
+            WHERE 
+                no_kk = ? AND 
+                nik = ? AND 
+                nama = ? AND 
+                username = ?"
+        );
         $stmt->bind_param('ssss', $no_kk, $nik, $nama, $username);
         $stmt->execute();
+
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
+
         $result = $stmt->get_result();
-        if ($result->num_rows === 0) {
-            return false;
-        } else {
-            return true;
-        }
+        if ($result->num_rows === 0)
+            return self::response(false, 'Tidak ada data user yang terdaftar dengan data yang diberikan');
+        else
+            return self::response(true, 'Ada data user yang terdaftar dengan data yang diberikan');
     }
 
     private static function create_new_user(
@@ -106,20 +103,22 @@ class Register extends Controller
         string $username,
         string $hashed_password
     ) {
-        $stmt = self::$mysqli->prepare("INSERT INTO penduduk SET no_kk = ?, nik = ?, nama = ?, email = ?, username = ?, password = ?");
+        $stmt = self::$mysqli->prepare(
+            "INSERT INTO 
+                penduduk 
+            SET 
+                no_kk = ?, 
+                nik = ?, 
+                nama = ?, 
+                email = ?, 
+                username = ?, 
+                password = ?"
+        );
         $stmt->bind_param('ssssss', $no_kk, $nik, $nama, $email, $username, $hashed_password);
         $stmt->execute();
-        if ($stmt->errno === 0) {
-            return (object) array(
-                'status' => true,
-                'msg' => 'Registrasi berhasil'
-            );
-        } else {
-            return (object) array(
-                'status' => false,
-                'errno' => $stmt->errno,
-                'error' => $stmt->error
-            );
-        }
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
+        else
+            return self::response(true, 'Registrasi berhasil');
     }
 }

@@ -6,14 +6,8 @@ class Pengumuman extends Controller {
 
     public static function api_get() {
         // Prevent XSS and Escape Special Chars
-        $rt = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_GET['id_rt'], ENT_COMPAT)
-        );
-        $rw = mysqli_real_escape_string(
-            self::$mysqli,
-            htmlspecialchars($_GET['id_rw'], ENT_COMPAT)
-        );
+        $rt = self::sanitize($_GET['id_rt']);
+        $rw = self::sanitize($_GET['id_rw']);
 
         return self::get_pengumuman($rt, $rw);
     }
@@ -21,24 +15,28 @@ class Pengumuman extends Controller {
     private static function get_pengumuman(string $rt, string $rw) {
         $response = array();
 
-        $stmt = self::$mysqli->prepare("SELECT * FROM pengumuman WHERE id_rt = ? AND id_rw = ?");
+        $stmt = self::$mysqli->prepare(
+            "SELECT 
+                * 
+            FROM
+                pengumuman
+            WHERE 
+                id_rt = ? AND
+                id_rw = ?"
+        );
         $stmt->bind_param('ss', $rt, $rw);
         $stmt->execute();
 
-        if ($stmt->errno !== 0) {
-            return (object) array(
-                'status' => false,
-                'error' => $stmt->error
-            );
-        }
+        if ($stmt->errno !== 0)
+            return self::error($stmt->error);
 
         $result = $stmt->get_result();
-        while ($obj = $result->fetch_object())
-            array_push($response, $obj);
-        
-        return (object) array(
-            'status' => true,
-            $response
-        );
+        if ($result->num_rows > 0) {
+            while ($obj = $result->fetch_object())
+                array_push($response, $obj);
+            
+            return self::response(true, $response);
+        } else
+            return self::response(false, 'Data tidak ditemukan');
     }
 }
