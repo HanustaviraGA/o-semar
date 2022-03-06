@@ -2,6 +2,14 @@
 
 function jenis_surat() {
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
+        if (!isset($_SESSION['nik'])) {
+            header("HTTP/ 401");
+            header('Content-Type: application/json');
+            echo json_encode(array(
+                'msg' => 'Not Authorized'
+            ));
+            die;
+        }
         $response = JenisSurat::api_get();
         if (!$response->status) {
             header("HTTP/ 400");

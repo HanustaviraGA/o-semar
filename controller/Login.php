@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Login Controller
- * 
- * @version 2.0.0
- */
 class Login extends Controller
 {
 

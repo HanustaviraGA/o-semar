@@ -2,6 +2,14 @@
 
 function iuran() {
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
+        if (!isset($_SESSION['nik'])) {
+            header("HTTP/ 401");
+            header('Content-Type: application/json');
+            echo json_encode(array(
+                'msg' => 'Not Authorized'
+            ));
+            die;
+        }
         $response = Iuran::api_get();
         if (!$response->status)
             header("HTTP/ 400");
@@ -10,6 +18,14 @@ function iuran() {
         header('Content-Type: application/json');
         echo json_encode($response);
     } else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (!isset($_SESSION['nik'])) {
+            header("HTTP/ 401");
+            header('Content-Type: application/json');
+            echo json_encode(array(
+                'msg' => 'Not Authorized'
+            ));
+            die;
+        }
         $response = Iuran::api_post();
         if (!$response->status) {
             header("HTTP/ 400");
