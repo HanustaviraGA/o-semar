@@ -366,6 +366,8 @@
             $rt = $data['rt'];
             $rw = $data['rw'];
             $nik = $data['nik'];
+            $no_sk = $data['no_sk'];
+            $tanggal_sk = $data['tanggal_sk'];
             // Cek Nama Pejabat
             $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
             $nama->bind_param('s', $nik);
@@ -374,8 +376,8 @@
             $data_nama = $nama2->fetch_assoc();
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = $koneksi->prepare("INSERT INTO msrt (id_rt, id_rw, nik_ketuart, nama_rt) VALUES (?, ?, ?, ?)");
-            $sql->bind_param('ssss', $rt, $rw, $nik, $nama_pejabat);
+            $sql = $koneksi->prepare("INSERT INTO msrt (id_rt, id_rw, nik_ketuart, nama_rt, nomor_sk, tanggal_sk) VALUES (?, ?, ?, ?, ?, ?)");
+            $sql->bind_param('ssssss', $rt, $rw, $nik, $nama_pejabat, $no_sk, $tanggal_sk);
             $query = $sql->execute();
             if($query == true){
                 header("Location: ../views/super/list_rt?pesan=sukses");
@@ -388,6 +390,8 @@
         case 'update_rt':
             $rt = $data['id_rt'];
             $nik = $data['nik'];
+            $no_sk = $data['no_sk'];
+            $tanggal_sk = $data['tanggal_sk'];
             // Cek Nama Pejabat
             $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
             $nama->bind_param('s', $nik);
@@ -396,8 +400,8 @@
             $data_nama = $nama2->fetch_assoc(); 
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = $koneksi->prepare("UPDATE msrt SET nik_ketuart=?, nama_rt=? WHERE id_rt=?");
-            $sql->bind_param('sss', $nik, $nama_pejabat, $rt);
+            $sql = $koneksi->prepare("UPDATE msrt SET nik_ketuart=?, nama_rt=?, nomor_sk=?, tanggal_sk=? WHERE id_rt=?");
+            $sql->bind_param('sssss', $nik, $nama_pejabat, $no_sk, $tanggal_sk, $rt);
             $query = $sql->execute();
             if($query == true){
                 header("Location: ../views/super/list_rt?pesan=sukses");
@@ -411,6 +415,8 @@
             $rw = $data['rw'];
             $kelurahan = $data['kelurahan'];
             $nik = $data['nik'];
+            $no_sk = $data['no_sk'];
+            $tanggal_sk = $data['tanggal_sk'];
             // Cek Nama Pejabat
             $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
             $nama->bind_param('s', $nik);
@@ -419,8 +425,8 @@
             $data_nama = $nama2->fetch_assoc();
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = $koneksi->prepare("INSERT INTO msrw(id_rw, id_kelurahan, nik_ketuarw, nama_rw) VALUES (?, ?, ?, ?)");
-            $sql->bind_param('ssss', $rw, $kelurahan, $nik, $nama_pejabat);
+            $sql = $koneksi->prepare("INSERT INTO msrw(id_rw, id_kelurahan, nik_ketuarw, nama_rw, nomor_sk, tanggal_sk) VALUES (?, ?, ?, ?, ?, ?)");
+            $sql->bind_param('ssssss', $rw, $kelurahan, $nik, $nama_pejabat, $no_sk, $tanggal_sk);
             $query = $sql->execute();
             if($query == true){
                 header("Location: ../views/super/list_rw?pesan=sukses");
@@ -433,6 +439,8 @@
         case 'update_rw':
             $rw = $data['id_rw'];
             $nik = $data['nik'];
+            $no_sk = $data['no_sk'];
+            $tanggal_sk = $data['tanggal_sk'];
             // Cek Nama Pejabat
             $nama = $koneksi->prepare("SELECT * FROM penduduk WHERE nik=?");
             $nama->bind_param('s', $nik);
@@ -441,8 +449,8 @@
             $data_nama = $nama2->fetch_assoc(); 
             $nama_pejabat = $data_nama['nama'];
             // Eksekusi
-            $sql = $koneksi->prepare("UPDATE msrw SET nik_ketuarw=?, nama_rw=? WHERE id_rw=?");
-            $sql->bind_param('sss', $nik, $nama_pejabat, $rw);
+            $sql = $koneksi->prepare("UPDATE msrw SET nik_ketuarw=?, nama_rw=?, nomor_sk=?, tanggal_sk=? WHERE id_rw=?");
+            $sql->bind_param('sssss', $nik, $nama_pejabat, $no_sk, $tanggal_sk, $rw);
             $query = $sql->execute();
             if($query == true){
                 header("Location: ../views/super/list_rw?pesan=sukses");
@@ -492,10 +500,22 @@
                             $strip = '-';
                             $sql->bind_param('sssssss', $nik, $uniqid, $new_filename, $jenis_lampiran, $tanggal, $tipe_status, $strip);
                             $sql_lampiran = $sql->execute();
-                            $sql_surat = $koneksi->prepare("INSERT INTO suratketerangan(no_surat, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, tujuan, keterangan, status)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                            $sql_surat->bind_param('ssssssssss', $uniqid, $nik, $rt, $rw, $jenis, $keperluan, $tanggal, $tujuan, $keterangan, $tipe_status);
+                            // Masuk tabel suratketerangan
+                            $sql_surat = $koneksi->prepare("INSERT INTO suratketerangan(identifier, nik, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, tujuan, keterangan, status, status_rt, status_rw, status_admin)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            $sql_surat->bind_param('sssssssssssss', $uniqid, $nik, $rt, $rw, $jenis, $keperluan, $tanggal, $tujuan, $keterangan, $tipe_status, $strip, $strip, $strip);
                             $sql_surat->execute();
+                            // Update nomor surat
+                            $index_surat = $koneksi->prepare("SELECT * FROM suratketerangan WHERE identifier=?");
+                            $index_surat->bind_param('s', $uniqid);
+                            $index_surat->execute();
+                            $gabung_surat = $index_surat->get_result();
+                            $ambil_indsurat = $gabung_surat->fetch_assoc();
+                            $index = $ambil_indsurat['index'];
+                            $update_no_surat = $index.'/'.date("j").'/'.date("n").'/9.3.'.$rt.'.'.$rw.'/'.date("Y");
+                            $masukkan_no_surat = $koneksi->prepare("UPDATE suratketerangan SET no_surat=? WHERE identifier=?");
+                            $masukkan_no_surat->bind_param('ss', $update_no_surat, $uniqid);
+                            $masukkan_no_surat->execute();
                             header("Location: ../views/surat/index?sukses=sukses");
                         }
                         else{
@@ -510,17 +530,90 @@
                 header("Location: ../views/surat/index?pesan=gagal");
             }                  
             break;
-        case 'verifikasi_surat' :
+            // Surat
+        case 'tambah_surat_non_warga':
+            $nik = $_POST['nik'];
+            $rt = $_SESSION['rt'];
+            $rw = $_SESSION['rw'];
+            $tanggal = date("Y-m-d");
+            if(isset($_POST['submit'])){
+                $nama = $_POST['nama'];
+                $keterangan = $_POST['keterangan'];
+                $tujuan = $_POST['tujuan'];
+                if(isset($_POST['jenis'])){
+                    $jenis = $_POST['jenis'];
+                }else if(!isset($_POST['jenis'])){
+                    $jenis = $_POST['jenis_lainnya'];
+                }
+                $keperluan = $_POST['keperluan'];
+                $prefix = 'SRT';
+                $uniqid = uniqid($prefix);
+                if(isset($_FILES["files"]) && !empty($_FILES["files"]["name"])){
+                    foreach($_FILES['files']['tmp_name'] as $key => $tmp_name ){
+                        $file_name = $key.$_FILES['files']['name'][$key];
+                        $file_size =$_FILES['files']['size'][$key];
+                        $file_tmp =$_FILES['files']['tmp_name'][$key];
+                        $file_type=$_FILES['files']['type'][$key];
+                        
+                        $original_filename = $_FILES['files']['name'][$key];
+                        $ext = strtolower(pathinfo($_FILES["files"]["name"][$key], PATHINFO_EXTENSION));
+                        // check extension and upload
+                        if(in_array( $ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'))) {
+                            $filename_without_ext = basename($original_filename, '.'.$ext);
+                            $new_filename = uniqid() .  '_' . $nik . '.' . $ext;
+                            move_uploaded_file($file_tmp,'../berkas/surat/'.$new_filename);
+                            // Masuk Lampiran
+                            $sql = $koneksi->prepare("INSERT INTO lampiran(nik, kode, lampiran, jenis_lampiran, tanggal_lampiran, status_lampiran, ket_lampiran) 
+                            VALUES(?, ?, ?, ?, ?, ?, ?)");
+                            $jenis_lampiran = 'Pengajuan Surat';
+                            $tipe_status = 'Pending';
+                            $strip = '-';
+                            $sql->bind_param('sssssss', $nik, $uniqid, $new_filename, $jenis_lampiran, $tanggal, $tipe_status, $strip);
+                            $sql_lampiran = $sql->execute();
+                            // Masuk tabel suratketerangan
+                            $sql_surat = $koneksi->prepare("INSERT INTO suratketerangan(identifier, nik, nama, id_rt, id_rw, jenis, keperluan, tanggal_pengajuan, tujuan, keterangan, status, status_rt, status_rw, status_admin)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            $sql_surat->bind_param('ssssssssssssss', $uniqid, $nik, $nama, $rt, $rw, $jenis, $keperluan, $tanggal, $tujuan, $keterangan, $tipe_status, $strip, $strip, $strip);
+                            $sql_surat->execute();
+                            // Update nomor surat
+                            $index_surat = $koneksi->prepare("SELECT * FROM suratketerangan WHERE identifier=?");
+                            $index_surat->bind_param('s', $uniqid);
+                            $index_surat->execute();
+                            $gabung_surat = $index_surat->get_result();
+                            $ambil_indsurat = $gabung_surat->fetch_assoc();
+                            $index = $ambil_indsurat['index'];
+                            $update_no_surat = $index.'/'.date("j").'/'.date("n").'/9.3.'.$rt.'.'.$rw.'/'.date("Y");
+                            $masukkan_no_surat = $koneksi->prepare("UPDATE suratketerangan SET no_surat=? WHERE identifier=?");
+                            $masukkan_no_surat->bind_param('ss', $update_no_surat, $uniqid);
+                            $masukkan_no_surat->execute();
+                            header("Location: ../views/surat/index?sukses=sukses");
+                        }
+                        else{
+                            header("Location: ../views/surat/index?pesan=ekstensi");
+                        }
+                    }
+                }else{
+                    header("Location: ../views/surat/index?pesan=file");
+                }
+                
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
+            }                  
+            break;
+        // Status Surat Diverifikasi
+        case 'verifikasi_surat_rt' :
             $id = $data['id'];
             $id_lampiran = $data['lampiran'];
-            $new = "Terverifikasi";
+            $new = "Terverifikasi RT";
             $empty = ' ';
-            $status_lampiran = 'Telah Diperiksa';
+            $status_lampiran = 'Telah Diperiksa RT';
+            $tanggal = date("Y-m-d");
             // Tabel pelaporan
-            $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, alasan=? WHERE no_surat=?");
-            $sql->bind_param('sss', $new, $catatan, $id);
+            $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, status_rt=?, alasan=? WHERE no_surat=?");
+            $sql->bind_param('ssss', $new, $tanggal, $catatan, $id);
             $sql_status = $sql->execute();
             // Tabel lampiran
+            $catatan = "Terverifikasi RT";
             if($id_lampiran == 'Semua') {
                 $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
                 $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
@@ -538,12 +631,100 @@
                 exit;
             }
             break;
-        case 'tolak_surat':
+        case 'verifikasi_surat_rw' :
             $id = $data['id'];
             $id_lampiran = $data['lampiran'];
-            $new = "Ditolak";
+            $new = "Terverifikasi RW";
+            $empty = ' ';
+            $status_lampiran = 'Telah Diperiksa RW';
+            $tanggal = date("Y-m-d");
+            // Tabel pelaporan
+            $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, status_rw=?, alasan=? WHERE no_surat=?");
+            $sql->bind_param('ssss', $new, $tanggal, $catatan, $id);
+            $sql_status = $sql->execute();
+            // Tabel lampiran
+            $catatan = "Terverifikasi RW";
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+            if($sql_status == true && $sql_lampiran_status == true){
+                header("Location: ../views/surat/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
+                exit;
+            }
+            break;
+        case 'verifikasi_surat_admin' :
+            $id = $data['id'];
+            $id_lampiran = $data['lampiran'];
+            $new = "Selesai";
+            $empty = ' ';
+            $status_lampiran = 'Telah Diperiksa Admin';
+            $tanggal = date("Y-m-d");
+            // Tabel pelaporan
+            $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, status_admin=?, alasan=? WHERE no_surat=?");
+            $sql->bind_param('ssss', $new, $tanggal, $catatan, $id);
+            $sql_status = $sql->execute();
+            // Tabel lampiran
+            $catatan = "Terverifikasi Admin";
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+            if($sql_status == true && $sql_lampiran_status == true){
+                header("Location: ../views/surat/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
+                exit;
+            }
+            break;
+        case 'tolak_surat_rt':
+            $id = $data['id'];
+            $id_lampiran = $data['lampiran'];
+            $new = "Ditolak RT";
             $catatan = $data['alasan'];
-            $status_lampiran = 'Telah Diperiksa';
+            $status_lampiran = 'Telah Diperiksa RT';
+            // Tabel suratketerangan
+            $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, alasan=? WHERE no_surat=?");
+            $sql->bind_param('sss', $new, $catatan, $id);
+            $query = $sql->execute();
+            // Tabel lampiran
+            if($id_lampiran == 'Semua') {
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=?");
+                $sql_lampiran->bind_param('sss', $status_lampiran, $catatan, $id);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }else{
+                $sql_lampiran = $koneksi->prepare("UPDATE lampiran SET status_lampiran=?, ket_lampiran=? WHERE kode=? AND lampiran=?");
+                $sql_lampiran->bind_param('ssss', $status_lampiran, $catatan, $id, $id_lampiran);
+                $sql_lampiran_status = $sql_lampiran->execute();
+            }
+            if($query == true && $sql_lampiran_status == true){
+                header("Location: ../views/surat/index?pesan=sukses");
+                exit;
+            }else{
+                header("Location: ../views/surat/index?pesan=gagal");
+                exit;
+            }
+            break;
+        case 'tolak_surat_rw':
+            $id = $data['id'];
+            $id_lampiran = $data['lampiran'];
+            $new = "Ditolak RW";
+            $catatan = $data['alasan'];
+            $status_lampiran = 'Telah Diperiksa RW';
             // Tabel suratketerangan
             $sql = $koneksi->prepare("UPDATE suratketerangan SET status=?, alasan=? WHERE no_surat=?");
             $sql->bind_param('sss', $new, $catatan, $id);
@@ -686,7 +867,7 @@
             $pdf->AddPage();
 
             $id = $_GET['id'];
-            $sql = $koneksi->prepare("SELECT * FROM suratketerangan WHERE no_surat=?");
+            $sql = $koneksi->prepare("SELECT * FROM suratketerangan WHERE identifier=?");
             $sql->bind_param('s', $id);
             $sql->execute();
             $sql2 = $sql->get_result();
@@ -745,6 +926,7 @@
             $tujuan = $identifikasi['tujuan'];
             $status = $identifikasi['tanggal_pengajuan'];
             $rekening = $identifikasi['keterangan'];
+            $nomor_surat = $identifikasi['no_surat'];
 
             // Ubah tanggal surat
             $month = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
@@ -764,7 +946,7 @@
             $pdf->Ln(9);
             $pdf->Cell( 0, 3, 'KELURAHAN : '.$keldesa_akhir, 0, 0, 'C');
             $pdf->Ln(9);
-            $pdf->Cell( 0, 3, 'NO. '.$id_provinsi_no.'/'.$id_kabkota_no.'/'.$id_kecamatan_no.'/'.$id_kelurahan_no.'/'.$id, 0, 0, 'C');
+            $pdf->Cell( 0, 3, 'NO. '.$nomor_surat, 0, 0, 'C');
             $pdf->Ln(9);
             $pdf->Image('surabaya-logo.png',165,6,37);
             $pdf->Ln(7);
@@ -818,7 +1000,7 @@
             $pdf->Cell( 0, 3, 'Tanda tangan.'.'                                                                                             '.$kabkota_akhir.', '.$tanggal_status.' '.$bulan_status.' '.$tahun_status.'', 0, 0, 'J');
             $pdf->Ln(7);
             $pdf->cell(7,0.5);
-            $pdf->Cell( 0, 3, 'yang bersangkutan                                                                                                            Ketua RT', 0, 0, 'J');
+            $pdf->Cell( 0, 3, 'yang bersangkutan                                                                                                   Ketua RT', 0, 0, 'J');
             $pdf->Ln(20);
             $pdf->Cell( 0, 3, '('.$nama.')                                                                                      ('.$fetch_ketua['nama_rt'].')', 0, 0, 'J');
             $pdf->Ln(10);
@@ -841,6 +1023,18 @@
             $strip = 'Surat Pengantar/Keterangan';
             $lampiran->bind_param('sssssss', $cek_nik, $id, $filename, $jenis_lampiran, $date, $status, $strip);
             $lampiran->execute();
+            break;
+        // Ganti session
+        case 'session_change':
+            $session = $_POST['session'];
+            $nik = $_POST['nik'];
+            
+
+            if($session == 'Penduduk'){
+                $_SESSiON['keadaan'] = "sudah_login_penduduk";
+            }else if($session = 'RT'){
+
+            }
             break;
         default:
         echo 'gk masuk';

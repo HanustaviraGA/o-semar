@@ -83,7 +83,7 @@
                         <input type="text" class="form-control" value="<?= $dataID['status'] ?>" readonly>
                       </div>
                     </form>
-                    <?php if($_SESSION['keadaan'] == "sudah_login_admin" || $_SESSION['keadaan'] == "sudah_login_rt" || $_SESSION['keadaan'] == "sudah_login_rw"){?>
+                    <?php if($_SESSION['keadaan'] == "sudah_login_rt"){?>
                       <br>
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Tindak Lanjut</button>
                     <?php } else{ ?>

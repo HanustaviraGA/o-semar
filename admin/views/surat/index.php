@@ -48,21 +48,97 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Pengajuan Surat</h1>
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="./">Refresh</a></li>
+              <?php if($_SESSION['keadaan'] == "sudah_login_rt") { ?>
+                <li class="breadcrumb-item">
+                  <a href="non_warga.php" class="btn btn-primary">Aplikasi Non Warga</a>
+                </li>
+              <?php } ?>
             </ol>
           </div>
-
           <!-- Row -->
           <div class="row">
           <?php if($_SESSION["keadaan"] == "sudah_login_admin"){ ?>
             <!-- DataTable with Hover -->
-            <?php 
-              $sql = "SELECT * FROM suratketerangan";
+            <?php
+              if(isset($_POST['filter_bulan'])){
+                $bulan = $_POST['filter_bulan'];
+                $sql = "SELECT * FROM suratketerangan WHERE MONTHNAME(tanggal_pengajuan) = '$bulan' AND nama IS NULL";
+              }else{
+                $sql = "SELECT * FROM suratketerangan WHERE nama IS NULL";
+              }
               $query = mysqli_query($koneksi,$sql);
             ?>
             <div class="col-lg-12">
+              <form method="POST" action=" ">
+                <!-- <div class="form-group">
+                  <label for="exampleInputEmail1">Hari</label>
+                  <select class="filter form-control" name="filter_hari" id="filter_hari">
+                    <option>Pilih</option>
+                    <option value="Sunday">Minggu</option>
+                    <option value="Monday">Senin</option>
+                    <option value="Tuesday">Selasa</option>
+                    <option value="Wednesday">Rabu</option>
+                    <option value="Thursday">Kamis</option>
+                    <option value="Friday">Jumat</option>
+                    <option value="Saturday">Sabtu</option>
+                  </select>
+                </div> -->
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Filter Bulan</label>
+                  <select class="filter form-control" name="filter_bulan" id="filter_bulan">
+                    <option>Pilih</option>
+                    <option value="January">Januari</option>
+                    <option value="February">Februari</option>
+                    <option value="March">Maret</option>
+                    <option value="April">April</option>
+                    <option value="May">Mei</option>
+                    <option value="June">Juni</option>
+                    <option value="July">Juli</option>
+                    <option value="August">Agustus</option>
+                    <option value="September">September</option>
+                    <option value="October">Oktober</option>
+                    <option value="November">November</option>
+                    <option value="December">Desember</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="./" class="btn btn-primary">Reset</a>
+                <br>
+                <br>
+              </form>
               <div class="card mb-4">
                 <div class="table-responsive p-3">
+                  <?php if(isset($_POST['filter_bulan'])){ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan data bulan <?php 
+                      if($_POST['filter_bulan'] == "January"){
+                        echo "Januari";
+                      } else if($_POST['filter_bulan'] == "February"){
+                        echo "Februari";
+                      } else if($_POST['filter_bulan'] == "March"){
+                        echo "Maret";
+                      } else if($_POST['filter_bulan'] == "April"){
+                        echo "April";
+                      } else if($_POST['filter_bulan'] == "May"){
+                        echo "Mei";
+                      } else if($_POST['filter_bulan'] == "June"){
+                        echo "Juni";
+                      } else if($_POST['filter_bulan'] == "July"){
+                        echo "Juli";
+                      } else if($_POST['filter_bulan'] == "August"){
+                        echo "Agustus";
+                      } else if($_POST['filter_bulan'] == "September"){
+                        echo "September";
+                      } else if($_POST['filter_bulan'] == "October"){
+                        echo "Oktober";
+                      } else if($_POST['filter_bulan'] == "November"){
+                        echo "November";
+                      } else if($_POST['filter_bulan'] == "December"){
+                        echo "Desember";
+                      }
+                      ?></label>
+                  <?php } else{ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan seluruh data</label>
+                  <?php } ?>
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
@@ -165,17 +241,17 @@
                     <div class="form-group">
                       <label for="exampleInputEmail1">Berkas</label>
                       <button type="button" class="btn btn-primary ml-2 mb-2" id="plusInput" style="font-size: 10px"><i class="fas fa-plus"></i></button>
-                      
-                      <div class="file-field1" name="berkas" id="berkas">
+                      <!-- <div class="file-field1" name="berkas" id="berkas">
                         <div class="btn btn-primary btn-sm float-left">
                           <input type="file" id="files[]" name="files[]">
                         </div>
+                      </div> -->
+                      <div class="form-group" name="berkas" id="berkas">
+                        <input type="file" id="files[]" name="files[]" class="form-control">
                       </div>
                       <div id="target">
 
                       </div>
-                      <br>
-                    <br>
                     </div>
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                   </div>
@@ -185,13 +261,87 @@
             </div>
             <?php
               $nik = $_SESSION['nik']; 
-              $sql = "SELECT * FROM suratketerangan WHERE nik=$nik";
+              if(isset($_POST['filter_bulan'])){
+                $bulan = $_POST['filter_bulan'];
+                $sql = "SELECT * FROM suratketerangan WHERE MONTHNAME(tanggal_pengajuan) = '$bulan' AND nik=$nik";
+              }else{
+                $sql = "SELECT * FROM suratketerangan WHERE nik=$nik";
+              }
               $query = mysqli_query($koneksi,$sql);
             ?>
             <!-- DataTable with Hover -->
+            
             <div class="col-lg-12">
+            <form method="POST" action=" ">
+                <!-- <div class="form-group">
+                  <label for="exampleInputEmail1">Hari</label>
+                  <select class="filter form-control" name="filter_hari" id="filter_hari">
+                    <option>Pilih</option>
+                    <option value="Sunday">Minggu</option>
+                    <option value="Monday">Senin</option>
+                    <option value="Tuesday">Selasa</option>
+                    <option value="Wednesday">Rabu</option>
+                    <option value="Thursday">Kamis</option>
+                    <option value="Friday">Jumat</option>
+                    <option value="Saturday">Sabtu</option>
+                  </select>
+                </div> -->
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Filter Bulan</label>
+                  <select class="filter form-control" name="filter_bulan" id="filter_bulan">
+                    <option>Pilih</option>
+                    <option value="January">Januari</option>
+                    <option value="February">Februari</option>
+                    <option value="March">Maret</option>
+                    <option value="April">April</option>
+                    <option value="May">Mei</option>
+                    <option value="June">Juni</option>
+                    <option value="July">Juli</option>
+                    <option value="August">Agustus</option>
+                    <option value="September">September</option>
+                    <option value="October">Oktober</option>
+                    <option value="November">November</option>
+                    <option value="December">Desember</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="./" class="btn btn-primary">Reset</a>
+                <br>
+                <br>
+              </form>
               <div class="card mb-4">
                 <div class="table-responsive p-3">
+                <?php if(isset($_POST['filter_bulan'])){ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan data bulan <?php 
+                      if($_POST['filter_bulan'] == "January"){
+                        echo "Januari";
+                      } else if($_POST['filter_bulan'] == "February"){
+                        echo "Februari";
+                      } else if($_POST['filter_bulan'] == "March"){
+                        echo "Maret";
+                      } else if($_POST['filter_bulan'] == "April"){
+                        echo "April";
+                      } else if($_POST['filter_bulan'] == "May"){
+                        echo "Mei";
+                      } else if($_POST['filter_bulan'] == "June"){
+                        echo "Juni";
+                      } else if($_POST['filter_bulan'] == "July"){
+                        echo "Juli";
+                      } else if($_POST['filter_bulan'] == "August"){
+                        echo "Agustus";
+                      } else if($_POST['filter_bulan'] == "September"){
+                        echo "September";
+                      } else if($_POST['filter_bulan'] == "October"){
+                        echo "Oktober";
+                      } else if($_POST['filter_bulan'] == "November"){
+                        echo "November";
+                      } else if($_POST['filter_bulan'] == "December"){
+                        echo "Desember";
+                      }
+                      ?></label>
+                  <?php } else{ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan seluruh data</label>
+                  <?php } ?>
                 <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
@@ -246,13 +396,86 @@
           <?php } elseif($_SESSION["keadaan"] == "sudah_login_rt") { ?>
             <?php
               $wil_rt = $_SESSION['rt'];
-              $sql = "SELECT * FROM suratketerangan WHERE id_rt = $wil_rt";
+              if(isset($_POST['filter_bulan'])){
+                $bulan = $_POST['filter_bulan'];
+                $sql = "SELECT * FROM suratketerangan WHERE MONTHNAME(tanggal_pengajuan) = '$bulan' AND id_rt = $wil_rt AND nama IS NULL";
+              }else{
+                $sql = "SELECT * FROM suratketerangan WHERE id_rt = $wil_rt AND nama IS NULL";
+              }
               $query = mysqli_query($koneksi,$sql);
             ?>
             <!-- DataTable with Hover -->
             <div class="col-lg-12">
+            <form method="POST" action=" ">
+                <!-- <div class="form-group">
+                  <label for="exampleInputEmail1">Hari</label>
+                  <select class="filter form-control" name="filter_hari" id="filter_hari">
+                    <option>Pilih</option>
+                    <option value="Sunday">Minggu</option>
+                    <option value="Monday">Senin</option>
+                    <option value="Tuesday">Selasa</option>
+                    <option value="Wednesday">Rabu</option>
+                    <option value="Thursday">Kamis</option>
+                    <option value="Friday">Jumat</option>
+                    <option value="Saturday">Sabtu</option>
+                  </select>
+                </div> -->
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Filter Bulan</label>
+                  <select class="filter form-control" name="filter_bulan" id="filter_bulan">
+                    <option>Pilih</option>
+                    <option value="January">Januari</option>
+                    <option value="February">Februari</option>
+                    <option value="March">Maret</option>
+                    <option value="April">April</option>
+                    <option value="May">Mei</option>
+                    <option value="June">Juni</option>
+                    <option value="July">Juli</option>
+                    <option value="August">Agustus</option>
+                    <option value="September">September</option>
+                    <option value="October">Oktober</option>
+                    <option value="November">November</option>
+                    <option value="December">Desember</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="./" class="btn btn-primary">Reset</a>
+                <br>
+                <br>
+              </form>
               <div class="card mb-4">
                 <div class="table-responsive p-3">
+                <?php if(isset($_POST['filter_bulan'])){ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan data bulan <?php 
+                      if($_POST['filter_bulan'] == "January"){
+                        echo "Januari";
+                      } else if($_POST['filter_bulan'] == "February"){
+                        echo "Februari";
+                      } else if($_POST['filter_bulan'] == "March"){
+                        echo "Maret";
+                      } else if($_POST['filter_bulan'] == "April"){
+                        echo "April";
+                      } else if($_POST['filter_bulan'] == "May"){
+                        echo "Mei";
+                      } else if($_POST['filter_bulan'] == "June"){
+                        echo "Juni";
+                      } else if($_POST['filter_bulan'] == "July"){
+                        echo "Juli";
+                      } else if($_POST['filter_bulan'] == "August"){
+                        echo "Agustus";
+                      } else if($_POST['filter_bulan'] == "September"){
+                        echo "September";
+                      } else if($_POST['filter_bulan'] == "October"){
+                        echo "Oktober";
+                      } else if($_POST['filter_bulan'] == "November"){
+                        echo "November";
+                      } else if($_POST['filter_bulan'] == "December"){
+                        echo "Desember";
+                      }
+                      ?></label>
+                  <?php } else{ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan seluruh data</label>
+                  <?php } ?>
                 <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
@@ -307,13 +530,86 @@
           <?php } elseif($_SESSION["keadaan"] == "sudah_login_rw") { ?>
             <?php
               $wil_rw = $_SESSION['rw'];
-              $sql = "SELECT * FROM suratketerangan WHERE id_rw = $wil_rw";
+              if(isset($_POST['filter_bulan'])){
+                $bulan = $_POST['filter_bulan'];
+                $sql = "SELECT * FROM suratketerangan WHERE MONTHNAME(tanggal_pengajuan) = '$bulan' AND id_rw = $wil_rw AND nama IS NULL";
+              }else{
+                $sql = "SELECT * FROM suratketerangan WHERE id_rw = $wil_rw AND nama IS NULL";
+              }
               $query = mysqli_query($koneksi,$sql);
             ?>
             <!-- DataTable with Hover -->
             <div class="col-lg-12">
+            <form method="POST" action=" ">
+                <!-- <div class="form-group">
+                  <label for="exampleInputEmail1">Hari</label>
+                  <select class="filter form-control" name="filter_hari" id="filter_hari">
+                    <option>Pilih</option>
+                    <option value="Sunday">Minggu</option>
+                    <option value="Monday">Senin</option>
+                    <option value="Tuesday">Selasa</option>
+                    <option value="Wednesday">Rabu</option>
+                    <option value="Thursday">Kamis</option>
+                    <option value="Friday">Jumat</option>
+                    <option value="Saturday">Sabtu</option>
+                  </select>
+                </div> -->
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Filter Bulan</label>
+                  <select class="filter form-control" name="filter_bulan" id="filter_bulan">
+                    <option>Pilih</option>
+                    <option value="January">Januari</option>
+                    <option value="February">Februari</option>
+                    <option value="March">Maret</option>
+                    <option value="April">April</option>
+                    <option value="May">Mei</option>
+                    <option value="June">Juni</option>
+                    <option value="July">Juli</option>
+                    <option value="August">Agustus</option>
+                    <option value="September">September</option>
+                    <option value="October">Oktober</option>
+                    <option value="November">November</option>
+                    <option value="December">Desember</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="./" class="btn btn-primary">Reset</a>
+                <br>
+                <br>
+              </form>
               <div class="card mb-4">
                 <div class="table-responsive p-3">
+                <?php if(isset($_POST['filter_bulan'])){ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan data bulan <?php 
+                      if($_POST['filter_bulan'] == "January"){
+                        echo "Januari";
+                      } else if($_POST['filter_bulan'] == "February"){
+                        echo "Februari";
+                      } else if($_POST['filter_bulan'] == "March"){
+                        echo "Maret";
+                      } else if($_POST['filter_bulan'] == "April"){
+                        echo "April";
+                      } else if($_POST['filter_bulan'] == "May"){
+                        echo "Mei";
+                      } else if($_POST['filter_bulan'] == "June"){
+                        echo "Juni";
+                      } else if($_POST['filter_bulan'] == "July"){
+                        echo "Juli";
+                      } else if($_POST['filter_bulan'] == "August"){
+                        echo "Agustus";
+                      } else if($_POST['filter_bulan'] == "September"){
+                        echo "September";
+                      } else if($_POST['filter_bulan'] == "October"){
+                        echo "Oktober";
+                      } else if($_POST['filter_bulan'] == "November"){
+                        echo "November";
+                      } else if($_POST['filter_bulan'] == "December"){
+                        echo "Desember";
+                      }
+                      ?></label>
+                  <?php } else{ ?>
+                    <label for="exampleInputEmail1" style="font-weight: bold;">Menampilkan seluruh data</label>
+                  <?php } ?>
                 <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
@@ -509,7 +805,7 @@
   <script>
     $('#plusInput').on('click', function () {
         var shot =
-            '<div class="file-field1" name="berkas1" id="berkas1"><div class="btn btn-primary btn-sm float-left"><input type="file" id="files[]" name="files[]"></div></div>';
+            '<div class="form-group" name="berkas" id="berkas"><input type="file" id="files[]" name="files[]" class="form-control"></div>';
         $('#target').append(shot);
     });
 
