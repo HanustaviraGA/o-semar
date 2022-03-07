@@ -1,21 +1,23 @@
 <?php
 
+require_once "controller.php";
+
 class Pengumuman extends Controller {
     // TODO: Controller for Web
-    public static function get() {}
+    public function get() {}
 
-    public static function api_get() {
+    public function api_get() {
         // Prevent XSS and Escape Special Chars
-        $rt = self::sanitize($_GET['id_rt']);
-        $rw = self::sanitize($_GET['id_rw']);
+        $rt = $this->sanitize($_GET['id_rt']);
+        $rw = $this->sanitize($_GET['id_rw']);
 
-        return self::get_pengumuman($rt, $rw);
+        return $this->get_pengumuman($rt, $rw);
     }
 
-    private static function get_pengumuman(string $rt, string $rw) {
+    private function get_pengumuman(string $rt, string $rw) {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM
@@ -28,15 +30,15 @@ class Pengumuman extends Controller {
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
             
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 }

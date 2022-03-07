@@ -1,5 +1,7 @@
 <?php
 
+require_once "controller.php";
+
 /**
  * Lampiran controller
  * 
@@ -8,35 +10,37 @@
 class Lampiran extends Controller
 {
     // TODO: Controller for Web
-    public static function get()
+    public function get()
     {
     }
 
-    public static function api_get()
+    public function api_get()
     {
         // Prevent XSS and Escape Special Chars
-        $id = self::sanitize($_GET['id']);
-        $jenis_lampiran = self::sanitize($_GET['jenis_lampiran']);
+        $id = $this->sanitize($_GET['id']);
+        $jenis_lampiran = $this->sanitize($_GET['jenis_lampiran']);
 
         switch ($jenis_lampiran) {
             case 'pelaporan': {
-                    $response = self::get_lampiran_pelaporan($id);
+                    $response = $this->get_lampiran_pelaporan($id);
                     break;
                 }
             case 'surat': {
-                    $response = self::get_lampiran_surat($id);
+                    $response = $this->get_lampiran_surat($id);
                     break;
                 }
             case 'pengumuman': {
-                    $response = self::get_lampiran_pengumuman($id);
+                    $response = $this->get_lampiran_pengumuman($id);
                     break;
                 }
             case 'iuran': {
-                    $response = self::get_lampiran_iuran($id);
+                    $response = $this->get_lampiran_iuran($id);
                     break;
                 }
             default: {
-                    return self::error("Jenis lampiran $jenis_lampiran tidak tersedia");
+                    if (empty($jenis_lampiran))
+                        return $this->error("Jenis lampiran null tidak tersedia");
+                    return $this->error("Jenis lampiran $jenis_lampiran tidak tersedia");
                 }
         }
 
@@ -58,16 +62,17 @@ class Lampiran extends Controller
                     'data_lampiran' => "http://localhost/o-semar/api/rest?function=get_berkas&key=buwinakeren&jenis_berkas=$jenis_lampiran&nama_berkas=" . $val["lampiran"]
                 ));
             }
-            return self::response(true, $data);
+            return $this->response(true, $data);
         } else
-            return self::error("Tidak ada data lampiran $jenis_lampiran pada database");
+            return $this->error("Tidak ada data lampiran $jenis_lampiran pada database");
     }
 
-    private static function get_lampiran_pelaporan(string $id)
+    private function get_lampiran_pelaporan(string $id)
     {
         $data = array();
+        $jenis_lampiran = 'Laporan Masyarakat';
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 pelaporan.id_pelaporan, 
                 lampiran, 
@@ -82,27 +87,28 @@ class Lampiran extends Controller
                 pelaporan.id_pelaporan = ? AND 
                 jenis_lampiran = ?"
         );
-        $stmt->bind_param('ss', $id, 'Laporan Masyarakat');
+        $stmt->bind_param('ss', $id, $jenis_lampiran);
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object()) 
                 array_push($data, $obj);
     
-            return self::response(true, $data);
+            return $this->response(true, $data);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 
-    private static function get_lampiran_surat(string $id)
+    private function get_lampiran_surat(string $id)
     {
         $data = array();
+        $jenis_lampiran = 'Pengajuan Surat';
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 suratketerangan.no_surat, 
                 lampiran, 
@@ -117,11 +123,11 @@ class Lampiran extends Controller
                 suratketerangan.no_surat = ? AND 
                 jenis_lampiran = ?"
         );
-        $stmt->bind_param('ss', $id, 'Pengajuan Surat');
+        $stmt->bind_param('ss', $id, $jenis_lampiran);
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -129,16 +135,17 @@ class Lampiran extends Controller
                 array_push($data, $obj);
             }
     
-            return self::response(true, $data);
+            return $this->response(true, $data);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 
-    private static function get_lampiran_pengumuman(string $id)
+    private function get_lampiran_pengumuman(string $id)
     {
         $data = array();
+        $jenis_lampiran = 'Pengajuan Warga';
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 pengumuman.id, 
                 lampiran, 
@@ -153,11 +160,11 @@ class Lampiran extends Controller
                 pengumuman.id = ? AND 
                 jenis_lampiran = ?"
         );
-        $stmt->bind_param('ss', $id, 'Pengajuan Warga');
+        $stmt->bind_param('ss', $id, $jenis_lampiran);
         $stmt->execute();
         
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -165,16 +172,17 @@ class Lampiran extends Controller
                 array_push($data, $obj);
             }
     
-            return self::response(true, $data);
+            return $this->response(true, $data);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 
-    private static function get_lampiran_iuran(string $id)
+    private function get_lampiran_iuran(string $id)
     {
         $data = array();
+        $jenis_lampiran = 'Pembayaran Tagihan';
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 tagihan.id_tagihan, 
                 lampiran, 
@@ -189,11 +197,11 @@ class Lampiran extends Controller
                 tagihan.id_tagihan = ? AND 
                 jenis_lampiran = ?"
         );
-        $stmt->bind_param('ss', $id, 'Pembayaran Tagihan');
+        $stmt->bind_param('ss', $id, $jenis_lampiran);
         $stmt->execute();
         
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -201,8 +209,8 @@ class Lampiran extends Controller
                 array_push($data, $obj);
             }
     
-            return self::response(true, $data);
+            return $this->response(true, $data);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 }

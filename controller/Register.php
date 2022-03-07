@@ -1,5 +1,7 @@
 <?php
 
+require_once "controller.php";
+
 /**
  * Register controller
  * 
@@ -9,19 +11,19 @@ class Register extends Controller
 {
 
     // TODO: Controller for Web
-    public static function post()
+    public function post()
     {
     }
 
-    public static function api_post()
+    public function api_post()
     {
         // Prevent XSS and Escape Special Chars
-        $no_kk = self::sanitize($_POST['no_kk']);
-        $nik = self::sanitize($_POST['nik']);
-        $nama = self::sanitize($_POST['nama']);
-        $email = self::sanitize($_POST['email']);
-        $username = self::sanitize($_POST['username']);
-        $password = self::sanitize($_POST['password']);
+        $no_kk = $this->sanitize($_POST['no_kk']);
+        $nik = $this->sanitize($_POST['nik']);
+        $nama = $this->sanitize($_POST['nama']);
+        $email = $this->sanitize($_POST['email']);
+        $username = $this->sanitize($_POST['username']);
+        $password = $this->sanitize($_POST['password']);
 
         if (
             empty($no_kk) ||
@@ -31,12 +33,12 @@ class Register extends Controller
             empty($username) ||
             empty($password)
         )
-            return self::response(false, 'Data tidak boleh kosong');
+            return $this->response(false, 'Data tidak boleh kosong');
 
         $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
-        if (!self::check_user_duplicate($no_kk, $nik, $nama, $username)) {
-            $response = self::create_new_user(
+        if (!$this->check_user_duplicate($no_kk, $nik, $nama, $username)) {
+            $response = $this->create_new_user(
                 $no_kk,
                 $nik,
                 $nama,
@@ -50,7 +52,7 @@ class Register extends Controller
             }
             return $response;
         } else
-            return self::response(false, 'Terdapat pengguna dengan data yang sama');
+            return $this->response(false, 'Terdapat pengguna dengan data yang sama');
     }
 
     /**
@@ -65,13 +67,13 @@ class Register extends Controller
      * @param string $username
      * @return object
      */
-    private static function check_user_duplicate(
+    private function check_user_duplicate(
         string $no_kk,
         string $nik,
         string $nama,
         string $username
     ) {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 
@@ -86,16 +88,16 @@ class Register extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows === 0)
-            return self::response(false, 'Tidak ada data user yang terdaftar dengan data yang diberikan');
+            return $this->response(false, 'Tidak ada data user yang terdaftar dengan data yang diberikan');
         else
-            return self::response(true, 'Ada data user yang terdaftar dengan data yang diberikan');
+            return $this->response(true, 'Ada data user yang terdaftar dengan data yang diberikan');
     }
 
-    private static function create_new_user(
+    private function create_new_user(
         string $no_kk,
         string $nik,
         string $nama,
@@ -103,7 +105,7 @@ class Register extends Controller
         string $username,
         string $hashed_password
     ) {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "INSERT INTO 
                 penduduk 
             SET 
@@ -117,8 +119,8 @@ class Register extends Controller
         $stmt->bind_param('ssssss', $no_kk, $nik, $nama, $email, $username, $hashed_password);
         $stmt->execute();
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
         else
-            return self::response(true, 'Registrasi berhasil');
+            return $this->response(true, 'Registrasi berhasil');
     }
 }

@@ -1,21 +1,23 @@
 <?php
 
+require_once "controller.php";
+
 class Logout extends Controller
 {
 
     // TODO: Controller for Web
-    public static function post()
+    public function post()
     {
-        self::clear_session();
+        $this->clear_session();
     }
 
-    public static function api_post()
+    public function api_post()
     {
-        self::clear_session();
-        return self::response(true, 'Logout sukses!');
+        $this->clear_session();
+        return $this->response(true, 'Logout sukses!');
     }
 
-    private static function clear_session()
+    private function clear_session()
     {
         session_start();
         session_unset();

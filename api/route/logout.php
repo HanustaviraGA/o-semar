@@ -1,5 +1,7 @@
 <?php
 
+require_once '../controller/Logout.php';
+
 /**
  * Untuk Logout
  * 
@@ -8,6 +10,8 @@
 function logout()
 {
     session_start();
+    $logout = new Logout();
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -17,7 +21,7 @@ function logout()
             ));
             die;
         }
-        $response = Logout::api_post();
+        $response = $logout->api_post();
         header("HTTP/ 200");
         header('Content-Type: application/json');
         echo json_encode($response);

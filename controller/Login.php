@@ -1,24 +1,26 @@
 <?php
 
+require_once "controller.php";
+
 class Login extends Controller
 {
 
     // TODO: Controller for Web
-    public static function post()
+    public function post()
     {
     }
 
-    public static function api_post()
+    public function api_post()
     {
         // Prevent XSS and Escape Special Chars
-        $username = self::sanitize($_POST['username']);
-        $input_password = self::sanitize($_POST['password']);
+        $username = $this->sanitize($_POST['username']);
+        $input_password = $this->sanitize($_POST['password']);
         // Check request data
-        if (empty($username) || empty($password)) {
-            return self::response(false, 'Data tidak boleh kosong');
+        if (empty($username) || empty($input_password)) {
+            return $this->response(false, 'Data tidak boleh kosong');
         }
         // 
-        $penduduk = self::get_penduduk_by_username($username);
+        $penduduk = $this->get_penduduk_by_username($username);
         if (count($penduduk->data) > 0) {
             $nik = $penduduk->data[0]->nik;
             $password = $penduduk->data[0]->password;
@@ -38,31 +40,31 @@ class Login extends Controller
                 $_SESSION['rt'] = $penduduk->data[0]->id_rt;
                 $_SESSION['rw'] = $penduduk->data[0]->id_rw;
 
-                if (self::check_if_ketua_rt($nik))
+                if ($this->check_if_ketua_rt($nik))
                     $_SESSION['keadaan'] = 'sudah_login_rt';
-                else if (self::check_if_ketua_rw($nik))
+                else if ($this->check_if_ketua_rw($nik))
                     $_SESSION['keadaan'] = 'sudah_login_rw';
-                else if (self::check_if_admin($nik))
+                else if ($this->check_if_admin($nik))
                     $_SESSION['keadaan'] = 'sudah_login_admin';
                 else
                     $_SESSION['keadaan'] = 'sudah_login_penduduk';
 
-                return self::response(true, (object) array(
+                return $this->response(true, (object) array(
                     'jenis_session' => $_SESSION['keadaan'],
                     $penduduk->data[0]
                 ));
             } else {
-                return self::response(false, 'Username atau Password salah!');
+                return $this->response(false, 'Username atau Password salah!');
             }
         } else {
-            return self::response(false, 'Data user tidak ditemukan');
+            return $this->response(false, 'Data user tidak ditemukan');
         }
     }
 
-    private static function get_penduduk_by_username(string $username)
+    private function get_penduduk_by_username(string $username)
     {
         $response = array();
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 
@@ -74,7 +76,7 @@ class Login extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -82,14 +84,14 @@ class Login extends Controller
                 array_push($response, $obj);
             }
     
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 
-    private static function check_if_ketua_rt(string $nik)
+    private function check_if_ketua_rt(string $nik)
     {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 
@@ -107,9 +109,9 @@ class Login extends Controller
         }
     }
 
-    private static function check_if_ketua_rw(string $nik)
+    private function check_if_ketua_rw(string $nik)
     {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 
@@ -127,9 +129,9 @@ class Login extends Controller
         }
     }
 
-    private static function check_if_admin(string $nik)
+    private function check_if_admin(string $nik)
     {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 

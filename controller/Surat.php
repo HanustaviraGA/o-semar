@@ -1,23 +1,25 @@
 <?php
 
+require_once "controller.php";
+
 class Surat extends Controller
 {
     // TODO: Controller for Web
-    public static function get()
+    public function get()
     {
     }
     
     // TODO: Controller for Web
-    public static function post()
+    public function post()
     {
     }
 
-    public static function api_get()
+    public function api_get()
     {
         // Prevent XSS and Escape Special Chars
-        $nik = self::sanitize($_POST['nik']);
+        $nik = $this->sanitize($_GET['nik']);
 
-        $response = self::get_list_of_surat($nik);
+        $response = $this->get_list_of_surat($nik);
         // Return Error or No Data
         if (!$response->status) {
             return $response;
@@ -26,15 +28,15 @@ class Surat extends Controller
         return $response;
     }
 
-    public static function api_post()
+    public function api_post()
     {
         // Prevent XSS and Escape Special Chars
-        $jenis = self::sanitize($_POST['jenis']);
-        $nik = self::sanitize($_POST['nik']);
-        $rt = self::sanitize($_POST['id_rt']);
-        $rw = self::sanitize($_POST['id_rw']);
-        $keterangan = self::sanitize($_POST['keterangan']);
-        $keperluan = self::sanitize($_POST['keperluan']);
+        $jenis = $this->sanitize($_POST['jenis']);
+        $nik = $this->sanitize($_POST['nik']);
+        $rt = $this->sanitize($_POST['id_rt']);
+        $rw = $this->sanitize($_POST['id_rw']);
+        $keterangan = $this->sanitize($_POST['keterangan']);
+        $keperluan = $this->sanitize($_POST['keperluan']);
 
         $tanggal = date('Y-m-d');
         $prefix = 'SRT';
@@ -42,12 +44,12 @@ class Surat extends Controller
         $file = $_FILES['files'];
 
         if (isset($file) && !empty($file['name'])) {
-            $response = self::insert_lampiran($file, $uniqid, $nik, $tanggal);
+            $response = $this->insert_lampiran($file, $uniqid, $nik, $tanggal);
             // Return Error or No Data
             if (!$response->status)
                 return $response;
         }
-        $response = self::insert_surat_keterangan(
+        $response = $this->insert_surat_keterangan(
             $uniqid,
             $nik,
             $rt,
@@ -61,14 +63,14 @@ class Surat extends Controller
         if (!$response->status)
             return $response;
 
-        return self::response(true, 'Insert surat sukses!');
+        return $this->response(true, 'Insert surat sukses!');
     }
 
-    private static function get_list_of_surat(string $nik)
+    private function get_list_of_surat(string $nik)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 nik, 
                 no_surat, 
@@ -89,16 +91,16 @@ class Surat extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows === 0)
-            return self::response(false, 'Tidak ada data surat untuk nik tersebut');
+            return $this->response(false, 'Tidak ada data surat untuk nik tersebut');
         
-        return self::response(true, (object) $response);
+        return $this->response(true, (object) $response);
     }
 
-    private static function insert_lampiran(
+    private function insert_lampiran(
         $file,
         string $uniqid,
         string $nik,
@@ -112,11 +114,11 @@ class Surat extends Controller
                 $new_filename = $uniqid .  '_' . $nik . '.' . $file_ext;
                 move_uploaded_file($file_tmp, '../admin/surat/berkas/' . $new_filename);
             } else {
-                return self::error('Ekstensi file tidak dapat diterima');
+                return $this->error('Ekstensi file tidak dapat diterima');
             }
         }
         // Insert entry to database
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "INSERT INTO lampiran
                 (
                     nik, 
@@ -142,12 +144,12 @@ class Surat extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
-        return self::response(true, 'Sukses');
+        return $this->response(true, 'Sukses');
     }
 
-    private static function insert_surat_keterangan(
+    private function insert_surat_keterangan(
         string $uniqid,
         string $nik,
         string $rt,
@@ -157,7 +159,7 @@ class Surat extends Controller
         string $tanggal,
         string $keterangan
     ) {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "INSERT INTO suratketerangan
                 (
                     no_surat, 
@@ -187,8 +189,8 @@ class Surat extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
         else
-            return self::response(true, 'Sukses');
+            return $this->response(true, 'Sukses');
     }
 }

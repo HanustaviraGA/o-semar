@@ -1,6 +1,12 @@
 <?php
 
-function iuran() {
+require_once '../controller/Iuran.php';
+
+function iuran()
+{
+    session_start();
+    $iuran = new Iuran();
+
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -10,7 +16,7 @@ function iuran() {
             ));
             die;
         }
-        $response = Iuran::api_get();
+        $response = $iuran->api_get();
         if (!$response->status)
             header("HTTP/ 400");
         else
@@ -26,7 +32,7 @@ function iuran() {
             ));
             die;
         }
-        $response = Iuran::api_post();
+        $response = $iuran->api_post();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {

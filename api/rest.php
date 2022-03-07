@@ -4,22 +4,10 @@ require_once "../koneksi.php";
 require_once "../csrf.php";
 require_once "./query.php";
 require_once "./generate_response.php";
-require_once "./route/get_berkas.php";
-require_once "./route/get_penduduk_data.php";
-require_once "./route/register.php";
-require_once "./route/login.php";
-require_once "./route/logout.php";
-require_once "./route/lihat_kk.php";
-require_once "./route/lihat_daftar_surat.php";
-require_once "./route/lihat_daftar_laporan.php";
-require_once "./route/lihat_daftar_lampiran_by_id.php";
-require_once "./route/lihat_iuran.php";
-require_once "./route/lihat_jenis_surat.php";
-require_once "./route/lihat_pengumuman.php";
-require_once "./route/buat_surat.php";
-require_once "./route/buat_laporan.php";
-require_once "./route/update_iuran.php";
-require_once "./route/update_profile.php";
+// Get all routes automaticly
+foreach (new DirectoryIterator(__DIR__ . '/route') as $file)
+    if ($file->isFile())
+        require_once "./route/" . $file->getFilename();
 
 /**
  * API Key dihapus karena tidak terlalu
@@ -27,3 +15,15 @@ require_once "./route/update_profile.php";
  * 
  * Dialihkan dengan mengecek session user
  */
+
+if (!empty($_GET['function']) && function_exists($_GET['function'])) {
+    $_GET['function']();
+} else {
+    $response = array(
+        'status' => 404,
+        'message' => 'Not Found'
+    );
+    header('HTTP/ 404');
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}

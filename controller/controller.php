@@ -7,19 +7,26 @@
  * @version 1.2.0
  */
 class Controller {
-    protected static $mysqli;
+    /**
+     * Mysqli
+     *
+     * @var mysqli
+     */
+    protected $mysqli;
 
     public function __construct()
     {
-        self::$mysqli = new mysqli(
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+        $this->mysqli = new mysqli(
             $_ENV['DB_HOST'], 
             $_ENV['DB_USERNAME'], 
             $_ENV['DB_PASSWORD'], 
             $_ENV['DB_DATABASE']
         );
 
-        if (self::$mysqli->errno !== 0) {
-            die('Koneksi gagal: ' . self::$mysqli->error);
+        if ($this->mysqli->errno !== 0) {
+            die('Koneksi gagal: ' . $this->mysqli->error);
         }
     }
 
@@ -34,7 +41,7 @@ class Controller {
      * @param object|array|string $res
      * @return object|\ErrorException
      */
-    protected static function response(bool|int $status, object|array|string $res)
+    protected function response(bool|int $status, object|array|string $res)
     {
         if (gettype($res) === 'string')
             return (object) array(
@@ -56,7 +63,7 @@ class Controller {
      * @param string $err
      * @return object
      */
-    protected static function error(string $err)
+    protected function error(string $err)
     {
         return (object) array(
             'status' => false,
@@ -70,8 +77,8 @@ class Controller {
      * @param string $data
      * @return string
      */
-    protected static function sanitize(string $data)
+    protected function sanitize(string $data)
     {
-        return self::$mysqli->real_escape_string(htmlspecialchars($data, ENT_COMPAT));
+        return $this->mysqli->real_escape_string(htmlspecialchars($data, ENT_COMPAT));
     }
 }

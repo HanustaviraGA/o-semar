@@ -1,30 +1,32 @@
 <?php
 
+require_once "controller.php";
+
 class Profile extends Controller
 {
     // TODO: Controller for Web
-    public static function post()
+    public function post()
     {
     }
 
-    public static function api_post()
+    public function api_post()
     {
-        $nik = self::sanitize($_POST['nik']);
-        $nik_baru = self::sanitize($_POST['nik_baru']);
-        $kk = self::sanitize($_POST['kk']);
-        $email = self::sanitize($_POST['email']);
-        $username = self::sanitize($_POST['username']);
-        $password = self::sanitize($_POST['password']);
+        $nik = $this->sanitize($_POST['nik']);
+        $nik_baru = $this->sanitize($_POST['nik_baru']);
+        $kk = $this->sanitize($_POST['kk']);
+        $email = $this->sanitize($_POST['email']);
+        $username = $this->sanitize($_POST['username']);
+        $password = $this->sanitize($_POST['password']);
         
 
-        $penduduk = self::get_user($nik);
+        $penduduk = $this->get_user($nik);
         if (count($penduduk) > 0) {
             if (!empty($password)) {
                 // Update Password
-                $response = self::update_password($nik, $password);
+                $response = $this->update_password($nik, $password);
             } else {
                 // Update Profile
-                $response = self::update_profile(
+                $response = $this->update_profile(
                     $nik,
                     $nik_baru,
                     $kk,
@@ -34,15 +36,15 @@ class Profile extends Controller
             }
             return $response;
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
         
     }
 
-    private static function get_user(string $nik)
+    private function get_user(string $nik)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 
@@ -54,26 +56,26 @@ class Profile extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
         
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
     
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 
-    private static function update_profile(
+    private function update_profile(
         string $nik,
         string $nik_baru,
         string $kk,
         string $email,
         string $username
     ) {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "UPDATE 
                 penduduk 
             SET 
@@ -88,16 +90,16 @@ class Profile extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0) 
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
-        return self::response(true, 'Update sukses');
+        return $this->response(true, 'Update sukses');
     }
 
-    private static function update_password(
+    private function update_password(
         string $nik,
         string $password
     ) {
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "UPDATE 
                 penduduk 
             SET 
@@ -109,8 +111,8 @@ class Profile extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0) 
-        return self::error($stmt->error);
+        return $this->error($stmt->error);
 
-        return self::response(true, 'Update sukses');
+        return $this->response(true, 'Update sukses');
     }
 }

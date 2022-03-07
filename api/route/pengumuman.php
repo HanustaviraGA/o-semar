@@ -1,6 +1,12 @@
 <?php
 
-function pengumuman() {
+require_once '../controller/Pengumuman.php';
+
+function pengumuman()
+{
+    session_start();
+    $pengumuman = new Pengumuman();
+
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -10,7 +16,7 @@ function pengumuman() {
             ));
             die;
         }
-        $response = Pengumuman::api_get();
+        $response = $pengumuman->api_get();
         if (!$response->status)
             header("HTTP/ 400");
         else

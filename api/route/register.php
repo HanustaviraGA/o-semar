@@ -1,5 +1,7 @@
 <?php
 
+require_once '../controller/Register.php';
+
 /**
  * Registrasi penduduk
  * 
@@ -7,8 +9,10 @@
  */
 function register()
 {
+    $register = new Register();
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $response = Register::api_post();
+        $response = $register->api_post();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {

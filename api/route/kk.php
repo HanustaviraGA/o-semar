@@ -1,6 +1,12 @@
 <?php
 
-function kk() {
+require_once '../controller/KK.php';
+
+function kk()
+{
+    session_start();
+    $kk = new KK();
+
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -10,7 +16,7 @@ function kk() {
             ));
             die;
         }
-        $response = KK::api_get();
+        $response = $kk->api_get();
         if (!$response->status)
             header("HTTP/ 400");
         else

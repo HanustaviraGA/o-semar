@@ -1,24 +1,26 @@
 <?php
 
+require_once "controller.php";
+
 class KK extends Controller {
 
     // TODO: Controller for Web
-    public static function get()
+    public function get()
     {
     }
 
-    public static function api_get() 
+    public function api_get() 
     {
-        $kk = self::sanitize($_GET['kk']);
+        $kk = $this->sanitize($_GET['kk']);
 
-        return self::get_penduduk_by_kk($kk);
+        return $this->get_penduduk_by_kk($kk);
     }
 
-    private static function get_penduduk_by_kk(string $kk)
+    private function get_penduduk_by_kk(string $kk)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 
@@ -30,7 +32,7 @@ class KK extends Controller {
         $stmt->execute();
 
         if ($stmt->errno !== 0) {
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
         }
 
         $result = $stmt->get_result();
@@ -38,9 +40,9 @@ class KK extends Controller {
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
 
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
 
     }
 }

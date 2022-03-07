@@ -1,6 +1,12 @@
 <?php
 
-function profile() {
+require_once '../controller/Profile.php';
+
+function profile()
+{
+    session_start();
+    $profile = new Profile();
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -10,7 +16,7 @@ function profile() {
             ));
             die;
         }
-        $response = Profile::api_post();
+        $response = $profile->api_post();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {

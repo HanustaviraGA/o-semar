@@ -1,22 +1,24 @@
 <?php
 
+require_once "controller.php";
+
 class JenisSurat extends Controller
 {
     // TODO: Controller for Web
-    public static function get()
+    public function get()
     {
     }
 
-    public static function api_get()
+    public function api_get()
     {
-        return self::get_jenis_surat();
+        return $this->get_jenis_surat();
     }
 
-    private static function get_jenis_surat(string $identifier = '1')
+    private function get_jenis_surat(string $identifier = '1')
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 jenis, 
                 keterangan_jenis 
@@ -29,15 +31,15 @@ class JenisSurat extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0)
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
         else
-            return self::response(false, 'Tidak ada data surat terdaftar');
+            return $this->response(false, 'Tidak ada data surat terdaftar');
 
-        return self::response(true, $response);
+        return $this->response(true, $response);
     }
 }

@@ -1,6 +1,12 @@
 <?php
 
-function penduduk() {
+require_once '../controller/Penduduk.php';
+
+function penduduk()
+{
+    session_start();
+    $penduduk = new Penduduk();
+
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -10,7 +16,7 @@ function penduduk() {
             ));
             die;
         }
-        $response = Penduduk::api_get();
+        $response = $penduduk->api_get();
         if (!$response->status)
             header("HTTP/ 400");
         else

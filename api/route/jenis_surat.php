@@ -1,6 +1,12 @@
 <?php
 
-function jenis_surat() {
+require_once '../controller/Jenis_Surat.php';
+
+function jenis_surat()
+{
+    session_start();
+    $jenis_surat = new JenisSurat();
+
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -10,7 +16,7 @@ function jenis_surat() {
             ));
             die;
         }
-        $response = JenisSurat::api_get();
+        $response = $jenis_surat->api_get();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {

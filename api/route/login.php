@@ -7,9 +7,13 @@ require_once '../controller/Login.php';
  * 
  * @return json
  */
-function login() {
+function login()
+{
+    session_start();
+    $login = new Login();
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $response = Login::api_post();
+        $response = $login->api_post();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {

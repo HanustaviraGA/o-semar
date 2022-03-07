@@ -1,27 +1,28 @@
 <?php
 
+require_once "controller.php";
 
 class Iuran extends Controller
 {
     // TODO: Controller for Web
-    public static function get()
+    public function get()
     {
     }
 
-    public static function api_get()
+    public function api_get()
     {
         // Prevent XSS and Escape Special Chars
-        $nik = self::sanitize($_GET['nik']);
-        $status = self::sanitize($_GET['status']);
+        $nik = $this->sanitize($_GET['nik']);
+        $status = $this->sanitize($_GET['status']);
 
         if ($status === 'unpaid') {
-            $response = self::get_unpaid_iuran($nik);
+            $response = $this->get_unpaid_iuran($nik);
             return $response;
         } else if ($status === 'paid') {
-            $response = self::get_paid_iuran($nik);
+            $response = $this->get_paid_iuran($nik);
             return $response;
         } else {
-            return self::response(false, 'Parameter tidak diketahui');
+            return $this->response(false, 'Parameter tidak diketahui');
         }
     }
 
@@ -34,40 +35,40 @@ class Iuran extends Controller
      *
      * @return object
      */
-    public static function api_post()
+    public function api_post()
     {
         // Prevent XSS and Escape Special Chars
-        $nik = self::sanitize($_POST['nik']);
-        $id = self::sanitize($_POST['id']);
+        $nik = $this->sanitize($_POST['nik']);
+        $id = $this->sanitize($_POST['id']);
 
         $file = $_FILES['files'];
         $tanggal = date('Y-m-d');
 
         if (isset($file) && !empty($file['name'])) {
-            $response = self::insert_lampiran($nik, $id, $tanggal, $file);
+            $response = $this->insert_lampiran($nik, $id, $tanggal, $file);
             if (!$response->status)
                 return $response;
         }
         
-        if (!self::get_tagihan($nik, $id)->status) {
-            $response = self::update_surat_keterangan($id, false);
+        if (!$this->get_tagihan($nik, $id)->status) {
+            $response = $this->update_surat_keterangan($id, false);
             if (!$response->status)
                 return $response;
         }
         else {
-            $response = self::update_surat_keterangan($id, true);
+            $response = $this->update_surat_keterangan($id, true);
             if (!$response->status)
                 return $response;
         }
 
-        return self::response(true, 'Sukses menghapus data iuran');
+        return $this->response(true, 'Sukses menghapus data iuran');
     }
 
-    private static function get_unpaid_iuran(string $nik)
+    private function get_unpaid_iuran(string $nik)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 nik, 
                 id_tagihan, 
@@ -90,23 +91,23 @@ class Iuran extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
             
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::error('Tidak ada data iuran tersimpan');
+            return $this->error('Tidak ada data iuran tersimpan');
     }
 
-    private static function get_paid_iuran(string $nik)
+    private function get_paid_iuran(string $nik)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 nik, 
                 id_tagihan, 
@@ -129,7 +130,7 @@ class Iuran extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -139,16 +140,16 @@ class Iuran extends Controller
                     $obj
                 ));
 
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::error('Tidak ada data iuran yang sudah terbayar tersimpan');
+            return $this->error('Tidak ada data iuran yang sudah terbayar tersimpan');
     }
 
-    private static function get_tagihan(string $nik, string $id)
+    private function get_tagihan(string $nik, string $id)
     {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 * 
             FROM 
@@ -161,25 +162,25 @@ class Iuran extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
 
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::error('Tidak ada data tagihan tersimpan');
+            return $this->error('Tidak ada data tagihan tersimpan');
     }
 
-    private static function insert_lampiran(
+    private function insert_lampiran(
         string $nik,
         string $id,
         string $tanggal,
         $file
     ) {
-        $tagihan = self::get_tagihan($nik, $id);
+        $tagihan = $this->get_tagihan($nik, $id);
         if (count($tagihan->data) > 0) {
             foreach ($file['tmp_name'] as $key) {
                 $file_tmp = $file['tmp_name'][$key];
@@ -189,9 +190,9 @@ class Iuran extends Controller
                     $new_filename = uniqid() .  '_' . $nik . '.' . $file_extension;
                     move_uploaded_file($file_tmp, "../admin/iuran/berkas/$new_filename");
                 } else
-                    return self::error('Ekstensi file tidak dapat diterima');
+                    return $this->error('Ekstensi file tidak dapat diterima');
 
-                $stmt = self::$mysqli->prepare(
+                $stmt = $this->mysqli->prepare(
                     "INSERT INTO lampiran
                         (
                             nik, 
@@ -217,21 +218,21 @@ class Iuran extends Controller
                 $stmt->execute();
 
                 if ($stmt->errno !== 0)
-                    return self::error($stmt->error);
+                    return $this->error($stmt->error);
 
-                return self::response(true, 'Berhasil memasukkan data tagihan');
+                return $this->response(true, 'Berhasil memasukkan data tagihan');
             }
         }
     }
 
-    private static function update_surat_keterangan(string $id, bool $lunas)
+    private function update_surat_keterangan(string $id, bool $lunas)
     {
         if ($lunas)
             $status = 'Lunas';
         else
             $status = 'Unpaid';
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "UPDATE 
                 tagihan 
             SET 
@@ -243,8 +244,8 @@ class Iuran extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
-        return self::response(true, 'Update surat keterangan berhasil');
+        return $this->response(true, 'Update surat keterangan berhasil');
     }
 }

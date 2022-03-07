@@ -1,17 +1,19 @@
 <?php
 
+require_once "controller.php";
+
 class Penduduk extends Controller
 {
 
-    public static function get()
+    public function get()
     {
     }
 
-    public static function api_get()
+    public function api_get()
     {
         // TODO: What is filter value?
 
-        $penduduk = self::get_penduduk();
+        $penduduk = $this->get_penduduk();
 
         // Return Error or No Data
         if (!$penduduk->status)
@@ -20,13 +22,13 @@ class Penduduk extends Controller
         if (count($penduduk->data) > 0)
             return $penduduk;
         else
-            return self::response(false, 'Tidak ada data');
+            return $this->response(false, 'Tidak ada data');
     }
 
-    private static function get_penduduk() {
+    private function get_penduduk() {
         $response = array();
 
-        $stmt = self::$mysqli->prepare(
+        $stmt = $this->mysqli->prepare(
             "SELECT 
                 no_kk, 
                 nik, 
@@ -54,15 +56,15 @@ class Penduduk extends Controller
         $stmt->execute();
 
         if ($stmt->errno !== 0)
-            return self::error($stmt->error);
+            return $this->error($stmt->error);
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             while ($obj = $result->fetch_object())
                 array_push($response, $obj);
     
-            return self::response(true, $response);
+            return $this->response(true, $response);
         } else
-            return self::response(false, 'Data tidak ditemukan');
+            return $this->response(false, 'Data tidak ditemukan');
     }
 }

@@ -1,6 +1,12 @@
 <?php
 
-function lampiran_by_id() {
+require_once '../controller/Lampiran.php';
+
+function lampiran_by_id()
+{
+    session_start();
+    $lampiran = new Lampiran();
+
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -10,7 +16,7 @@ function lampiran_by_id() {
             ));
             die;
         }
-        $response = Lampiran::api_get();
+        $response = $lampiran->api_get();
         if (!$response->status)
             header("HTTP/ 400");
         else

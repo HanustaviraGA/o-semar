@@ -1,11 +1,17 @@
 <?php
 
+require_once '../controller/Laporan.php';
+
 /**
  * Untuk olah laporan
  * 
  * @return json
  */
-function laporan() {
+function laporan()
+{
+    session_start();
+    $laporan = new Laporan();
+
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         if (!isset($_SESSION['nik'])) {
             header("HTTP/ 401");
@@ -15,7 +21,7 @@ function laporan() {
             ));
             die;
         }
-        $response = Laporan::api_get();
+        $response = $laporan->api_get();
         if (!$response->status)
             header("HTTP/ 400");
         else
@@ -31,7 +37,7 @@ function laporan() {
             ));
             die;
         }
-        $response = Laporan::api_post();
+        $response = $laporan->api_post();
         if (!$response->status) {
             header("HTTP/ 400");
         } else {
