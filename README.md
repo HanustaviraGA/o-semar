@@ -1,4 +1,6 @@
-# O-Semar
+# O-Semar (Not Maintained!)
+
+**Repository ini ditinggalkan dan tidak dimaintain lagi**
 
 **Branch ini merupakan rilis nightly alpha, jadi masih belum stabil dan belum siap digunakan**
 
