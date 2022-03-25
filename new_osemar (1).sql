@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 31 Jan 2022 pada 07.51
+-- Waktu pembuatan: 06 Mar 2022 pada 14.50
 -- Versi server: 10.4.22-MariaDB
--- Versi PHP: 8.1.1
+-- Versi PHP: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -73,13 +73,7 @@ CREATE TABLE `lampiran` (
 --
 
 INSERT INTO `lampiran` (`nik`, `kode`, `lampiran`, `jenis_lampiran`, `tanggal_lampiran`, `status_lampiran`, `ket_lampiran`) VALUES
-('321654987', 'SRT61f2592130e18', '61f2592130e25_321654987.png', 'Pengajuan Surat', '2022-01-27', 'Telah Diperiksa', ''),
-('321654987', 'SRT61f2592130e18', '61f2592131f02_321654987.png', 'Pengajuan Surat', '2022-01-27', 'Telah Diperiksa', ''),
-('321654987', 'LPR61f32ed6e7caa', '61f32ed6e7cb2_321654987.jpg', 'Laporan Masyarakat', '2022-01-28', 'Pending', '-'),
-('321654987', 'LPR61f32ed6e7caa', '61f32ed6e9cfe_321654987.jpg', 'Laporan Masyarakat', '2022-01-28', 'Pending', '-'),
-('321654987', 'TGHN61f329af94a17', '61f3d0204116f_321654987.jpg', 'Pembayaran Tagihan', '2022-01-28', 'Telah Diperiksa', 'Paid'),
-('123456789', 'PNG61f338c370c6e', 'PNG61f338c370c6e_123456789.jpg', 'Pengumuman Warga', '2022-01-28', '-', '-'),
-('321654987', 'SRT61f2592130e18', 'SRT61f2592130e18_321654987.pdf', 'Pengajuan Surat', '2022-01-28', 'Telah Diperiksa', '');
+('3534342493434', 'SRT6224973bb4193', '6224973bb419e_3534342493434.png', 'Pengajuan Surat', '2022-03-06', 'Pending', '-');
 
 -- --------------------------------------------------------
 
@@ -88,15 +82,22 @@ INSERT INTO `lampiran` (`nik`, `kode`, `lampiran`, `jenis_lampiran`, `tanggal_la
 --
 
 CREATE TABLE `msadmin` (
-  `nik` varchar(300) NOT NULL
+  `nik` varchar(300) NOT NULL,
+  `nama` varchar(300) NOT NULL,
+  `username` varchar(300) NOT NULL,
+  `password` varchar(300) NOT NULL,
+  `alamat` varchar(300) NOT NULL,
+  `no_kk` varchar(300) NOT NULL,
+  `id_rt` varchar(300) NOT NULL,
+  `id_rw` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `msadmin`
 --
 
-INSERT INTO `msadmin` (`nik`) VALUES
-('123456789');
+INSERT INTO `msadmin` (`nik`, `nama`, `username`, `password`, `alamat`, `no_kk`, `id_rt`, `id_rw`) VALUES
+('123456789', 'Hanustavira Guru Acarya', 'hanhan', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', 'Klampis Ngasem', '999888777444', '5', '9');
 
 -- --------------------------------------------------------
 
@@ -184,19 +185,20 @@ CREATE TABLE `msrt` (
   `id_rt` varchar(300) NOT NULL,
   `id_rw` varchar(300) NOT NULL,
   `nik_ketuart` varchar(300) NOT NULL,
-  `nama_rt` varchar(300) NOT NULL
+  `nama_rt` varchar(300) NOT NULL,
+  `nomor_sk` varchar(300) NOT NULL,
+  `tanggal_sk` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `msrt`
 --
 
-INSERT INTO `msrt` (`id_rt`, `id_rw`, `nik_ketuart`, `nama_rt`) VALUES
-('1', '9', '3741554', 'Dionisius'),
-('4', '8', '456789123', 'Cheryl Almeira'),
-('5', '8', '12345678900', 'Zulkifli'),
-('6', '8', '3741520', 'Suhartini'),
-('7', '8', '3534342493434', 'Luki');
+INSERT INTO `msrt` (`id_rt`, `id_rw`, `nik_ketuart`, `nama_rt`, `nomor_sk`, `tanggal_sk`) VALUES
+('1', '9', '3741520', 'Suhartini', '910/RT/478/2022', '2022-03-05'),
+('2', '9', '6488254872501', 'Sudarmono', '455/RT/511/2022', '2022-03-05'),
+('4', '8', '456789123', 'Cheryl Almeira', '', ''),
+('5', '8', '12345678900', 'Zulkifli', '', '');
 
 -- --------------------------------------------------------
 
@@ -208,17 +210,18 @@ CREATE TABLE `msrw` (
   `id_rw` varchar(300) NOT NULL,
   `id_kelurahan` varchar(300) NOT NULL,
   `nik_ketuarw` varchar(300) NOT NULL,
-  `nama_rw` varchar(300) NOT NULL
+  `nama_rw` varchar(300) NOT NULL,
+  `nomor_sk` varchar(300) NOT NULL,
+  `tanggal_sk` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `msrw`
 --
 
-INSERT INTO `msrw` (`id_rw`, `id_kelurahan`, `nik_ketuarw`, `nama_rw`) VALUES
-('10', '2013', '6488254872501', 'Sudarmono'),
-('8', '2013', '987456321', 'Andru Baskara Putra'),
-('9', '2013', '66974215', 'Setyo');
+INSERT INTO `msrw` (`id_rw`, `id_kelurahan`, `nik_ketuarw`, `nama_rw`, `nomor_sk`, `tanggal_sk`) VALUES
+('8', '2013', '987456321', 'Andru Baskara Putra', '', ''),
+('9', '2013', '66974215', 'Setyo', '', '');
 
 -- --------------------------------------------------------
 
@@ -264,13 +267,6 @@ CREATE TABLE `pelaporan` (
   `alasan` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data untuk tabel `pelaporan`
---
-
-INSERT INTO `pelaporan` (`id_pelaporan`, `nik`, `id_rt`, `id_rw`, `kategori`, `keterangan`, `tanggal_pelaporan`, `status`, `alasan`) VALUES
-('LPR61f32ed6e7caa', '321654987', '5', '8', 'Sarana dan Prasarana', 'Hadir ', '2022-01-28', 'Pending', '');
-
 -- --------------------------------------------------------
 
 --
@@ -297,6 +293,7 @@ CREATE TABLE `penduduk` (
   `email` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `username` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `password` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
+  `acc_status` varchar(1) NOT NULL DEFAULT '1',
   `no_hp` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `status_hubungan_keluarga` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `no_paspor` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
@@ -315,28 +312,15 @@ CREATE TABLE `penduduk` (
 -- Dumping data untuk tabel `penduduk`
 --
 
-INSERT INTO `penduduk` (`no_kk`, `nik`, `nama`, `tempat_lahir`, `tanggal_lahir`, `alamat`, `id_rt`, `id_rw`, `jenis_kelamin`, `agama`, `status_perkawinan`, `pekerjaan`, `gol_darah`, `kewarganegaraan`, `status_ktp`, `foto_ktp`, `email`, `username`, `password`, `no_hp`, `status_hubungan_keluarga`, `no_paspor`, `no_kitas`, `kepala_keluarga`, `nama_ayah`, `nama_ibu`, `virtual_account_id`, `foto_kk`, `pendidikan`, `tanggal_pengeluaran_kk`, `tanggal_reg`) VALUES
-('4623241', '0087964', 'Albertus', 'Tidak Diketahui', '2021-12-08', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'albertus@binus.ac.id', 'albertus', 'buwinajoss', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-08', '2021-12-08'),
-('999777444', '123456789', 'Hanustavira Guru Acarya', 'Malang', '2000-03-27', 'Dusun Karangjati', '4', '8', 'Laki - Laki', 'Islam', 'Belum Kawin', 'Mahasiswa', '', 'WNI', '', '', 'hanvir@sunib.com', 'hanhan', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '', '', '', '', 1, '', '', '', 'KK_12345678.jpg', '', '2021-12-01', '0000-00-00'),
-('12345678900', '12345678900', 'Zulkifli', 'Tidak Diketahui', '2021-12-11', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'zulkifli@binus.ac.id', 'zulkifli', '$2y$10$Yz.XN0egTQdp6KFBcDK31u1vo.7YqsszKZJHa1r/tI5FoCQ6jvM9K', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-11', '2021-12-11'),
-('123888', '222333666', 'Budiman', 'Surabaya', '0000-00-00', '', '4', '8', '', '', '', '', '', '', '', '', '', '', 'sunibngalam', '', '', '', '', 1, '', '', '', '', '', '2021-12-01', '0000-00-00'),
-('333', '321654987', 'Michelle Angela Guntjoro', '', '2001-06-27', '', '5', '8', '', '', '', '', '', '', '', '', '', 'cele', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '', '', '', '', 1, '', '', '', '', '', '2021-12-01', '0000-00-00'),
-('667452', '321654999', 'Siswanto', 'Tidak Diketahui', '2021-12-11', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'siswanto@binus.ac.id', 'siswanto', '$2y$10$7LUf9P0AI9NoRHIe4mFcTuN5GYOKBqmUktmgL.CesMg6e/79dVmxi', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-11', '2021-12-11'),
-('12345678', '3534342493434', 'Luki', 'Tidak Diketahui', '2021-11-16', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'muhammad.masyhuri@binus.ac.id', 'fikri', 'sunibngalam', 'Tidak Diketahui', '', '', '', 0, 'Hendra', 'Sri', '', '', '', '2021-12-01', '2021-11-16'),
-('12345678', '3534342493436', 'Sumartono', 'Tidak Diketahui', '2021-11-16', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'muhammad.masyhuri@binus.ac.id', 'fikris', 'sunibngalam', 'Tidak Diketahui', '', '', '', 0, 'Sugiyanto', 'Dewi', '', '', '', '2021-12-01', '2021-11-16'),
-('35794523974461', '35794510335481', 'Sanusi', 'Tidak Diketahui', '2021-11-16', 'Tidak Diketahui', '4', '9', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'dhani@binus.ac.id', 'dhani', 'sunibngalam', 'Tidak Diketahui', '', '', '', 1, '', '', '', '', '', '2021-12-01', '2021-11-16'),
-('4479674', '3741520', 'Suhartini', 'Tidak Diketahui', '2021-12-08', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'suhartini@binus.ac.id', 'suhartini', 'sunibngalam', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-08', '2021-12-08'),
-('4479652', '3741554', 'Dionisius', 'Tidak Diketahui', '2021-12-08', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'dionisius@binus.ac.id', 'dion', 'sunibngalam', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-08', '2021-12-08'),
-('897', '456789123', 'Cheryl Almeira', '', '2021-10-27', '', '4', '8', '', '', '', '', '', '', '', '', '', 'cheryl', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '', '', '', '', 1, '', '', '', '', '', '2021-12-01', '0000-00-00'),
-('47281983129479', '47248500172323', 'Misnari', 'Tidak Diketahui', '2022-01-17', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'misnari@binus.ac.id', 'misnari', '$2y$10$4TXahJROwhEFwfpUdn/Q/OXVSPfRgDcXtI/xbKvUtXXdRGgUQT5Pm', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2022-01-17', '2022-01-17'),
-('2251484774424', '6488254872334', 'Surip', 'Tidak Diketahui', '2021-11-16', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'suherman@binus.ac.id', 'suherman', 'sunibngalam', 'Tidak Diketahui', '', '', '', 0, '', '', '', '', '', '2021-12-01', '2021-11-16'),
-('2251484774500', '6488254872501', 'Sudarmono', 'Tidak Diketahui', '0000-00-00', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'sudarmono@binus.ac.id', 'sudarmono', 'sunibngalam', 'Tidak Diketahui', '', '', '', 0, '', '', '', '', '', '2021-12-01', '2021-11-16'),
-('554', '654987321', 'Gerry Guinardi', '', '0000-00-00', '', '4', '8', '', '', '', '', '', '', '', '', '', 'overlord', 'sunibngalam', '', '', '', '', 0, '', '', '', '', '', '2021-12-01', '0000-00-00'),
-('35679524', '66974215', 'Setyo', 'Tidak Diketahui', '2021-12-10', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'setyo@binus.ac.id', 'setyo', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-10', '2021-12-10'),
-('22561174', '77925411', 'Dian', 'Tidak Diketahui', '2021-12-08', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'dian@binus.ac.id', 'dian', 'sunibngalam', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-08', '2021-12-08'),
-('22561178', '77925421', 'Bimo', 'Tidak Diketahui', '2021-12-10', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'bimo@binus.ac.id', 'bimo', 'sunibngalam', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-10', '2021-12-10'),
-('1234567890', '92919010293', 'Fikri Imaduddin', 'Tidak Diketahui', '2021-12-06', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'fikri.iaim@gmail.com', 'fikcoy', 'sunibngalam', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-06', '2021-12-06'),
-('664', '987456321', 'Andru Baskara Putra', '', '0000-00-00', '', '3', '8', '', '', '', '', '', '', '', '', '', 'andru', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '', '', '', '', 0, '', '', '', '', '', '2021-12-01', '0000-00-00');
+INSERT INTO `penduduk` (`no_kk`, `nik`, `nama`, `tempat_lahir`, `tanggal_lahir`, `alamat`, `id_rt`, `id_rw`, `jenis_kelamin`, `agama`, `status_perkawinan`, `pekerjaan`, `gol_darah`, `kewarganegaraan`, `status_ktp`, `foto_ktp`, `email`, `username`, `password`, `acc_status`, `no_hp`, `status_hubungan_keluarga`, `no_paspor`, `no_kitas`, `kepala_keluarga`, `nama_ayah`, `nama_ibu`, `virtual_account_id`, `foto_kk`, `pendidikan`, `tanggal_pengeluaran_kk`, `tanggal_reg`) VALUES
+('12345678900', '12345678900', 'Zulkifli', 'Tidak Diketahui', '2021-12-11', 'Tidak Diketahui', '5', '8', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'zulkifli@binus.ac.id', 'zulkifli', '$2y$10$Yz.XN0egTQdp6KFBcDK31u1vo.7YqsszKZJHa1r/tI5FoCQ6jvM9K', '1', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-11', '2021-12-11'),
+('12345678', '3534342493434', 'Luki', 'Tidak Diketahui', '2021-11-16', 'Tidak Diketahui', '7', '8', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'muhammad.masyhuri@binus.ac.id', 'luki', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '1', 'Tidak Diketahui', '', '', '', 0, 'Hendra', 'Sri', '', '', '', '2021-12-01', '2021-11-16'),
+('4479674', '3741520', 'Suhartini', 'Tidak Diketahui', '2021-12-08', 'Tidak Diketahui', '6', '8', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'suhartini@binus.ac.id', 'suhartini', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '1', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-08', '2021-12-08'),
+('4479652', '3741554', 'Dionisius', 'Tidak Diketahui', '2021-12-08', 'Tidak Diketahui', '1', '9', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'dionisius@binus.ac.id', 'dion', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '1', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-08', '2021-12-08'),
+('897', '456789123', 'Cheryl Almeira', '', '2021-10-27', '', '4', '8', '', '', '', '', '', '', '', '', '', 'cheryl', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '1', '', '', '', '', 1, '', '', '', '', '', '2021-12-01', '0000-00-00'),
+('2251484774500', '6488254872501', 'Sudarmono', 'Tidak Diketahui', '0000-00-00', 'Tidak Diketahui', '1', '10', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'sudarmono@binus.ac.id', 'sudarmono', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '1', 'Tidak Diketahui', '', '', '', 0, '', '', '', '', '', '2021-12-01', '2021-11-16'),
+('35679524', '66974215', 'Setyo', 'Tidak Diketahui', '2021-12-10', 'Tidak Diketahui', '1', '9', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'setyo@binus.ac.id', 'setyo', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '0', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 0, 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', 'Tidak Diketahui', '2021-12-10', '2021-12-10'),
+('664', '987456321', 'Andru Baskara Putra', '', '0000-00-00', '', '3', '8', '', '', '', '', '', '', '', '', '', 'andru', '$2y$10$O9sKO0J2qPhuIifqHrZeQuXFE531.sRjafE2SHD0yDh31lYKRKRPy', '1', '', '', '', '', 0, '', '', '', '', '', '2021-12-01', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -354,13 +338,6 @@ CREATE TABLE `pengumuman` (
   `pengirim` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data untuk tabel `pengumuman`
---
-
-INSERT INTO `pengumuman` (`id`, `pengumuman`, `isi`, `tanggal`, `id_rt`, `id_rw`, `pengirim`) VALUES
-('PNG61f338c370c6e', 'Bayar Keamanan dan Ketertiban', 'Hati hati ada hajatan', '2022-01-28', '4', '8', 'Hanustavira Guru Acarya');
-
 -- --------------------------------------------------------
 
 --
@@ -368,8 +345,11 @@ INSERT INTO `pengumuman` (`id`, `pengumuman`, `isi`, `tanggal`, `id_rt`, `id_rw`
 --
 
 CREATE TABLE `suratketerangan` (
+  `index` int(100) NOT NULL,
   `no_surat` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
+  `identifier` varchar(300) NOT NULL,
   `nik` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
+  `nama` varchar(300) DEFAULT NULL,
   `id_rt` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `id_rw` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `jenis` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
@@ -378,6 +358,9 @@ CREATE TABLE `suratketerangan` (
   `tujuan` varchar(300) NOT NULL,
   `keterangan` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `status` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
+  `status_rt` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
+  `status_rw` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
+  `status_admin` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `alasan` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -385,8 +368,8 @@ CREATE TABLE `suratketerangan` (
 -- Dumping data untuk tabel `suratketerangan`
 --
 
-INSERT INTO `suratketerangan` (`no_surat`, `nik`, `id_rt`, `id_rw`, `jenis`, `keperluan`, `tanggal_pengajuan`, `tujuan`, `keterangan`, `status`, `alasan`) VALUES
-('SRT61f2592130e18', '321654987', '5', '8', 'Surat Keterangan Penghasilan', 'Keberangkatan ke luar negeri', '2022-01-27', 'Mancing di sawah', 'Hadir', 'Terverifikasi', '');
+INSERT INTO `suratketerangan` (`index`, `no_surat`, `identifier`, `nik`, `nama`, `id_rt`, `id_rw`, `jenis`, `keperluan`, `tanggal_pengajuan`, `tujuan`, `keterangan`, `status`, `status_rt`, `status_rw`, `status_admin`, `alasan`) VALUES
+(8, '8/6/3/9.3.7.8/2022', 'SRT6224973bb4193', '3534342493434', NULL, '7', '8', 'Surat Keterangan Akan Menikah', 'Keberangkatan ke luar negeri', '2022-03-06', 'KUA Surabaya', 'Test', 'Pending', '-', '-', '-', 'Tidak Diketahui');
 
 -- --------------------------------------------------------
 
@@ -407,13 +390,6 @@ CREATE TABLE `tagihan` (
   `bukti_pembayaran` varchar(300) NOT NULL DEFAULT 'Tidak Diketahui',
   `tanggal_pembayaran` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `tagihan`
---
-
-INSERT INTO `tagihan` (`id_tagihan`, `nik`, `id_rt`, `id_rw`, `jenis_tagihan`, `total_tagihan`, `jatuh_tempo`, `status_pembayaran`, `rekening`, `bukti_pembayaran`, `tanggal_pembayaran`) VALUES
-('TGHN61f329af94a17', '321654987', '5', '8', 'Bayar Tagihan Air', 153000, '2022-01-31', 'Paid', 'BCA : 1234567', '61f3d0204116f_321654987.jpg', '2022-01-28');
 
 --
 -- Indexes for dumped tables
@@ -504,7 +480,7 @@ ALTER TABLE `pengumuman`
 -- Indeks untuk tabel `suratketerangan`
 --
 ALTER TABLE `suratketerangan`
-  ADD PRIMARY KEY (`no_surat`);
+  ADD PRIMARY KEY (`index`);
 
 --
 -- Indeks untuk tabel `tagihan`
@@ -521,6 +497,12 @@ ALTER TABLE `tagihan`
 --
 ALTER TABLE `jenis_surat`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT untuk tabel `suratketerangan`
+--
+ALTER TABLE `suratketerangan`
+  MODIFY `index` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

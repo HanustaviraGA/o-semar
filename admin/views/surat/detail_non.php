@@ -62,12 +62,6 @@
                 </div>
                 <div class="card mb-4">
                 <div class="card-body">
-                        <?php 
-                          $nik = $dataID['nik'];
-                          $sqlID = "SELECT * FROM penduduk WHERE nik = '$nik'";
-                          $queryID = mysqli_query($koneksi,$sqlID);
-                          $result = mysqli_fetch_array($queryID);
-                        ?>
                   <form action="controller.php" method="POST">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nomor Surat</label>
@@ -79,7 +73,7 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Nama Pengaju</label>
-                      <input type="text" class="form-control" value="<?= $result['nama'] ?>" readonly>
+                      <input type="text" class="form-control" value="<?= $dataID['nama'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Keperluan</label>

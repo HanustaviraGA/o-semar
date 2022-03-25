@@ -108,6 +108,12 @@
           <span>Pengaturan RW</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="adminduk/list_penduduk/update">
+          <i class="far fa-fw fa-window-maximize"></i>
+          <span>Tambah Data Penduduk</span>
+        </a>
+      </li>
       
       <hr class="sidebar-divider">
       <div class="version" id="version-O-Semar"></div>

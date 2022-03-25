@@ -84,6 +84,14 @@
                         <?php endwhile; ?>  
                         </select>  
                     </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Nomor SK</label>
+                      <input type="text" class="form-control" name="no_sk" id="no_sk">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Tanggal Penerbitan SK</label>
+                      <input type="date" class="form-control" name="tanggal_sk" id="tanggal_sk">
+                    </div>
                     <input type="hidden" name="id_rt" id="id_rt" value="<?= $id?>" required>
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                   </div>
