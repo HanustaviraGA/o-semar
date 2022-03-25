@@ -1,4 +1,6 @@
-# O-Semar
+# O-Semar (Not Maintained!)
+
+**Repository ini ditinggalkan dan tidak dimaintain lagi**
 
 Lupa singkatannya apa...
 
